@@ -1,11 +1,11 @@
 import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
-import ScrobblesScreen from '../screens/ScrobblesScreen'
+import MainBottomTabNavigator from './MainBottomTabNavigator'
 
 const AppNavigator = () => {
   return (
     <NavigationContainer>
-      <ScrobblesScreen />
+      <MainBottomTabNavigator />
     </NavigationContainer>
   )
 }

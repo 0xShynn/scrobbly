@@ -1,12 +1,12 @@
 import React from 'react'
 import { View, Text } from 'react-native'
 
-const TopArtistsScreen = () => {
+const TopAlbumsScreen = () => {
   return (
     <View>
-      <Text>Top Artists</Text>
+      <Text>Top Albums</Text>
     </View>
   )
 }
 
-export default TopArtistsScreen
+export default TopAlbumsScreen
