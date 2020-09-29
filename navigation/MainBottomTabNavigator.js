@@ -1,11 +1,11 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import ScrobblesScreen from '../screens/ScrobblesScreen'
 import TopArtistsScreen from '../screens/TopArtistsScreen'
 import TopAlbumsScreen from '../screens/TopAlbumsScreen'
 import TopTracksScreen from '../screens/TopTracksScreen'
 
 import { Ionicons } from '@expo/vector-icons'
+import DetailsStackScreen from './DetailsStackScreen'
 
 const Tab = createBottomTabNavigator()
 
@@ -20,13 +20,13 @@ const MainBottomTabNavigator = () => {
             case 'Scrobbles':
               iconName = 'ios-list'
               break
-            case 'Top Artists':
+            case 'Artists':
               iconName = 'md-person'
               break
-            case 'Top Albums':
+            case 'Albums':
               iconName = 'ios-disc'
               break
-            case 'Top Tracks':
+            case 'Tracks':
               iconName = 'ios-musical-notes'
               break
             default:
@@ -37,14 +37,14 @@ const MainBottomTabNavigator = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'tomato',
+        activeTintColor: 'red',
         inactiveTintColor: 'gray',
       }}
     >
-      <Tab.Screen name="Scrobbles" component={ScrobblesScreen} />
-      <Tab.Screen name="Top Artists" component={TopArtistsScreen} />
-      <Tab.Screen name="Top Albums" component={TopAlbumsScreen} />
-      <Tab.Screen name="Top Tracks" component={TopTracksScreen} />
+      <Tab.Screen name="Scrobbles" component={DetailsStackScreen} />
+      <Tab.Screen name="Artists" component={TopArtistsScreen} />
+      <Tab.Screen name="Albums" component={TopAlbumsScreen} />
+      <Tab.Screen name="Tracks" component={TopTracksScreen} />
     </Tab.Navigator>
   )
 }
