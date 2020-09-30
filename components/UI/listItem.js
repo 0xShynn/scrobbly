@@ -2,23 +2,20 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 
-const listItem = ({ item }) => {
+const ListItem = (props) => {
   return (
-    <TouchableOpacity>
+    <TouchableOpacity onPress={props.onSelect}>
       <View style={styles.itemContainer}>
-        <Image
-          source={{ uri: item.image[3]['#text'] }}
-          style={styles.coverArt}
-        />
+        <Image source={{ uri: props.image }} style={styles.coverArt} />
         <View style={styles.infoContainer}>
           <Text numberOfLines={1} style={styles.artist}>
-            {item.artist['#text']}
+            {props.artist}
           </Text>
           <Text numberOfLines={1} style={styles.title}>
-            {item.name}
+            {props.title}
           </Text>
         </View>
-        {item['@attr'] && (
+        {props.nowPlaying && (
           <View>
             <Ionicons
               name="ios-musical-notes"
@@ -33,7 +30,7 @@ const listItem = ({ item }) => {
   )
 }
 
-export default listItem
+export default ListItem
 
 const styles = StyleSheet.create({
   itemContainer: {
