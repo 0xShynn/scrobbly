@@ -8,11 +8,11 @@ const ListItem = (props) => {
       <View style={styles.itemContainer}>
         <Image source={{ uri: props.image }} style={styles.coverArt} />
         <View style={styles.infoContainer}>
-          <Text numberOfLines={1} style={styles.artist}>
-            {props.artist}
-          </Text>
           <Text numberOfLines={1} style={styles.title}>
             {props.title}
+          </Text>
+          <Text numberOfLines={1} style={styles.artist}>
+            {props.artist}
           </Text>
         </View>
         {props.nowPlaying && (

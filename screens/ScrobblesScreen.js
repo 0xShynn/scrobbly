@@ -8,6 +8,7 @@ import {
 } from 'react-native'
 
 import ListItem from '../components/UI/ListItem'
+import LoadingContainer from '../components/UI/LoadingContainer'
 import { api_key, baseUrl, username } from '../utils/lastfm'
 
 const ScrobblesScreen = (props) => {
@@ -17,7 +18,7 @@ const ScrobblesScreen = (props) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const getScrobblesHandler = useCallback(async () => {
-    const getRecentTracks = `?method=user.getrecenttracks&user=${username}&api_key=${api_key}&format=json&limit=30`
+    const getRecentTracks = `?method=user.getrecenttracks&user=${username}&api_key=${api_key}&format=json&limit=50`
     setIsRefreshing(true)
     setError(null)
 
@@ -51,34 +52,39 @@ const ScrobblesScreen = (props) => {
     })
   }, [getScrobblesHandler, setIsLoading])
 
-  const onSelectHandler = (artist, title) => {
+  const onSelectHandler = (artist, title, image) => {
     props.navigation.navigate('Details', {
-      detailsArtist: artist,
-      detailsTitle: title,
+      artist,
+      title,
+      image,
     })
   }
 
-  return (
-    <View style={styles.container}>
-      {isLoading ? (
-        <ActivityIndicator size="large" color="black" />
-      ) : (
+  if (isLoading) {
+    return <LoadingContainer />
+  }
+
+  if (!isLoading) {
+    return (
+      <View style={styles.container}>
         <FlatList
           onRefresh={getScrobblesHandler}
           refreshing={isRefreshing}
           data={recentTracks}
           renderItem={(itemData) => (
             <ListItem
-              image={itemData.item.image[2]['#text']}
+              image={itemData.item.image[3]['#text']}
               artist={itemData.item.artist['#text']}
               title={itemData.item.name}
               nowPlaying={itemData.item['@attr']}
               onSelect={() => {
                 onSelectHandler(
                   itemData.item.artist['#text'],
-                  itemData.item.name
+                  itemData.item.name,
+                  itemData.item.image[3]['#text']
                 )
               }}
+              key={itemData.item.name}
             />
           )}
           keyExtractor={(item, index) => {
@@ -89,9 +95,9 @@ const ScrobblesScreen = (props) => {
           }}
           style={styles.listContainer}
         />
-      )}
-    </View>
-  )
+      </View>
+    )
+  }
 }
 
 const styles = StyleSheet.create({
