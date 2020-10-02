@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { View, StyleSheet, FlatList, Alert } from 'react-native'
+import { View, StyleSheet, FlatList, Alert, StatusBar } from 'react-native'
 
-import ListItem from '../components/UI/ListItem'
 import LoadingContainer from '../components/UI/LoadingContainer'
+import NewListItem from '../components/UI/NewListItem'
 import { api_key, baseUrl, username } from '../utils/lastfm'
 
 const ScrobblesScreen = (props) => {
@@ -25,8 +25,8 @@ const ScrobblesScreen = (props) => {
       }
 
       const resData = await response.json()
-      setRecentTracks([...resData.recenttracks.track])
-      console.log(recentTracks)
+      setRecentTracks(resData.recenttracks.track)
+      // console.log(recentTracks)
       setIsRefreshing(false)
     } catch (errorInLog) {
       throw errorInLog
@@ -61,16 +61,20 @@ const ScrobblesScreen = (props) => {
   if (!isLoading) {
     return (
       <View style={styles.container}>
+        <StatusBar barStyle="dark-content" />
         <FlatList
           onRefresh={getScrobblesHandler}
           refreshing={isRefreshing}
           data={recentTracks}
           renderItem={(itemData) => (
-            <ListItem
+            <NewListItem
               image={itemData.item.image[3]['#text']}
               artist={itemData.item.artist['#text']}
               title={itemData.item.name}
-              nowPlaying={itemData.item['@attr']}
+              nowPlaying={
+                itemData.item['@attr'] ? itemData.item['@attr'] : false
+              }
+              date={itemData.item.date}
               onSelect={() => {
                 onSelectHandler(
                   itemData.item.artist['#text'],
@@ -80,7 +84,8 @@ const ScrobblesScreen = (props) => {
               }}
             />
           )}
-          keyExtractor={(item) => item.index}
+          initialNumToRender={10}
+          keyExtractor={(item) => item.name + Math.random().toString()}
           ItemSeparatorComponent={() => {
             return <View style={styles.separator} />
           }}

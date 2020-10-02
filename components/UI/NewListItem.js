@@ -1,8 +1,13 @@
 import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import dayjs from 'dayjs'
+import { updatedLocale } from '../../utils/dayjs'
 
-const ListItem = (props) => {
+const NewListItem = (props) => {
+  const date = props.date ? props.date['#text'] : null
+  const timestamp = dayjs(date).utc(true).fromNow()
+
   return (
     <TouchableOpacity onPress={props.onSelect}>
       <View style={styles.itemContainer}>
@@ -15,7 +20,7 @@ const ListItem = (props) => {
             {props.artist}
           </Text>
         </View>
-        {props.nowPlaying && (
+        {props.nowPlaying ? (
           <View>
             <Ionicons
               name="ios-musical-notes"
@@ -24,19 +29,22 @@ const ListItem = (props) => {
               style={styles.nowPlaying}
             />
           </View>
+        ) : (
+          <Text style={styles.date}>{timestamp}</Text>
         )}
       </View>
     </TouchableOpacity>
   )
 }
 
-export default ListItem
+export default NewListItem
 
 const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     backgroundColor: '#FFF',
+    paddingRight: 10,
   },
   coverArt: {
     width: 80,
@@ -57,5 +65,14 @@ const styles = StyleSheet.create({
   },
   nowPlaying: {
     marginRight: 20,
+  },
+  date: {
+    color: '#666',
+    backgroundColor: '#EEE',
+    paddingHorizontal: 8,
+    paddingVertical: 4,
+    borderRadius: 10,
+    fontSize: 12,
+    overflow: 'hidden',
   },
 })

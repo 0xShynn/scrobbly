@@ -28,7 +28,7 @@ const DetailsScreen = (props) => {
 
       const resData = await response.json()
       // console.log(resData.track)
-      setTrackInfo({ ...resData.track })
+      setTrackInfo(resData.track)
     } catch (error) {
       throw error
     }
@@ -55,8 +55,7 @@ const DetailsScreen = (props) => {
         artistScrobbled: resData.artist.stats.playcount,
         artistListeners: resData.artist.stats.listeners,
       })
-      console.log(artistData.userScrobbles)
-      setArtistInfo({ ...resData.artist })
+      setArtistInfo(resData.artist)
     } catch (error) {
       throw error
     }

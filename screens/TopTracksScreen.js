@@ -1,11 +1,12 @@
 import React from 'react'
 import { View, Text } from 'react-native'
+import CenteredContainer from '../components/UI/CenteredContainer'
 
 const TopTracksScreen = () => {
   return (
-    <View>
+    <CenteredContainer>
       <Text>Top Tracks</Text>
-    </View>
+    </CenteredContainer>
   )
 }
 
