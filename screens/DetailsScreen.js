@@ -1,13 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
 import LoadingContainer from '../components/UI/LoadingContainer'
-import { api_key, baseUrl } from '../utils/lastfm'
+import { api_key, baseUrl, username } from '../utils/lastfm'
 import { abbreviateNumber } from '../utils/numbers'
-import { FlatList } from 'react-native-gesture-handler'
 
 const DetailsScreen = (props) => {
   const [trackInfo, setTrackInfo] = useState({})
   const [artistInfo, setArtistInfo] = useState({})
+  const [artistData, setArtistData] = useState({})
   const [similarTracks, setSimilarTracks] = useState([])
   const [isLoading, setIsLoading] = useState(false)
 
@@ -16,7 +16,7 @@ const DetailsScreen = (props) => {
   const albumArt = props.route.params.image
 
   const getTrackInfoHandler = useCallback(async () => {
-    const getTrackInfo = `?method=track.getInfo&api_key=${api_key}&artist=${artistName}&track=${titleName}&format=json`
+    const getTrackInfo = `?method=track.getInfo&api_key=${api_key}&artist=${artistName}&track=${titleName}&username=${username}&format=json`
 
     try {
       const response = await fetch(baseUrl + getTrackInfo)
@@ -28,15 +28,14 @@ const DetailsScreen = (props) => {
 
       const resData = await response.json()
       // console.log(resData.track)
-
       setTrackInfo({ ...resData.track })
     } catch (error) {
       throw error
     }
-  }, [getTrackInfoHandler, setTrackInfo])
+  }, [getTrackInfoHandler])
 
   const getArtistInfoHandler = useCallback(async () => {
-    const getArtistInfo = `?method=artist.getinfo&artist=${artistName}&api_key=${api_key}&format=json`
+    const getArtistInfo = `?method=artist.getinfo&artist=${artistName}&username=${username}&api_key=${api_key}&format=json`
 
     try {
       const response = await fetch(baseUrl + getArtistInfo)
@@ -47,11 +46,21 @@ const DetailsScreen = (props) => {
       }
 
       const resData = await response.json()
-      console.log(resData)
+      // console.log('resData', resData)
+
+      setArtistData({
+        artistBio: resData.artist.bio.content,
+        artistSummary: resData.artist.bio.summary,
+        artistName: resData.artist.name,
+        artistScrobbled: resData.artist.stats.playcount,
+        artistListeners: resData.artist.stats.listeners,
+      })
+      console.log(artistData.userScrobbles)
+      setArtistInfo({ ...resData.artist })
     } catch (error) {
       throw error
     }
-  }, [getArtistInfoHandler])
+  }, [getArtistInfoHandler, setArtistInfo])
 
   const getSimilarTracksHandler = useCallback(async () => {
     const getSimilarTracks = `?method=track.getsimilar&artist=${artistName}&track=${titleName}&api_key=${api_key}&limit=5&format=json`
@@ -66,7 +75,6 @@ const DetailsScreen = (props) => {
 
       const resData = await response.json()
       setSimilarTracks(resData.similartracks.track)
-      console.log('ICCCCIIII', similarTracks)
     } catch (error) {
       throw error
     }
@@ -79,7 +87,7 @@ const DetailsScreen = (props) => {
     getTrackInfoHandler().then(() => {
       setIsLoading(false)
     })
-  }, [getArtistInfoHandler, getTrackInfoHandler, getSimilarTracksHandler])
+  }, [getArtistInfoHandler, getSimilarTracksHandler, getTrackInfoHandler])
 
   if (isLoading) {
     return <LoadingContainer />
@@ -119,32 +127,43 @@ const DetailsScreen = (props) => {
             </View>
             <View style={styles.counter}>
               <Text style={styles.titleInfo}>Your Scrobbles</Text>
-              <Text style={styles.valueInfo}>0</Text>
+              <Text style={styles.valueInfo}>
+                {abbreviateNumber(trackInfo.userplaycount)}
+              </Text>
             </View>
           </View>
+
           <View style={styles.mainContainer}>
-            <FlatList
-              data={similarTracks}
-              ListHeaderComponent={() => {
-                return (
-                  <View>
-                    <Text>Similar Tracks</Text>
-                  </View>
-                )
-              }}
-              renderItem={(itemData) => (
-                <View style={styles.similarTrack}>
+            <Text>{artistData.artistName}</Text>
+            <Text>
+              Total Scrobbles: {abbreviateNumber(artistData.artistScrobbled)}
+            </Text>
+            <Text>
+              Total Listeners: {abbreviateNumber(artistData.artistListeners)}
+            </Text>
+            <Text numberOfLines={5}>Summary: {artistData.artistSummary}</Text>
+            {similarTracks.map((itemData, index) => {
+              return (
+                <View style={styles.similarTrack} key={index + 1}>
                   <View style={styles.similarInfo}>
-                    <Text numberOfLines={1} style={styles.similarInfoTitle}>
-                      {itemData.item.name}
-                    </Text>
-                    <Text numberOfLines={1} style={styles.similarInfoArtist}>
-                      {itemData.item.artist.name}
-                    </Text>
+                    <Text style={styles.similarTrackCounter}>{index + 1}</Text>
+                    <View style={styles.middle}>
+                      <Text numberOfLines={1} style={styles.similarInfoTitle}>
+                        {itemData.name}
+                      </Text>
+                      <Text numberOfLines={1} style={styles.similarInfoArtist}>
+                        {itemData.artist.name}
+                      </Text>
+                    </View>
+                    <View style={styles.similarTrackData}>
+                      <Text style={styles.badge}>
+                        {abbreviateNumber(itemData.playcount)}
+                      </Text>
+                    </View>
                   </View>
                 </View>
-              )}
-            />
+              )
+            })}
           </View>
         </View>
       </ScrollView>
@@ -153,6 +172,10 @@ const DetailsScreen = (props) => {
 }
 
 const styles = StyleSheet.create({
+  separator: {
+    backgroundColor: '#DDD',
+    height: 1,
+  },
   container: {
     flex: 1,
   },
@@ -201,7 +224,7 @@ const styles = StyleSheet.create({
   },
   valueInfo: {
     fontWeight: 'bold',
-    fontSize: 20,
+    fontSize: 24,
   },
   love: {
     padding: 20,
@@ -213,10 +236,36 @@ const styles = StyleSheet.create({
 
   similarInfo: {
     paddingVertical: 10,
+    flexDirection: 'row',
+  },
+  similarTrackCounter: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingRight: 15,
+    paddingVertical: 4,
+    color: '#999',
+    fontWeight: 'bold',
+    fontSize: 24,
   },
   similarInfoTitle: {
     fontWeight: 'bold',
     fontSize: 16,
+  },
+  middle: {
+    flex: 1,
+    paddingRight: 10,
+  },
+  similarTrackData: {
+    alignSelf: 'center',
+  },
+  badge: {
+    backgroundColor: '#DDD',
+    paddingVertical: 4,
+    paddingHorizontal: 10,
+    borderRadius: 12,
+    overflow: 'hidden',
+    color: '#777',
+    fontWeight: '600',
   },
 })
 

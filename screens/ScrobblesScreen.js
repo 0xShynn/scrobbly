@@ -1,11 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import {
-  View,
-  StyleSheet,
-  FlatList,
-  Alert,
-  ActivityIndicator,
-} from 'react-native'
+import { View, StyleSheet, FlatList, Alert } from 'react-native'
 
 import ListItem from '../components/UI/ListItem'
 import LoadingContainer from '../components/UI/LoadingContainer'
@@ -31,8 +25,8 @@ const ScrobblesScreen = (props) => {
       }
 
       const resData = await response.json()
-      const tracksArray = [...resData.recenttracks.track]
-      setRecentTracks(tracksArray)
+      setRecentTracks([...resData.recenttracks.track])
+      console.log(recentTracks)
       setIsRefreshing(false)
     } catch (errorInLog) {
       throw errorInLog
@@ -84,12 +78,9 @@ const ScrobblesScreen = (props) => {
                   itemData.item.image[3]['#text']
                 )
               }}
-              key={itemData.item.name}
             />
           )}
-          keyExtractor={(item, index) => {
-            item[index]
-          }}
+          keyExtractor={(item) => item.index}
           ItemSeparatorComponent={() => {
             return <View style={styles.separator} />
           }}

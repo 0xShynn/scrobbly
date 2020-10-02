@@ -1,4 +1,4 @@
-const SI_SYMBOL = ['', 'k', 'M', 'G', 'T', 'P', 'E']
+const SI_SYMBOL = ['', 'K', 'M', 'G', 'T', 'P', 'E']
 
 export const abbreviateNumber = (number) => {
   // what tier? (determines SI symbol)
