@@ -2,6 +2,7 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { View, Text, StyleSheet, Image, ScrollView, Button } from 'react-native'
 import SimilarTrack from '../components/SimilarTrack'
 import CenteredContainer from '../components/UI/CenteredContainer'
+import Counter from '../components/UI/Counter'
 import ErrorBanner from '../components/UI/ErrorBanner'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import { api_key, baseUrl, username } from '../utils/lastfm'
@@ -119,32 +120,32 @@ const DetailsScreen = (props) => {
             </View>
 
             <View style={styles.infoContainer}>
-              <View style={styles.counter}>
-                <Text style={styles.titleInfo}>Scrobbles</Text>
-                <Text style={styles.valueInfo}>
-                  {trackInfo.hasOwnProperty('playcount')
+              <Counter
+                title="Scrobbles"
+                value={
+                  trackInfo.hasOwnProperty('playcount')
                     ? abbreviateNumber(trackInfo.playcount)
-                    : '?'}
-                </Text>
-              </View>
+                    : '?'
+                }
+              />
 
-              <View style={styles.counter}>
-                <Text style={styles.titleInfo}>Listeners</Text>
-                <Text style={styles.valueInfo}>
-                  {trackInfo.hasOwnProperty('listeners')
+              <Counter
+                title="Listeners"
+                value={
+                  trackInfo.hasOwnProperty('listeners')
                     ? abbreviateNumber(trackInfo.listeners)
-                    : '?'}
-                </Text>
-              </View>
+                    : '?'
+                }
+              />
 
-              <View style={styles.counter}>
-                <Text style={styles.titleInfo}>Your Scrobbles</Text>
-                <Text style={styles.valueInfo}>
-                  {trackInfo.hasOwnProperty('userplaycount')
+              <Counter
+                title="Your Scrobbles"
+                value={
+                  trackInfo.hasOwnProperty('userplaycount')
                     ? abbreviateNumber(trackInfo.userplaycount)
-                    : '?'}
-                </Text>
-              </View>
+                    : '?'
+                }
+              />
             </View>
 
             <View style={styles.mainContainer}>
@@ -217,17 +218,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     borderBottomWidth: 1,
     borderBottomColor: '#DDD',
-  },
-  counter: {
-    padding: 20,
-  },
-  titleInfo: {
-    textTransform: 'uppercase',
-    color: '#555',
-  },
-  valueInfo: {
-    fontWeight: 'bold',
-    fontSize: 24,
   },
   love: {
     padding: 20,
