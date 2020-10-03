@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useMemo, useState } from 'react'
 import { View, StyleSheet, FlatList, Alert, StatusBar } from 'react-native'
 
 import LoadingContainer from '../components/UI/LoadingContainer'
-import NewListItem from '../components/UI/NewListItem'
+import NewListItem from '../components/NewListItem'
 import { api_key, baseUrl, username } from '../utils/lastfm'
 
 const ScrobblesScreen = (props) => {
@@ -12,21 +12,16 @@ const ScrobblesScreen = (props) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const getScrobblesHandler = useCallback(async () => {
-    const getRecentTracks = `?method=user.getrecenttracks&user=${username}&api_key=${api_key}&format=json&limit=50`
+    const getRecentTracks = `?method=user.getrecenttracks&user=${username}&api_key=${api_key}&format=json&limit=50&page=1`
     setIsRefreshing(true)
     setError(null)
 
     try {
       const response = await fetch(baseUrl + getRecentTracks)
 
-      if (!response.ok) {
-        const errorResData = await response.json()
-        setError(errorResData.message)
-      }
-
       const resData = await response.json()
-      setRecentTracks(resData.recenttracks.track)
-      // console.log(recentTracks)
+      const updatedRecentTracks = resData.recenttracks.track
+      setRecentTracks(updatedRecentTracks)
       setIsRefreshing(false)
     } catch (errorInLog) {
       throw errorInLog
@@ -54,6 +49,33 @@ const ScrobblesScreen = (props) => {
     })
   }
 
+  const renderItem = useCallback(
+    ({ item }) => (
+      <NewListItem
+        image={item.image[3]['#text']}
+        artist={item.artist['#text']}
+        title={item.name}
+        nowPlaying={item['@attr'] ? item['@attr'] : false}
+        date={item.date}
+        onSelect={() => {
+          onSelectHandler(
+            item.artist['#text'],
+            item.name,
+            item.image[3]['#text']
+          )
+        }}
+      />
+    ),
+    []
+  )
+
+  const keyExtractor = useCallback(
+    (item) => item.name + Math.random().toString(),
+    []
+  )
+
+  const itemSeparator = () => <View style={styles.separator} />
+
   if (isLoading) {
     return <LoadingContainer />
   }
@@ -63,32 +85,13 @@ const ScrobblesScreen = (props) => {
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
         <FlatList
+          data={recentTracks}
+          initialNumToRender={10}
+          renderItem={renderItem}
           onRefresh={getScrobblesHandler}
           refreshing={isRefreshing}
-          data={recentTracks}
-          renderItem={(itemData) => (
-            <NewListItem
-              image={itemData.item.image[3]['#text']}
-              artist={itemData.item.artist['#text']}
-              title={itemData.item.name}
-              nowPlaying={
-                itemData.item['@attr'] ? itemData.item['@attr'] : false
-              }
-              date={itemData.item.date}
-              onSelect={() => {
-                onSelectHandler(
-                  itemData.item.artist['#text'],
-                  itemData.item.name,
-                  itemData.item.image[3]['#text']
-                )
-              }}
-            />
-          )}
-          initialNumToRender={10}
-          keyExtractor={(item) => item.name + Math.random().toString()}
-          ItemSeparatorComponent={() => {
-            return <View style={styles.separator} />
-          }}
+          keyExtractor={keyExtractor}
+          ItemSeparatorComponent={itemSeparator}
           style={styles.listContainer}
         />
       </View>

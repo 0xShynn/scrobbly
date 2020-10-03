@@ -2,7 +2,8 @@ import React from 'react'
 import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import dayjs from 'dayjs'
-import { updatedLocale } from '../../utils/dayjs'
+import { updatedLocale } from '../utils/dayjs'
+import Badge from './UI/Badge'
 
 const NewListItem = (props) => {
   const date = props.date ? props.date['#text'] : null
@@ -30,7 +31,7 @@ const NewListItem = (props) => {
             />
           </View>
         ) : (
-          <Text style={styles.date}>{timestamp}</Text>
+          <Badge>{timestamp}</Badge>
         )}
       </View>
     </TouchableOpacity>
@@ -65,14 +66,5 @@ const styles = StyleSheet.create({
   },
   nowPlaying: {
     marginRight: 20,
-  },
-  date: {
-    color: '#666',
-    backgroundColor: '#EEE',
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 10,
-    fontSize: 12,
-    overflow: 'hidden',
   },
 })
