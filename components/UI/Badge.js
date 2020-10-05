@@ -19,5 +19,9 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     overflow: 'hidden',
   },
-  badgeText: { color: '#666', fontSize: 12, fontWeight: '500' },
+  badgeText: {
+    color: '#666',
+    fontSize: 12,
+    fontWeight: '500',
+  },
 })

@@ -1,26 +1,29 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import { TouchableOpacity } from 'react-native-gesture-handler'
 import { abbreviateNumber } from '../utils/numbers'
 import Badge from './UI/Badge'
 
 const SimilarTrack = (props) => {
   return (
-    <View style={styles.similarTrack} key={props.index + 1}>
-      <View style={styles.similarInfo}>
-        <Text style={styles.similarTrackCounter}>{props.index + 1}</Text>
-        <View style={styles.middle}>
-          <Text numberOfLines={1} style={styles.similarInfoTitle}>
-            {props.item.name}
-          </Text>
-          <Text numberOfLines={1} style={styles.similarInfoArtist}>
-            {props.item.artist.name}
-          </Text>
-        </View>
-        <View style={styles.similarTrackData}>
-          <Badge>{abbreviateNumber(props.item.playcount)}</Badge>
+    <TouchableOpacity onPress={props.onSelect}>
+      <View style={styles.similarTrack} key={props.index}>
+        <View style={styles.similarInfo}>
+          <Text style={styles.similarTrackCounter}>{props.index + 1}</Text>
+          <View style={styles.middle}>
+            <Text numberOfLines={1} style={styles.similarInfoTitle}>
+              {props.item.name}
+            </Text>
+            <Text numberOfLines={1} style={styles.similarInfoArtist}>
+              {props.item.artist.name}
+            </Text>
+          </View>
+          <View style={styles.similarTrackData}>
+            <Badge>{abbreviateNumber(props.item.playcount)}</Badge>
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }
 

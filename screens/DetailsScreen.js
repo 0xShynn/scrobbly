@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { View, Text, StyleSheet, Image, ScrollView, Button } from 'react-native'
+import { View, Text, StyleSheet, Image, ScrollView } from 'react-native'
 import SimilarTrack from '../components/SimilarTrack'
-import CenteredContainer from '../components/UI/CenteredContainer'
+import RoundedContainer from '../components/UI/RoundedContainer'
 import Counter from '../components/UI/Counter'
 import ErrorBanner from '../components/UI/ErrorBanner'
 import LoadingContainer from '../components/UI/LoadingContainer'
@@ -25,6 +25,7 @@ const DetailsScreen = (props) => {
     try {
       const response = await fetch(baseUrl + getTrackInfo)
       const resData = await response.json()
+      console.log('trackInfo', resData)
 
       if (resData.hasOwnProperty('error')) {
         setError(resData)
@@ -74,6 +75,14 @@ const DetailsScreen = (props) => {
     }
   }, [getSimilarTracksHandler])
 
+  const onSelectHandler = (artist, title, image) => {
+    props.navigation.push('Details', {
+      artist,
+      title,
+      image,
+    })
+  }
+
   // useEffect(() => {
   //   setIsLoading(true)
   //   getArtistInfoHandler()
@@ -95,16 +104,13 @@ const DetailsScreen = (props) => {
     return <LoadingContainer />
   }
 
-  const returnHandler = () => {
-    props.navigation.goBack()
-  }
-
   if (!isLoading) {
     return (
       <View>
         {error && (
           <ErrorBanner>Sorry there's some missing information.</ErrorBanner>
         )}
+
         <ScrollView>
           <View style={styles.container}>
             <View style={styles.topContainer}>
@@ -122,6 +128,7 @@ const DetailsScreen = (props) => {
             <View style={styles.infoContainer}>
               <Counter
                 title="Scrobbles"
+                icon="ios-musical-notes"
                 value={
                   trackInfo.hasOwnProperty('playcount')
                     ? abbreviateNumber(trackInfo.playcount)
@@ -131,6 +138,7 @@ const DetailsScreen = (props) => {
 
               <Counter
                 title="Listeners"
+                icon="md-person"
                 value={
                   trackInfo.hasOwnProperty('listeners')
                     ? abbreviateNumber(trackInfo.listeners)
@@ -139,7 +147,7 @@ const DetailsScreen = (props) => {
               />
 
               <Counter
-                title="Your Scrobbles"
+                title="Your Scrob"
                 value={
                   trackInfo.hasOwnProperty('userplaycount')
                     ? abbreviateNumber(trackInfo.userplaycount)
@@ -149,23 +157,42 @@ const DetailsScreen = (props) => {
             </View>
 
             <View style={styles.mainContainer}>
-              <View>
-                <Text>
-                  Total Scrobbles:
-                  {abbreviateNumber(artistData.artistScrobbled)}
-                </Text>
-                <Text>
-                  Total Listeners:
-                  {abbreviateNumber(artistData.artistListeners)}
-                </Text>
-                <Text numberOfLines={5}>
-                  Summary: {artistData.artistSummary}
-                </Text>
-              </View>
-              {similarTracks &&
-                similarTracks.map((itemData, index) => {
-                  return <SimilarTrack item={itemData} index={index} />
-                })}
+              <RoundedContainer>
+                <View>
+                  <Text>
+                    Total Scrobbles:
+                    {abbreviateNumber(artistData.artistScrobbled)}
+                  </Text>
+                  <Text>
+                    Total Listeners:
+                    {abbreviateNumber(artistData.artistListeners)}
+                  </Text>
+                  <Text numberOfLines={5}>
+                    Summary: {artistData.artistSummary}
+                  </Text>
+                </View>
+              </RoundedContainer>
+
+              {similarTracks.length !== 0 && (
+                <View style={styles.roundedContainer}>
+                  <Text style={styles.titled}>Similar Tracks</Text>
+                  {similarTracks.map((itemData, index) => {
+                    return (
+                      <SimilarTrack
+                        item={itemData}
+                        index={index}
+                        onSelect={() => {
+                          onSelectHandler(
+                            itemData.artist.name,
+                            itemData.name,
+                            itemData.image[3]['#text']
+                          )
+                        }}
+                      />
+                    )
+                  })}
+                </View>
+              )}
             </View>
           </View>
         </ScrollView>
@@ -175,6 +202,18 @@ const DetailsScreen = (props) => {
 }
 
 const styles = StyleSheet.create({
+  titled: {
+    textTransform: 'uppercase',
+    color: '#666',
+    fontWeight: '800',
+    fontSize: 20,
+    marginBottom: 10,
+  },
+  roundedContainer: {
+    backgroundColor: '#DDD',
+    borderRadius: 20,
+    padding: 20,
+  },
   separator: {
     backgroundColor: '#DDD',
     height: 1,

@@ -20,8 +20,7 @@ const ScrobblesScreen = (props) => {
       const response = await fetch(baseUrl + getRecentTracks)
 
       const resData = await response.json()
-      const updatedRecentTracks = resData.recenttracks.track
-      setRecentTracks(updatedRecentTracks)
+      setRecentTracks(resData.recenttracks.track)
       setIsRefreshing(false)
     } catch (errorInLog) {
       throw errorInLog
