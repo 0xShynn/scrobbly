@@ -20,6 +20,7 @@ const ScrobblesScreen = (props) => {
       const response = await fetch(baseUrl + getRecentTracks)
 
       const resData = await response.json()
+      // console.log(resData)
       setRecentTracks(resData.recenttracks.track)
       setIsRefreshing(false)
     } catch (errorInLog) {
@@ -40,11 +41,12 @@ const ScrobblesScreen = (props) => {
     })
   }, [getScrobblesHandler, setIsLoading])
 
-  const onSelectHandler = (artist, title, image) => {
+  const onSelectHandler = (artist, title, image, album) => {
     props.navigation.navigate('Details', {
       artist,
       title,
       image,
+      album,
     })
   }
 
@@ -60,7 +62,8 @@ const ScrobblesScreen = (props) => {
           onSelectHandler(
             item.artist['#text'],
             item.name,
-            item.image[3]['#text']
+            item.image[3]['#text'],
+            item.album['#text']
           )
         }}
       />

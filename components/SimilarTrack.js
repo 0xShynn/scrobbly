@@ -7,7 +7,7 @@ import Badge from './UI/Badge'
 const SimilarTrack = (props) => {
   return (
     <TouchableOpacity onPress={props.onSelect}>
-      <View style={styles.similarTrack} key={props.index}>
+      <View style={styles.similarTrack}>
         <View style={styles.similarInfo}>
           <Text style={styles.similarTrackCounter}>{props.index + 1}</Text>
           <View style={styles.middle}>
