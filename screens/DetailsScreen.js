@@ -346,12 +346,13 @@ const styles = StyleSheet.create({
   artist: {
     fontSize: 20,
     color: '#DDD',
+    fontFamily: 'Inter_400Regular',
   },
   title: {
     fontSize: 24,
     color: 'white',
     textAlign: 'center',
-    fontWeight: 'bold',
+    fontFamily: 'Inter_700Bold',
   },
   infoContainer: {
     flexDirection: 'row',

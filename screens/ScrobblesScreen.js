@@ -5,6 +5,10 @@ import LoadingContainer from '../components/UI/LoadingContainer'
 import NewListItem from '../components/NewListItem'
 import { api_key, baseUrl, username } from '../utils/lastfm'
 
+const listFooter = () => {
+  return <View style={styles.listFooter}></View>
+}
+
 const ScrobblesScreen = (props) => {
   const [recentTracks, setRecentTracks] = useState([])
   const [error, setError] = useState()
@@ -50,7 +54,7 @@ const ScrobblesScreen = (props) => {
     })
   }
 
-  const renderItem = useCallback(
+  const listItem = useCallback(
     ({ item }) => (
       <NewListItem
         image={item.image[3]['#text']}
@@ -76,7 +80,7 @@ const ScrobblesScreen = (props) => {
     []
   )
 
-  const itemSeparator = () => <View style={styles.separator} />
+  const listItemSeparator = () => <View style={styles.separator} />
 
   if (isLoading) {
     return <LoadingContainer />
@@ -89,11 +93,12 @@ const ScrobblesScreen = (props) => {
         <FlatList
           data={recentTracks}
           initialNumToRender={10}
-          renderItem={renderItem}
+          renderItem={listItem}
           onRefresh={getScrobblesHandler}
           refreshing={isRefreshing}
           keyExtractor={keyExtractor}
-          ItemSeparatorComponent={itemSeparator}
+          ItemSeparatorComponent={listItemSeparator}
+          ListFooterComponent={listFooter}
           style={styles.listContainer}
         />
       </View>
@@ -106,15 +111,21 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: 'white',
   },
-  listContainer: { width: '100%' },
+  listContainer: {
+    width: '100%',
+    paddingTop: 10,
+  },
+  listFooter: {
+    height: 20,
+  },
   separator: {
     backgroundColor: '#FFF',
-    height: 1,
+    height: 10,
   },
   bottom: {
     flex: 1,
-    backgroundColor: 'red',
   },
 })
 

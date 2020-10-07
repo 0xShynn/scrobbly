@@ -13,7 +13,7 @@ export default Badge
 
 const styles = StyleSheet.create({
   badge: {
-    backgroundColor: '#EEE',
+    backgroundColor: '#F3F3F3',
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 10,
@@ -22,6 +22,5 @@ const styles = StyleSheet.create({
   badgeText: {
     color: '#666',
     fontSize: 12,
-    fontWeight: '500',
   },
 })

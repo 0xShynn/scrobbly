@@ -1,11 +1,12 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import TopArtistsScreen from '../screens/TopArtistsScreen'
-import TopAlbumsScreen from '../screens/TopAlbumsScreen'
 import TopTracksScreen from '../screens/TopTracksScreen'
 
 import { Ionicons } from '@expo/vector-icons'
 import DetailsStackScreen from './DetailsStackScreen'
+import TopAlbumsStackScreen from './TopAlbumsStackScreen'
+import Colors from '../constants/Colors'
 
 const Tab = createBottomTabNavigator()
 
@@ -37,13 +38,17 @@ const MainBottomTabNavigator = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'red',
-        inactiveTintColor: 'gray',
+        activeTintColor: Colors.primary,
+        inactiveTintColor: '#999',
+        labelStyle: {
+          fontSize: 10,
+          fontFamily: 'Inter_400Regular',
+        },
       }}
     >
       <Tab.Screen name="Scrobbles" component={DetailsStackScreen} />
+      <Tab.Screen name="Albums" component={TopAlbumsStackScreen} />
       <Tab.Screen name="Artists" component={TopArtistsScreen} />
-      <Tab.Screen name="Albums" component={TopAlbumsScreen} />
       <Tab.Screen name="Tracks" component={TopTracksScreen} />
     </Tab.Navigator>
   )

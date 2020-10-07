@@ -48,21 +48,24 @@ const styles = StyleSheet.create({
     paddingRight: 10,
   },
   coverArt: {
-    width: 80,
-    height: 80,
-    marginRight: 10,
+    width: 70,
+    height: 70,
+    borderRadius: 6,
+    marginHorizontal: 10,
+    overflow: 'hidden',
   },
   infoContainer: {
     flex: 1,
     paddingRight: 20,
   },
   artist: {
-    fontSize: 15,
+    fontSize: 14,
     marginBottom: 3,
+    fontFamily: 'Inter_400Regular',
   },
   title: {
-    fontSize: 17,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontFamily: 'Inter_700Bold',
   },
   nowPlaying: {
     marginRight: 20,

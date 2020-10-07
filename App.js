@@ -1,28 +1,21 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { AppLoading } from 'expo'
-import * as Font from 'expo-font'
 import AppNavigator from './navigation/AppNavigator'
-
-const fetchFonts = () => {
-  return Font.loadAsync({
-    'roboto-regular': require('./assets/fonts/Roboto-Medium.ttf'),
-    'roboto-bold': require('./assets/fonts/Roboto-Black.ttf'),
-  })
-}
+import {
+  Inter_400Regular,
+  Inter_700Bold,
+  useFonts,
+} from '@expo-google-fonts/inter'
 
 export default function App() {
-  const [fontsLoaded, setFontsLoaded] = useState(false)
+  let [fontsLoaded] = useFonts({
+    Inter_400Regular,
+    Inter_700Bold,
+  })
 
   if (!fontsLoaded) {
-    return (
-      <AppLoading
-        startAsync={fetchFonts}
-        onFinish={() => {
-          setFontsLoaded(true)
-        }}
-      />
-    )
+    return <AppLoading />
+  } else {
+    return <AppNavigator />
   }
-
-  return <AppNavigator />
 }
