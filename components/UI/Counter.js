@@ -1,19 +1,17 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
+import { TextH6, TitleH2 } from './Typography'
 
 const Counter = (props) => {
   return (
     <View style={styles.counter}>
-      <Text style={styles.titleInfo}>{props.title}</Text>
-      <View style={styles.lol}>
-        <Ionicons
-          name={props.icon}
-          size={22}
-          color="#444"
-          iconStyle={{ marginRight: 10 }}
-        />
-        <Text style={styles.valueInfo}>{props.value}</Text>
+      <TextH6 style={styles.titleInfo} color="#555">
+        {props.title}
+      </TextH6>
+      <View style={styles.iconContainer}>
+        <Ionicons name={props.icon} size={24} />
+        <TitleH2 style={{ marginLeft: 8 }}>{props.value}</TitleH2>
       </View>
     </View>
   )
@@ -28,16 +26,10 @@ const styles = StyleSheet.create({
   },
   titleInfo: {
     textTransform: 'uppercase',
-    color: '#555',
     marginBottom: 4,
   },
-  lol: {
+  iconContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-  },
-  valueInfo: {
-    fontWeight: 'bold',
-    fontSize: 24,
-    marginLeft: 6,
   },
 })

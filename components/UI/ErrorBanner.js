@@ -1,10 +1,11 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
+import { TextH5 } from './Typography'
 
 const ErrorBanner = (props) => {
   return (
     <View style={styles.banner}>
-      <Text>{props.children}</Text>
+      <TextH5>{props.children}</TextH5>
     </View>
   )
 }

@@ -1,26 +1,23 @@
 import React from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, View } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { abbreviateNumber } from '../utils/numbers'
 import Badge from './UI/Badge'
+import { TextH6, TextH2, TitleH5 } from './UI/Typography'
 
 const SimilarTrack = (props) => {
   return (
     <TouchableOpacity onPress={props.onSelect}>
-      <View style={styles.similarTrack}>
-        <View style={styles.similarInfo}>
-          <Text style={styles.similarTrackCounter}>{props.index + 1}</Text>
-          <View style={styles.middle}>
-            <Text numberOfLines={1} style={styles.similarInfoTitle}>
-              {props.item.name}
-            </Text>
-            <Text numberOfLines={1} style={styles.similarInfoArtist}>
-              {props.item.artist.name}
-            </Text>
-          </View>
-          <View style={styles.similarTrackData}>
-            <Badge>{abbreviateNumber(props.item.playcount)}</Badge>
-          </View>
+      <View style={styles.info}>
+        <TextH2 style={styles.rank} color="#777">
+          {props.index + 1}
+        </TextH2>
+        <View style={styles.titles}>
+          <TitleH5 numberOfLines={1}>{props.item.name}</TitleH5>
+          <TextH6 numberOfLines={1}>{props.item.artist.name}</TextH6>
+        </View>
+        <View>
+          <Badge>{abbreviateNumber(props.item.playcount)}</Badge>
         </View>
       </View>
     </TouchableOpacity>
@@ -30,30 +27,18 @@ const SimilarTrack = (props) => {
 export default SimilarTrack
 
 const styles = StyleSheet.create({
-  similarTrack: {},
-
-  similarInfo: {
+  info: {
     paddingVertical: 10,
     flexDirection: 'row',
   },
-  similarTrackCounter: {
+  rank: {
     justifyContent: 'center',
     alignItems: 'center',
     paddingRight: 20,
     paddingVertical: 4,
-    color: '#999',
-    fontWeight: 'bold',
-    fontSize: 24,
   },
-  similarInfoTitle: {
-    fontWeight: 'bold',
-    fontSize: 16,
-  },
-  middle: {
+  titles: {
     flex: 1,
     paddingRight: 10,
-  },
-  similarTrackData: {
-    alignSelf: 'center',
   },
 })

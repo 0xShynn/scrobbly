@@ -6,7 +6,7 @@ import TopTracksScreen from '../screens/TopTracksScreen'
 import { Ionicons } from '@expo/vector-icons'
 import DetailsStackScreen from './DetailsStackScreen'
 import TopAlbumsStackScreen from './TopAlbumsStackScreen'
-import Colors from '../constants/Colors'
+import myColors from '../constants/myColors'
 
 const Tab = createBottomTabNavigator()
 
@@ -38,7 +38,7 @@ const MainBottomTabNavigator = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: Colors.primary,
+        activeTintColor: myColors.primary,
         inactiveTintColor: '#999',
         labelStyle: {
           fontSize: 10,

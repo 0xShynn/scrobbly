@@ -1,7 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import {
   View,
-  Text,
   StyleSheet,
   Image,
   ScrollView,
@@ -12,9 +11,9 @@ import RoundedContainer from '../components/UI/RoundedContainer'
 import Counter from '../components/UI/Counter'
 import ErrorBanner from '../components/UI/ErrorBanner'
 import LoadingContainer from '../components/UI/LoadingContainer'
-
 import { api_key, baseUrl, username } from '../utils/lastfm'
 import { abbreviateNumber } from '../utils/numbers'
+import { TextH5, TextH6, TitleH3, TitleH4 } from '../components/UI/Typography'
 
 const DetailsScreen = (props) => {
   const [trackInfo, setTrackInfo] = useState({})
@@ -96,7 +95,7 @@ const DetailsScreen = (props) => {
       if (!resData.hasOwnProperty('error')) {
         setAlbumInfo(resData.album)
         setAlbumTrackList(resData.album.tracks.track)
-        console.log('album tracklist', albumTrackList)
+        // console.log('album tracklist', albumTrackList)
       }
     } catch (error) {
       console.log('getAlbumInfoHandler erreur', error)
@@ -116,21 +115,12 @@ const DetailsScreen = (props) => {
       console.log('rien')
       return
     }
-    props.navigation.navigate('AlbumDetails', {
-      albumTrackList,
+    props.navigation.navigate('Album Details', {
       artistName,
       albumArt,
+      albumName,
     })
   }
-
-  // useEffect(() => {
-  //   setIsLoading(true)
-  //   getArtistInfoHandler()
-  //   getSimilarTracksHandler()
-  //   getTrackInfoHandler().then(() => {
-  //     setIsLoading(false)
-  //   })
-  // }, [getArtistInfoHandler, getSimilarTracksHandler, getTrackInfoHandler])
 
   useEffect(() => {
     setIsLoading(true)
@@ -148,9 +138,7 @@ const DetailsScreen = (props) => {
 
   if (isLoading) {
     return <LoadingContainer />
-  }
-
-  if (!isLoading) {
+  } else {
     return (
       <View>
         {error && (
@@ -158,20 +146,20 @@ const DetailsScreen = (props) => {
         )}
 
         <ScrollView>
-          <View style={styles.container}>
-            <View style={styles.topContainer}>
-              <View style={styles.imageContainer}>
-                <Image source={{ uri: albumArt }} style={styles.image} />
-              </View>
+          <View>
+            <View style={styles.headerContainer}>
+              <Image source={{ uri: albumArt }} style={styles.albumArt} />
               <View style={styles.headerTitle}>
-                <Text style={styles.title} numberOfLines={1}>
+                <TitleH3 numberOfLines={2} color="white">
                   {titleName}
-                </Text>
-                <Text style={styles.artist}>{artistName}</Text>
+                </TitleH3>
+                <TextH5 color="white" style={{ marginTop: 4 }}>
+                  {artistName}
+                </TextH5>
               </View>
             </View>
 
-            <View style={styles.infoContainer}>
+            <View style={styles.countersContainer}>
               <Counter
                 title="Scrobbles"
                 icon="ios-musical-notes"
@@ -206,20 +194,22 @@ const DetailsScreen = (props) => {
               {albumInfo && (
                 <RoundedContainer>
                   <TouchableOpacity onPress={albumDetailsHandler}>
-                    <Text style={styles.titled}>From the Album</Text>
-                    <View style={styles.albumContainer}>
-                      <View style={styles.albumArtContainer}>
-                        <Image
-                          source={{ uri: albumArt }}
-                          style={styles.albumImage}
-                        />
-                      </View>
+                    <TitleH4
+                      style={{ marginBottom: 12, textTransform: 'uppercase' }}
+                    >
+                      From the Album
+                    </TitleH4>
+                    <View style={styles.albumDetailsContainer}>
+                      <Image
+                        source={{ uri: albumArt }}
+                        style={styles.albumImage}
+                      />
                       <View style={styles.albumInfoContainer}>
-                        <Text numberOfLines={1} style={styles.albumTitle}>
+                        <TitleH3 numberOfLines={1} style={styles.albumTitle}>
                           {albumInfo.name}
-                        </Text>
-                        <Text>{abbreviateNumber(albumInfo.listeners)}</Text>
-                        <Text>{abbreviateNumber(albumInfo.playcount)}</Text>
+                        </TitleH3>
+                        <TextH5>{abbreviateNumber(albumInfo.listeners)}</TextH5>
+                        <TextH5>{abbreviateNumber(albumInfo.playcount)}</TextH5>
                       </View>
                     </View>
                   </TouchableOpacity>
@@ -227,24 +217,31 @@ const DetailsScreen = (props) => {
               )}
 
               <RoundedContainer>
+                <TitleH4
+                  style={{ marginBottom: 12, textTransform: 'uppercase' }}
+                >
+                  Biography
+                </TitleH4>
                 <View>
-                  <Text>
+                  <TextH6>
                     Total Scrobbles:
                     {abbreviateNumber(artistData.artistScrobbled)}
-                  </Text>
-                  <Text>
+                  </TextH6>
+                  <TextH6>
                     Total Listeners:
                     {abbreviateNumber(artistData.artistListeners)}
-                  </Text>
-                  <Text numberOfLines={5}>
+                  </TextH6>
+                  <TextH6 numberOfLines={5}>
                     Summary: {artistData.artistSummary}
-                  </Text>
+                  </TextH6>
                 </View>
               </RoundedContainer>
 
               {similarTracks.length !== 0 && (
                 <RoundedContainer>
-                  <Text style={styles.titled}>Similar Tracks</Text>
+                  <TitleH4 style={{ textTransform: 'uppercase' }}>
+                    Similar Tracks
+                  </TitleH4>
                   {similarTracks.map((itemData, index) => {
                     return (
                       <SimilarTrack
@@ -272,101 +269,48 @@ const DetailsScreen = (props) => {
 }
 
 const styles = StyleSheet.create({
-  albumContainer: {
-    flex: 1,
-    flexDirection: 'row',
-  },
-  albumArtContainer: {
-    borderRadius: 4,
-    overflow: 'hidden',
-  },
-  albumInfoContainer: {
-    marginLeft: 14,
-  },
-  albumTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  trackItem: {
-    flex: 1,
-    flexDirection: 'row',
-    padding: 10,
-  },
-  trackRank: {
-    fontWeight: 'bold',
-    paddingRight: 10,
-  },
-  trackName: {
-    flex: 1,
-  },
-  albumImage: {
-    width: 80,
-    height: 80,
-    backgroundColor: '#333',
-  },
-  titled: {
-    textTransform: 'uppercase',
-    color: '#666',
-    fontWeight: '800',
-    fontSize: 20,
-    marginBottom: 10,
-  },
-  roundedContainer: {
-    backgroundColor: '#DDD',
-    borderRadius: 20,
-    padding: 20,
-  },
-  separator: {
-    backgroundColor: '#DDD',
-    height: 1,
-  },
-  container: {
-    flex: 1,
-    backgroundColor: '#F9F9F9',
-  },
-  topContainer: {
+  headerContainer: {
     backgroundColor: '#111',
-    width: '100%',
     paddingHorizontal: 20,
     paddingVertical: 30,
   },
-  imageContainer: {
-    alignSelf: 'center',
-    marginBottom: 20,
-  },
-  image: {
+  albumArt: {
     width: 200,
     height: 200,
-    borderRadius: 5,
+    borderRadius: 10,
+    alignSelf: 'center',
+    marginBottom: 20,
   },
   headerTitle: {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  artist: {
-    fontSize: 20,
-    color: '#DDD',
-    fontFamily: 'Inter_400Regular',
-  },
-  title: {
-    fontSize: 24,
-    color: 'white',
-    textAlign: 'center',
-    fontFamily: 'Inter_700Bold',
-  },
-  infoContainer: {
+  countersContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
     backgroundColor: 'white',
     borderBottomWidth: 1,
     borderBottomColor: '#DDD',
   },
-  love: {
+  mainContainer: {
     padding: 20,
-    flexGrow: 1,
-    backgroundColor: '#CCC',
+    backgroundColor: 'white',
   },
-  mainContainer: { padding: 20 },
+  albumDetailsContainer: {
+    flexDirection: 'row',
+  },
+
+  albumInfoContainer: {
+    marginLeft: 14,
+    flex: 1,
+  },
+  albumImage: {
+    width: 80,
+    height: 80,
+    backgroundColor: '#333',
+    borderRadius: 4,
+    overflow: 'hidden',
+  },
 })
 
 export default DetailsScreen

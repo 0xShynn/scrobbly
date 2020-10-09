@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { View, StyleSheet, FlatList, Alert, StatusBar } from 'react-native'
 
 import LoadingContainer from '../components/UI/LoadingContainer'
@@ -80,13 +80,11 @@ const ScrobblesScreen = (props) => {
     []
   )
 
-  const listItemSeparator = () => <View style={styles.separator} />
+  const listItemSeparator = () => <View style={styles.listItemSeparator} />
 
   if (isLoading) {
     return <LoadingContainer />
-  }
-
-  if (!isLoading) {
+  } else {
     return (
       <View style={styles.container}>
         <StatusBar barStyle="dark-content" />
@@ -120,12 +118,9 @@ const styles = StyleSheet.create({
   listFooter: {
     height: 20,
   },
-  separator: {
+  listItemSeparator: {
     backgroundColor: '#FFF',
     height: 10,
-  },
-  bottom: {
-    flex: 1,
   },
 })
 

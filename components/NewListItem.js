@@ -1,9 +1,10 @@
 import React from 'react'
-import { View, Text, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, StyleSheet, TouchableOpacity, Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import dayjs from 'dayjs'
 import { updatedLocale } from '../utils/dayjs'
 import Badge from './UI/Badge'
+import { TextH6, TitleH5 } from './UI/Typography'
 
 const NewListItem = (props) => {
   const date = props.date ? props.date['#text'] : null
@@ -12,14 +13,12 @@ const NewListItem = (props) => {
   return (
     <TouchableOpacity onPress={props.onSelect}>
       <View style={styles.itemContainer}>
-        <Image source={{ uri: props.image }} style={styles.coverArt} />
+        <Image source={{ uri: props.image }} style={styles.albumArt} />
         <View style={styles.infoContainer}>
-          <Text numberOfLines={1} style={styles.title}>
-            {props.title}
-          </Text>
-          <Text numberOfLines={1} style={styles.artist}>
+          <TitleH5 numberOfLines={1}>{props.title}</TitleH5>
+          <TextH6 numberOfLines={1} style={{ marginTop: 2 }}>
             {props.artist}
-          </Text>
+          </TextH6>
         </View>
         {props.nowPlaying ? (
           <View>
@@ -44,10 +43,9 @@ const styles = StyleSheet.create({
   itemContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    backgroundColor: '#FFF',
     paddingRight: 10,
   },
-  coverArt: {
+  albumArt: {
     width: 70,
     height: 70,
     borderRadius: 6,
@@ -57,15 +55,6 @@ const styles = StyleSheet.create({
   infoContainer: {
     flex: 1,
     paddingRight: 20,
-  },
-  artist: {
-    fontSize: 14,
-    marginBottom: 3,
-    fontFamily: 'Inter_400Regular',
-  },
-  title: {
-    fontSize: 16,
-    fontFamily: 'Inter_700Bold',
   },
   nowPlaying: {
     marginRight: 20,
