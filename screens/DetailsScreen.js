@@ -196,20 +196,25 @@ const DetailsScreen = (props) => {
                   <TouchableOpacity onPress={albumDetailsHandler}>
                     <TitleH4
                       style={{ marginBottom: 12, textTransform: 'uppercase' }}
-                    >
-                      From the Album
-                    </TitleH4>
+                      children="From the Album"
+                    />
                     <View style={styles.albumDetailsContainer}>
                       <Image
                         source={{ uri: albumArt }}
-                        style={styles.albumImage}
+                        style={styles.albumDetailsArt}
                       />
                       <View style={styles.albumInfoContainer}>
-                        <TitleH3 numberOfLines={1} style={styles.albumTitle}>
-                          {albumInfo.name}
-                        </TitleH3>
-                        <TextH5>{abbreviateNumber(albumInfo.listeners)}</TextH5>
-                        <TextH5>{abbreviateNumber(albumInfo.playcount)}</TextH5>
+                        <TitleH3
+                          numberOfLines={1}
+                          style={styles.albumTitle}
+                          children={albumInfo.name}
+                        />
+                        <TextH5
+                          children={abbreviateNumber(albumInfo.listeners)}
+                        />
+                        <TextH5
+                          children={abbreviateNumber(albumInfo.playcount)}
+                        />
                       </View>
                     </View>
                   </TouchableOpacity>
@@ -219,29 +224,32 @@ const DetailsScreen = (props) => {
               <RoundedContainer>
                 <TitleH4
                   style={{ marginBottom: 12, textTransform: 'uppercase' }}
-                >
-                  Biography
-                </TitleH4>
+                  children="Biography"
+                />
                 <View>
-                  <TextH6>
-                    Total Scrobbles:
-                    {abbreviateNumber(artistData.artistScrobbled)}
-                  </TextH6>
-                  <TextH6>
-                    Total Listeners:
-                    {abbreviateNumber(artistData.artistListeners)}
-                  </TextH6>
-                  <TextH6 numberOfLines={5}>
-                    Summary: {artistData.artistSummary}
-                  </TextH6>
+                  <TextH6
+                    children={`Total Scrobbles: ${abbreviateNumber(
+                      artistData.artistScrobbled
+                    )}`}
+                  />
+                  <TextH6
+                    children={`Total Listeners: ${abbreviateNumber(
+                      artistData.artistListeners
+                    )}`}
+                  />
+                  <TextH6
+                    numberOfLines={5}
+                    children={`Summary: ${artistData.artistSummary}`}
+                  />
                 </View>
               </RoundedContainer>
 
               {similarTracks.length !== 0 && (
                 <RoundedContainer>
-                  <TitleH4 style={{ textTransform: 'uppercase' }}>
-                    Similar Tracks
-                  </TitleH4>
+                  <TitleH4
+                    style={{ textTransform: 'uppercase' }}
+                    children="Similar Tracks"
+                  />
                   {similarTracks.map((itemData, index) => {
                     return (
                       <SimilarTrack
@@ -299,12 +307,11 @@ const styles = StyleSheet.create({
   albumDetailsContainer: {
     flexDirection: 'row',
   },
-
   albumInfoContainer: {
     marginLeft: 14,
     flex: 1,
   },
-  albumImage: {
+  albumDetailsArt: {
     width: 80,
     height: 80,
     backgroundColor: '#333',

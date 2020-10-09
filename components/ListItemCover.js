@@ -31,16 +31,14 @@ const ListItemCover = (props) => {
               color="white"
               style={styles.itemIcon}
             />
-            <TitleH3 style={{ marginLeft: 8 }} color="white">
-              {props.playcount}
-            </TitleH3>
+            <TitleH3
+              style={{ marginLeft: 8 }}
+              color="white"
+              children={props.playcount}
+            />
           </View>
-          <TitleH5 color="white" numberOfLines={1}>
-            {props.albumName}
-          </TitleH5>
-          <TextH6 color="#DDD" numberOfLines={1}>
-            {props.artistName}
-          </TextH6>
+          <TitleH5 color="white" numberOfLines={1} children={props.albumName} />
+          <TextH6 color="#DDD" numberOfLines={1} children={props.artistName} />
         </View>
       </TouchableWithoutFeedback>
     </ImageBackground>

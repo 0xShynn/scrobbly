@@ -15,10 +15,12 @@ const NewListItem = (props) => {
       <View style={styles.itemContainer}>
         <Image source={{ uri: props.image }} style={styles.albumArt} />
         <View style={styles.infoContainer}>
-          <TitleH5 numberOfLines={1}>{props.title}</TitleH5>
-          <TextH6 numberOfLines={1} style={{ marginTop: 2 }}>
-            {props.artist}
-          </TextH6>
+          <TitleH5 numberOfLines={1} children={props.title} />
+          <TextH6
+            numberOfLines={1}
+            style={{ marginTop: 2 }}
+            children={props.artist}
+          />
         </View>
         {props.nowPlaying ? (
           <View>

@@ -9,12 +9,10 @@ const SimilarTrack = (props) => {
   return (
     <TouchableOpacity onPress={props.onSelect}>
       <View style={styles.info}>
-        <TextH2 style={styles.rank} color="#777">
-          {props.index + 1}
-        </TextH2>
+        <TextH2 style={styles.rank} color="#777" children={props.index + 1} />
         <View style={styles.titles}>
-          <TitleH5 numberOfLines={1}>{props.item.name}</TitleH5>
-          <TextH6 numberOfLines={1}>{props.item.artist.name}</TextH6>
+          <TitleH5 numberOfLines={1} children={props.item.name} />
+          <TextH6 numberOfLines={1} children={props.item.artist.name} />
         </View>
         <View>
           <Badge>{abbreviateNumber(props.item.playcount)}</Badge>

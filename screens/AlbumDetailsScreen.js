@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Button, FlatList, Image, StyleSheet, Text, View } from 'react-native'
+import { Button, FlatList, Image, StyleSheet, View } from 'react-native'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import { TextH5, TextH6, TitleH3, TitleH6 } from '../components/UI/Typography'
 import { api_key, baseUrl, username } from '../utils/lastfm'
@@ -7,11 +7,9 @@ import { api_key, baseUrl, username } from '../utils/lastfm'
 const itemList = ({ item }) => {
   return (
     <View style={styles.trackItem}>
-      <TitleH6 style={{ minWidth: 25 }}>{item['@attr'].rank}</TitleH6>
-      <TextH6 numberOfLines={1} style={{ flex: 1 }}>
-        {item.name}
-      </TextH6>
-      <TextH6>{item.duration}</TextH6>
+      <TitleH6 style={{ minWidth: 25 }} children={item['@attr'].rank} />
+      <TextH6 numberOfLines={1} style={{ flex: 1 }} children={item.name} />
+      <TextH6 children={item.duration} />
     </View>
   )
 }
@@ -62,8 +60,8 @@ const AlbumDetailsScreen = (props) => {
         <Image source={{ uri: albumArt }} style={styles.albumArt} />
       </View>
       <View style={styles.albumInfo}>
-        <TitleH3 numberOfLines={2}>{albumName}</TitleH3>
-        <TextH5 style={{ marginTop: 2 }}>{artistName}</TextH5>
+        <TitleH3 numberOfLines={2} children={albumName} />
+        <TextH5 style={{ marginTop: 2 }} children={artistName} />
       </View>
     </View>
   )
@@ -79,9 +77,10 @@ const AlbumDetailsScreen = (props) => {
           <View style={styles.flatList}>
             <ListHeader />
             <View>
-              <TextH5 style={{ textAlign: 'center' }}>
-                Tracklist not found
-              </TextH5>
+              <TextH5
+                style={{ textAlign: 'center' }}
+                children="Tracklist not found"
+              />
               <Button
                 title="Go Back"
                 onPress={() => props.navigation.goBack()}
