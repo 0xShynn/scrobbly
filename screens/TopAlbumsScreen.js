@@ -21,7 +21,7 @@ const TopAlbumsScreen = (props) => {
       const response = await fetch(baseUrl + getTopAlbums)
       const resData = await response.json()
       setTopAlbums(resData.topalbums.album)
-      console.log(topAlbums)
+      // console.log(topAlbums)
     } catch (error) {
       console.log(error)
     }

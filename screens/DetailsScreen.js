@@ -112,7 +112,6 @@ const DetailsScreen = (props) => {
 
   const albumDetailsHandler = () => {
     if (albumTrackList.length <= 0) {
-      console.log('rien')
       return
     }
     props.navigation.navigate('Album Details', {
@@ -150,12 +149,12 @@ const DetailsScreen = (props) => {
             <View style={styles.headerContainer}>
               <Image source={{ uri: albumArt }} style={styles.albumArt} />
               <View style={styles.headerTitle}>
-                <TitleH3 numberOfLines={2} color="white">
-                  {titleName}
-                </TitleH3>
-                <TextH5 color="white" style={{ marginTop: 4 }}>
-                  {artistName}
-                </TextH5>
+                <TitleH3 numberOfLines={2} color="white" children={titleName} />
+                <TextH5
+                  color="white"
+                  style={{ marginTop: 4 }}
+                  children={artistName}
+                />
               </View>
             </View>
 
