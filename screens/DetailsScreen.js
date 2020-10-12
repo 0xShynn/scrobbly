@@ -14,6 +14,7 @@ import LoadingContainer from '../components/UI/LoadingContainer'
 import { api_key, baseUrl, username } from '../utils/lastfm'
 import { abbreviateNumber } from '../utils/numbers'
 import { TextH5, TextH6, TitleH3, TitleH4 } from '../components/UI/Typography'
+import myColors from '../constants/myColors'
 
 const DetailsScreen = (props) => {
   const [trackInfo, setTrackInfo] = useState({})
@@ -149,10 +150,14 @@ const DetailsScreen = (props) => {
             <View style={styles.headerContainer}>
               <Image source={{ uri: albumArt }} style={styles.albumArt} />
               <View style={styles.headerTitle}>
-                <TitleH3 numberOfLines={2} color="white" children={titleName} />
+                <TitleH3
+                  style={{ color: 'white' }}
+                  numberOfLines={2}
+                  children={titleName}
+                />
                 <TextH5
-                  color="white"
-                  style={{ marginTop: 4 }}
+                  style={{ marginTop: 4, color: 'white' }}
+                  numberOfLines={2}
                   children={artistName}
                 />
               </View>
@@ -277,7 +282,7 @@ const DetailsScreen = (props) => {
 
 const styles = StyleSheet.create({
   headerContainer: {
-    backgroundColor: '#111',
+    backgroundColor: myColors.dark_gray,
     paddingHorizontal: 20,
     paddingVertical: 30,
   },
@@ -295,13 +300,13 @@ const styles = StyleSheet.create({
   countersContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    backgroundColor: 'white',
+    backgroundColor: myColors.white,
     borderBottomWidth: 1,
-    borderBottomColor: '#DDD',
+    borderBottomColor: myColors.blue_gray_200,
   },
   mainContainer: {
     padding: 20,
-    backgroundColor: 'white',
+    backgroundColor: myColors.blue_gray_100,
   },
   albumDetailsContainer: {
     flexDirection: 'row',
@@ -313,7 +318,6 @@ const styles = StyleSheet.create({
   albumDetailsArt: {
     width: 80,
     height: 80,
-    backgroundColor: '#333',
     borderRadius: 4,
     overflow: 'hidden',
   },

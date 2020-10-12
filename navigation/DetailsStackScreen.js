@@ -14,7 +14,8 @@ const DetailsStackScreen = () => {
         headerStyle: {
           backgroundColor: myColors.primary,
         },
-        headerTintColor: '#fff',
+        headerTintColor: myColors.white,
+
         headerTitleStyle: {
           fontFamily: 'Inter_700Bold',
         },

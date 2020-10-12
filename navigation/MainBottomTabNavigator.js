@@ -39,7 +39,7 @@ const MainBottomTabNavigator = () => {
       })}
       tabBarOptions={{
         activeTintColor: myColors.primary,
-        inactiveTintColor: '#999',
+        inactiveTintColor: myColors.blue_gray_500,
         labelStyle: {
           fontSize: 10,
           fontFamily: 'Inter_400Regular',

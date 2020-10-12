@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text } from 'react-native'
+import myColors from '../../constants/myColors'
 
 export const TextH2 = (props) => {
   return (
@@ -9,7 +10,6 @@ export const TextH2 = (props) => {
         ...styles.textWeightRegular,
         ...styles.titleH2,
         ...props.style,
-        color: props.color,
       }}
     >
       {props.children}
@@ -25,7 +25,6 @@ export const TextH3 = (props) => {
         ...styles.textWeightRegular,
         ...styles.titleH3,
         ...props.style,
-        color: props.color,
       }}
     >
       {props.children}
@@ -41,7 +40,6 @@ export const TextH5 = (props) => {
         ...styles.textWeightRegular,
         ...styles.titleH5,
         ...props.style,
-        color: props.color,
       }}
     >
       {props.children}
@@ -57,7 +55,6 @@ export const TextH6 = (props) => {
         ...styles.textWeightRegular,
         ...styles.titleH6,
         ...props.style,
-        color: props.color,
       }}
     >
       {props.children}
@@ -73,7 +70,6 @@ export const TitleH1 = (props) => {
         ...styles.textWeightBold,
         ...styles.titleH1,
         ...props.style,
-        color: props.color,
       }}
     >
       {props.children}
@@ -89,7 +85,6 @@ export const TitleH2 = (props) => {
         ...styles.textWeightBold,
         ...styles.titleH2,
         ...props.style,
-        color: props.color,
       }}
     >
       {props.children}
@@ -105,7 +100,6 @@ export const TitleH3 = (props) => {
         ...styles.textWeightBold,
         ...styles.titleH3,
         ...props.style,
-        color: props.color,
       }}
     >
       {props.children}
@@ -121,7 +115,6 @@ export const TitleH4 = (props) => {
         ...styles.textWeightBold,
         ...styles.titleH4,
         ...props.style,
-        color: props.color,
       }}
     >
       {props.children}
@@ -137,7 +130,6 @@ export const TitleH5 = (props) => {
         ...styles.textWeightBold,
         ...styles.titleH5,
         ...props.style,
-        color: props.color,
       }}
     >
       {props.children}
@@ -153,7 +145,6 @@ export const TitleH6 = (props) => {
         ...styles.textWeightBold,
         ...styles.titleH6,
         ...props.style,
-        color: props.color,
       }}
     >
       {props.children}
@@ -164,9 +155,11 @@ export const TitleH6 = (props) => {
 const styles = StyleSheet.create({
   textWeightRegular: {
     fontFamily: 'Inter_400Regular',
+    color: myColors.blue_gray_990,
   },
   textWeightBold: {
     fontFamily: 'Inter_700Bold',
+    color: myColors.blue_gray_990,
   },
   titleH1: {
     fontSize: 30,

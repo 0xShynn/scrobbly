@@ -1,8 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { Button, FlatList, Image, StyleSheet, View } from 'react-native'
+import {
+  Button,
+  Dimensions,
+  FlatList,
+  Image,
+  StyleSheet,
+  View,
+} from 'react-native'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import { TextH5, TextH6, TitleH3, TitleH6 } from '../components/UI/Typography'
 import { api_key, baseUrl, username } from '../utils/lastfm'
+import myColors from '../constants/myColors'
 
 const itemList = ({ item }) => {
   return (
@@ -13,6 +21,8 @@ const itemList = ({ item }) => {
     </View>
   )
 }
+
+const itemSeparator = () => <View style={styles.itemSeparator} />
 
 const AlbumDetailsScreen = (props) => {
   const artistName = props.route.params.artistName
@@ -52,52 +62,48 @@ const AlbumDetailsScreen = (props) => {
     []
   )
 
-  const itemSeparator = () => <View style={styles.itemSeparator} />
-
   const ListHeader = () => (
     <View style={styles.albumInfoContainer}>
       <View>
         <Image source={{ uri: albumArt }} style={styles.albumArt} />
       </View>
       <View style={styles.albumInfo}>
-        <TitleH3 numberOfLines={2} children={albumName} />
-        <TextH5 style={{ marginTop: 2 }} children={artistName} />
+        <TitleH3
+          style={{ color: 'white' }}
+          numberOfLines={2}
+          children={albumName}
+        />
+        <TextH5
+          style={{ marginTop: 2, color: 'white' }}
+          numberOfLines={1}
+          children={artistName}
+        />
       </View>
     </View>
   )
 
-  const ListFooter = () => <View style={styles.listFooter} />
+  const ListEmpty = () => (
+    <View style={{ ...styles.listContainer, ...styles.listEmpty }}>
+      <TextH5 style={{ textAlign: 'center' }} children="Tracklist not found" />
+      <Button title="Go Back" onPress={() => props.navigation.goBack()} />
+    </View>
+  )
 
   if (isLoading) {
     return <LoadingContainer />
   } else {
     return (
-      <View>
-        {albumTracklist.length === 0 ? (
-          <View style={styles.flatList}>
-            <ListHeader />
-            <View>
-              <TextH5
-                style={{ textAlign: 'center' }}
-                children="Tracklist not found"
-              />
-              <Button
-                title="Go Back"
-                onPress={() => props.navigation.goBack()}
-              />
-            </View>
-          </View>
-        ) : (
-          <FlatList
-            data={albumTracklist}
-            renderItem={itemList}
-            keyExtractor={keyExtractor}
-            ItemSeparatorComponent={itemSeparator}
-            ListHeaderComponent={ListHeader}
-            ListFooterComponent={ListFooter}
-            style={styles.flatList}
-          />
-        )}
+      <View style={styles.container}>
+        <FlatList
+          data={albumTracklist}
+          renderItem={itemList}
+          keyExtractor={keyExtractor}
+          ItemSeparatorComponent={itemSeparator}
+          ListHeaderComponent={ListHeader}
+          ListEmptyComponent={ListEmpty}
+          onEndReachedThreshold={0.2}
+          style={styles.listContainer}
+        />
       </View>
     )
   }
@@ -106,13 +112,27 @@ const AlbumDetailsScreen = (props) => {
 export default AlbumDetailsScreen
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: myColors.blue_gray_100,
+  },
+  listContainer: {
+    height: Dimensions.get('window').height,
+  },
+  listEmpty: {
+    height: Dimensions.get('window').height / 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   albumInfoContainer: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginBottom: 20,
+    backgroundColor: myColors.dark_gray,
+    paddingHorizontal: 40,
+    paddingVertical: 30,
   },
   albumInfo: {
-    marginLeft: 10,
+    marginLeft: 20,
     flex: 1,
   },
   albumArt: {
@@ -121,20 +141,14 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     overflow: 'hidden',
   },
-  flatList: {
-    padding: 30,
-    height: '100%',
-  },
   trackItem: {
     flexDirection: 'row',
-    padding: 10,
+    paddingHorizontal: 40,
+    paddingVertical: 10,
     backgroundColor: 'white',
   },
   itemSeparator: {
     height: 1,
-    backgroundColor: '#DDD',
-  },
-  listFooter: {
-    height: 60,
+    backgroundColor: myColors.blue_gray_100,
   },
 })

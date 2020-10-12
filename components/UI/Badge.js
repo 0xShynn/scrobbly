@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
+import myColors from '../../constants/myColors'
 
 const Badge = (props) => {
   return (
@@ -13,14 +14,14 @@ export default Badge
 
 const styles = StyleSheet.create({
   badge: {
-    backgroundColor: '#F3F3F3',
+    backgroundColor: myColors.blue_gray_100,
     paddingHorizontal: 8,
     paddingVertical: 4,
     borderRadius: 10,
     overflow: 'hidden',
   },
   badgeText: {
-    color: '#666',
+    color: myColors.blue_gray_600,
     fontSize: 12,
   },
 })

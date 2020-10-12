@@ -8,6 +8,7 @@ import {
 import { LinearGradient } from 'expo-linear-gradient'
 import { Ionicons } from '@expo/vector-icons'
 import { TextH6, TitleH3, TitleH5 } from './UI/Typography'
+import myColors from '../constants/myColors'
 
 const ListItemCover = (props) => {
   return (
@@ -32,13 +33,20 @@ const ListItemCover = (props) => {
               style={styles.itemIcon}
             />
             <TitleH3
-              style={{ marginLeft: 8 }}
-              color="white"
+              style={{ marginLeft: 8, color: 'white' }}
               children={props.playcount}
             />
           </View>
-          <TitleH5 color="white" numberOfLines={1} children={props.albumName} />
-          <TextH6 color="#DDD" numberOfLines={1} children={props.artistName} />
+          <TitleH5
+            style={{ color: 'white' }}
+            numberOfLines={1}
+            children={props.albumName}
+          />
+          <TextH6
+            style={{ color: myColors.blue_gray_200 }}
+            numberOfLines={1}
+            children={props.artistName}
+          />
         </View>
       </TouchableWithoutFeedback>
     </ImageBackground>

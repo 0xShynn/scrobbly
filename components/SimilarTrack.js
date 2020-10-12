@@ -9,7 +9,7 @@ const SimilarTrack = (props) => {
   return (
     <TouchableOpacity onPress={props.onSelect}>
       <View style={styles.info}>
-        <TextH2 style={styles.rank} color="#777" children={props.index + 1} />
+        <TextH2 style={styles.rank} children={props.index + 1} />
         <View style={styles.titles}>
           <TitleH5 numberOfLines={1} children={props.item.name} />
           <TextH6 numberOfLines={1} children={props.item.artist.name} />

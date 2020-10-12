@@ -4,6 +4,7 @@ import { View, StyleSheet, FlatList, Alert, StatusBar } from 'react-native'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import NewListItem from '../components/NewListItem'
 import { api_key, baseUrl, username } from '../utils/lastfm'
+import myColors from '../constants/myColors'
 
 const listFooter = () => {
   return <View style={styles.listFooter}></View>
@@ -87,7 +88,10 @@ const ScrobblesScreen = (props) => {
   } else {
     return (
       <View style={styles.container}>
-        <StatusBar barStyle="dark-content" />
+        <StatusBar
+          barStyle="light-content"
+          backgroundColor={myColors.primary}
+        />
         <FlatList
           data={recentTracks}
           initialNumToRender={10}
@@ -109,7 +113,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
+    backgroundColor: myColors.white,
   },
   listContainer: {
     width: '100%',
@@ -119,7 +123,7 @@ const styles = StyleSheet.create({
     height: 20,
   },
   listItemSeparator: {
-    backgroundColor: '#FFF',
+    backgroundColor: myColors.white,
     height: 10,
   },
 })
