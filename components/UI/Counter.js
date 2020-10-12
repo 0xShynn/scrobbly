@@ -25,6 +25,7 @@ const styles = StyleSheet.create({
   },
   titleInfo: {
     textTransform: 'uppercase',
+    color: myColors.blue_gray_700,
     marginBottom: 4,
   },
   iconContainer: {

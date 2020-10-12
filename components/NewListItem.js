@@ -5,6 +5,7 @@ import dayjs from 'dayjs'
 import { updatedLocale } from '../utils/dayjs'
 import Badge from './UI/Badge'
 import { TextH6, TitleH5 } from './UI/Typography'
+import myColors from '../constants/myColors'
 
 const NewListItem = (props) => {
   const date = props.date ? props.date['#text'] : null
@@ -18,7 +19,7 @@ const NewListItem = (props) => {
           <TitleH5 numberOfLines={1} children={props.title} />
           <TextH6
             numberOfLines={1}
-            style={{ marginTop: 2 }}
+            style={{ marginTop: 2, color: myColors.blue_gray_700 }}
             children={props.artist}
           />
         </View>
@@ -27,7 +28,7 @@ const NewListItem = (props) => {
             <Ionicons
               name="ios-musical-notes"
               size={20}
-              color="black"
+              color={myColors.blue_gray_990}
               style={styles.nowPlaying}
             />
           </View>

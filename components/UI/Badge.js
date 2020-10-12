@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
   },
   badgeText: {
-    color: myColors.blue_gray_600,
+    color: myColors.blue_gray_700,
     fontSize: 12,
   },
 })

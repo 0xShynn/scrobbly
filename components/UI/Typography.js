@@ -152,6 +152,21 @@ export const TitleH6 = (props) => {
   )
 }
 
+export const DetailsTitle = (props) => {
+  return (
+    <TitleH4
+      style={{
+        marginBottom: 12,
+        textTransform: 'uppercase',
+        fontFamily: 'Inter_400Regular',
+        color: myColors.blue_gray_700,
+      }}
+    >
+      {props.children}
+    </TitleH4>
+  )
+}
+
 const styles = StyleSheet.create({
   textWeightRegular: {
     fontFamily: 'Inter_400Regular',

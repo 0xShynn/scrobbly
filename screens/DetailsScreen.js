@@ -13,7 +13,13 @@ import ErrorBanner from '../components/UI/ErrorBanner'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import { api_key, baseUrl, username } from '../utils/lastfm'
 import { abbreviateNumber } from '../utils/numbers'
-import { TextH5, TextH6, TitleH3, TitleH4 } from '../components/UI/Typography'
+import {
+  TextH5,
+  TextH6,
+  TitleH3,
+  TitleH4,
+  DetailsTitle,
+} from '../components/UI/Typography'
 import myColors from '../constants/myColors'
 
 const DetailsScreen = (props) => {
@@ -198,10 +204,7 @@ const DetailsScreen = (props) => {
               {albumInfo && (
                 <RoundedContainer>
                   <TouchableOpacity onPress={albumDetailsHandler}>
-                    <TitleH4
-                      style={{ marginBottom: 12, textTransform: 'uppercase' }}
-                      children="From the Album"
-                    />
+                    <DetailsTitle children="From the Album" />
                     <View style={styles.albumDetailsContainer}>
                       <Image
                         source={{ uri: albumArt }}
@@ -226,10 +229,7 @@ const DetailsScreen = (props) => {
               )}
 
               <RoundedContainer>
-                <TitleH4
-                  style={{ marginBottom: 12, textTransform: 'uppercase' }}
-                  children="Biography"
-                />
+                <DetailsTitle children="Biography" />
                 <View>
                   <TextH6
                     children={`Total Scrobbles: ${abbreviateNumber(
@@ -250,10 +250,7 @@ const DetailsScreen = (props) => {
 
               {similarTracks.length !== 0 && (
                 <RoundedContainer>
-                  <TitleH4
-                    style={{ textTransform: 'uppercase' }}
-                    children="Similar Tracks"
-                  />
+                  <DetailsTitle children="Similar Tracks" />
                   {similarTracks.map((itemData, index) => {
                     return (
                       <SimilarTrack
