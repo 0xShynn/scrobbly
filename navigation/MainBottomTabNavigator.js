@@ -7,6 +7,7 @@ import { Ionicons } from '@expo/vector-icons'
 import DetailsStackScreen from './DetailsStackScreen'
 import TopAlbumsStackScreen from './TopAlbumsStackScreen'
 import myColors from '../constants/myColors'
+import MyAccountScreen from '../screens/MyAccountScreen'
 
 const Tab = createBottomTabNavigator()
 
@@ -22,13 +23,16 @@ const MainBottomTabNavigator = () => {
               iconName = 'ios-list'
               break
             case 'Artists':
-              iconName = 'md-person'
+              iconName = 'md-star'
               break
             case 'Albums':
               iconName = 'ios-disc'
               break
             case 'Tracks':
               iconName = 'ios-musical-notes'
+              break
+            case 'My Account':
+              iconName = 'md-person'
               break
             default:
               iconName = 'ios-musical-note'
@@ -50,6 +54,7 @@ const MainBottomTabNavigator = () => {
       <Tab.Screen name="Albums" component={TopAlbumsStackScreen} />
       <Tab.Screen name="Artists" component={TopArtistsScreen} />
       <Tab.Screen name="Tracks" component={TopTracksScreen} />
+      <Tab.Screen name="My Account" component={MyAccountScreen} />
     </Tab.Navigator>
   )
 }

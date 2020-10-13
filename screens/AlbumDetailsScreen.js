@@ -84,7 +84,7 @@ const AlbumDetailsScreen = (props) => {
 
   const ListEmpty = () => (
     <View style={{ ...styles.listContainer, ...styles.listEmpty }}>
-      <TextH5 style={{ textAlign: 'center' }} children="Tracklist not found" />
+      <TextH6 style={{ textAlign: 'center' }} children="Tracklist not found" />
       <Button title="Go Back" onPress={() => props.navigation.goBack()} />
     </View>
   )
