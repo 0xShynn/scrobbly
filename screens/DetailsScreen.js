@@ -140,6 +140,7 @@ const DetailsScreen = (props) => {
     getSimilarTracksHandler,
     getTrackInfoHandler,
     getAlbumInfoHandler,
+    setIsLoading,
   ])
 
   if (isLoading) {

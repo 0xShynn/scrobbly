@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import {
   Button,
   Dimensions,
@@ -25,9 +25,7 @@ const itemList = ({ item }) => {
 const itemSeparator = () => <View style={styles.itemSeparator} />
 
 const AlbumDetailsScreen = (props) => {
-  const artistName = props.route.params.artistName
-  const albumName = props.route.params.albumName
-  const albumArt = props.route.params.albumArt
+  const { artistName, albumName, albumArt } = props.route.params
 
   const [isLoading, setIsLoading] = useState(false)
   const [albumTracklist, setAlbumTracklist] = useState([])
@@ -55,7 +53,7 @@ const AlbumDetailsScreen = (props) => {
   useEffect(() => {
     setIsLoading(true)
     getAlbumInfoHandler(artistName, albumName).then(() => setIsLoading(false))
-  }, [getAlbumInfoHandler, setIsLoading, artistName, albumName])
+  }, [setIsLoading, getAlbumInfoHandler, artistName, albumName])
 
   const keyExtractor = useCallback(
     (item) => item + Math.random().toString(),
@@ -88,6 +86,13 @@ const AlbumDetailsScreen = (props) => {
       <Button title="Go Back" onPress={() => props.navigation.goBack()} />
     </View>
   )
+
+  // Set the header title
+  useLayoutEffect(() => {
+    props.navigation.setOptions({
+      title: `${artistName} - ${albumName}`,
+    })
+  }, [props.navigation])
 
   if (isLoading) {
     return <LoadingContainer />
