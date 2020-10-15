@@ -63,8 +63,8 @@ const ScrobblesScreen = (props) => {
     return (
       <NewListItem
         image={albumArt}
-        artist={artistName}
         title={trackName}
+        subtitle={artistName}
         nowPlaying={isNowPlaying ? isNowPlaying : false}
         date={date}
         onSelect={itemSelectHandler.bind(
@@ -112,9 +112,6 @@ const ScrobblesScreen = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: myColors.white,
   },
   listContainer: {

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import {
   View,
   StyleSheet,
@@ -17,7 +17,6 @@ import {
   TextH5,
   TextH6,
   TitleH3,
-  TitleH4,
   DetailsTitle,
 } from '../components/UI/Typography'
 import myColors from '../constants/myColors'
@@ -32,12 +31,12 @@ const DetailsScreen = (props) => {
   const [error, setError] = useState()
 
   const artistName = props.route.params.artist
-  const titleName = props.route.params.title
+  const trackName = props.route.params.title
   const albumArt = props.route.params.image
   const albumName = props.route.params.album
 
   const getTrackInfoHandler = useCallback(async () => {
-    const getTrackInfo = `?method=track.getInfo&api_key=${api_key}&artist=${artistName}&track=${titleName}&username=${username}&format=json`
+    const getTrackInfo = `?method=track.getInfo&api_key=${api_key}&artist=${artistName}&track=${trackName}&username=${username}&format=json`
 
     try {
       const response = await fetch(baseUrl + getTrackInfo)
@@ -78,7 +77,7 @@ const DetailsScreen = (props) => {
   }, [getArtistInfoHandler])
 
   const getSimilarTracksHandler = useCallback(async () => {
-    const getSimilarTracks = `?method=track.getsimilar&artist=${artistName}&track=${titleName}&api_key=${api_key}&limit=5&format=json`
+    const getSimilarTracks = `?method=track.getsimilar&artist=${artistName}&track=${trackName}&api_key=${api_key}&limit=5&format=json`
 
     try {
       const response = await fetch(baseUrl + getSimilarTracks)
@@ -143,6 +142,13 @@ const DetailsScreen = (props) => {
     setIsLoading,
   ])
 
+  // Set the header title
+  useLayoutEffect(() => {
+    props.navigation.setOptions({
+      title: `${artistName} - ${trackName}`,
+    })
+  }, [props.navigation])
+
   if (isLoading) {
     return <LoadingContainer />
   } else {
@@ -160,7 +166,7 @@ const DetailsScreen = (props) => {
                 <TitleH3
                   style={{ color: 'white' }}
                   numberOfLines={2}
-                  children={titleName}
+                  children={trackName}
                 />
                 <TextH5
                   style={{ marginTop: 4, color: 'white' }}
