@@ -109,7 +109,7 @@ const DetailsScreen = (props) => {
     }
   }, [getAlbumInfoHandler])
 
-  const onSelectHandler = (artist, title, image) => {
+  const itemSelectHandler = (artist, title, image) => {
     props.navigation.push('Details', {
       artist,
       title,
@@ -258,13 +258,11 @@ const DetailsScreen = (props) => {
                         item={itemData}
                         index={index}
                         key={index}
-                        onSelect={() => {
-                          onSelectHandler(
-                            itemData.artist.name,
-                            itemData.name,
-                            itemData.image[3]['#text']
-                          )
-                        }}
+                        onSelect={itemSelectHandler.bind(
+                          itemData.artist.name,
+                          itemData.name,
+                          itemData.image[3]['#text']
+                        )}
                       />
                     )
                   })}

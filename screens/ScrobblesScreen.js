@@ -12,9 +12,9 @@ const listFooter = () => {
 
 const ScrobblesScreen = (props) => {
   const [recentTracks, setRecentTracks] = useState([])
-  const [error, setError] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [error, setError] = useState()
 
   const getScrobblesHandler = useCallback(async () => {
     const getRecentTracks = `?method=user.getrecenttracks&user=${username}&api_key=${api_key}&format=json&limit=50&page=1`
@@ -25,7 +25,6 @@ const ScrobblesScreen = (props) => {
       const response = await fetch(baseUrl + getRecentTracks)
 
       const resData = await response.json()
-      // console.log(resData)
       setRecentTracks(resData.recenttracks.track)
       setIsRefreshing(false)
     } catch (errorInLog) {
@@ -41,12 +40,10 @@ const ScrobblesScreen = (props) => {
 
   useEffect(() => {
     setIsLoading(true)
-    getScrobblesHandler().then(() => {
-      setIsLoading(false)
-    })
+    getScrobblesHandler().then(() => setIsLoading(false))
   }, [getScrobblesHandler, setIsLoading])
 
-  const onSelectHandler = (artist, title, image, album) => {
+  const itemSelectHandler = (artist, title, image, album) => {
     props.navigation.navigate('Details', {
       artist,
       title,
@@ -55,26 +52,31 @@ const ScrobblesScreen = (props) => {
     })
   }
 
-  const listItem = useCallback(
-    ({ item }) => (
+  const listItem = useCallback(({ item }) => {
+    const albumArt = item.image[3]['#text']
+    const albumName = item.album['#text']
+    const artistName = item.artist['#text']
+    const trackName = item.name
+    const isNowPlaying = item['@attr']
+    const date = item.date
+
+    return (
       <NewListItem
-        image={item.image[3]['#text']}
-        artist={item.artist['#text']}
-        title={item.name}
-        nowPlaying={item['@attr'] ? item['@attr'] : false}
-        date={item.date}
-        onSelect={() => {
-          onSelectHandler(
-            item.artist['#text'],
-            item.name,
-            item.image[3]['#text'],
-            item.album['#text']
-          )
-        }}
+        image={albumArt}
+        artist={artistName}
+        title={trackName}
+        nowPlaying={isNowPlaying ? isNowPlaying : false}
+        date={date}
+        onSelect={itemSelectHandler.bind(
+          this,
+          artistName,
+          trackName,
+          albumArt,
+          albumName
+        )}
       />
-    ),
-    []
-  )
+    )
+  }, [])
 
   const keyExtractor = useCallback(
     (item) => item.name + Math.random().toString(),

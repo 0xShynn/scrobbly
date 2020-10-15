@@ -27,7 +27,7 @@ const TopAlbumsScreen = (props) => {
     }
   }, [getTopAlbumsHandler, setIsLoading])
 
-  const selectItemHandler = (artistName, albumName, albumArt) => {
+  const itemSelectHandler = (artistName, albumName, albumArt) => {
     props.navigation.navigate('Album Details', {
       artistName,
       albumArt,
@@ -39,14 +39,15 @@ const TopAlbumsScreen = (props) => {
     const albumArt = item.image[3]['#text']
     const artistName = item.artist.name
     const albumName = item.name
+    const playCount = item.playcount
 
     return (
       <ListItemCover
-        albumArt={albumArt}
-        albumName={albumName}
-        artistName={artistName}
-        playcount={item.playcount}
-        onSelect={() => selectItemHandler(artistName, albumName, albumArt)}
+        image={albumArt}
+        title={albumName}
+        subtitle={artistName}
+        playcount={playCount}
+        onSelect={itemSelectHandler.bind(this, artistName, albumName, albumArt)}
       />
     )
   }

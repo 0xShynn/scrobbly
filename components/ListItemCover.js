@@ -14,7 +14,7 @@ const ListItemCover = (props) => {
   return (
     <TouchableWithoutFeedback style={styles.itemCover} onPress={props.onSelect}>
       <ImageBackground
-        source={{ uri: props.albumArt }}
+        source={{ uri: props.image }}
         style={styles.listImageBackground}
       >
         <TouchableWithoutFeedback onPress={props.onSelect}>
@@ -38,13 +38,15 @@ const ListItemCover = (props) => {
             <TitleH5
               style={{ color: 'white' }}
               numberOfLines={1}
-              children={props.albumName}
+              children={props.title}
             />
-            <TextH6
-              style={{ color: myColors.blue_gray_200 }}
-              numberOfLines={1}
-              children={props.artistName}
-            />
+            {props.subtitle && (
+              <TextH6
+                style={{ color: myColors.blue_gray_200 }}
+                numberOfLines={1}
+                children={props.subtitle}
+              />
+            )}
           </View>
         </TouchableWithoutFeedback>
       </ImageBackground>
