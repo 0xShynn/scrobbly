@@ -20,7 +20,7 @@ const NewListItem = (props) => {
           <TextH6
             numberOfLines={1}
             style={{ marginTop: 2, color: myColors.blue_gray_700 }}
-            children={props.artist}
+            children={props.subtitle}
           />
         </View>
         {props.nowPlaying ? (
@@ -33,7 +33,7 @@ const NewListItem = (props) => {
             />
           </View>
         ) : (
-          <Badge>{timestamp}</Badge>
+          <Badge>{props.date ? timestamp : props.playCount}</Badge>
         )}
       </View>
     </TouchableOpacity>
@@ -47,6 +47,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     paddingRight: 10,
+    backgroundColor: 'white',
   },
   albumArt: {
     width: 70,
