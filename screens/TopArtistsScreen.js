@@ -1,16 +1,9 @@
-import React, { useEffect, useState, useCallback } from 'react'
-import { View, FlatList, StyleSheet } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import { api_key, baseUrl, username } from '../utils/lastfm'
 
-import myColors from '../constants/myColors'
 import ListItemCover from '../components/ListItemCover'
-
-const listItemSeparator = () => <View style={styles.listItemSeparator} />
-
-const listFooter = () => {
-  return <View style={styles.listFooter} />
-}
+import FlatListItemsCover from '../components/FlatListItemsCover'
 
 const TopArtistsScreen = (props) => {
   const [topArtists, setTopArtists] = useState([])
@@ -30,27 +23,24 @@ const TopArtistsScreen = (props) => {
     }
   }
 
-  const itemSelectHandler = (artist) => {
-    props.navigation.navigate('Artist Details', { artist })
+  const itemSelectHandler = (artist, playCount) => {
+    props.navigation.navigate('Artist Details', { artist, playCount })
   }
 
   const listItem = ({ item }) => {
     const artistName = item.name
     const playCount = item.playcount
+    const image = item.image[3]['#text']
 
     return (
       <ListItemCover
         title={artistName}
         playcount={playCount}
-        onSelect={itemSelectHandler.bind(this, artistName)}
+        image={image}
+        onSelect={itemSelectHandler.bind(this, artistName, playCount)}
       />
     )
   }
-
-  const keyExtractor = useCallback(
-    (item) => item.name + Math.random().toString(),
-    []
-  )
 
   useEffect(() => {
     setIsLoading(true)
@@ -60,33 +50,8 @@ const TopArtistsScreen = (props) => {
   if (isLoading) {
     return <LoadingContainer />
   } else {
-    return (
-      <FlatList
-        data={topArtists}
-        renderItem={listItem}
-        ItemSeparatorComponent={listItemSeparator}
-        ListFooterComponent={listFooter}
-        keyExtractor={keyExtractor}
-        horizontal={false}
-        numColumns={2}
-        style={styles.listContainer}
-      />
-    )
+    return <FlatListItemsCover data={topArtists} renderItem={listItem} />
   }
 }
-
-const styles = StyleSheet.create({
-  listContainer: {
-    paddingHorizontal: 4,
-    paddingTop: 20,
-    paddingBottom: 20,
-  },
-  listFooter: {
-    height: 40,
-  },
-  listItemSeparator: {
-    height: 12,
-  },
-})
 
 export default TopArtistsScreen
