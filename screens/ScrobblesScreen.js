@@ -1,42 +1,33 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import { View, StyleSheet, FlatList, Alert, StatusBar } from 'react-native'
+import { View, StatusBar } from 'react-native'
 
 import LoadingContainer from '../components/UI/LoadingContainer'
 import NewListItem from '../components/NewListItem'
 import { api_key, baseUrl, username } from '../utils/lastfm'
 import myColors from '../constants/myColors'
+import FlatListItems from '../components/FlatListItems'
 
-const listFooter = () => {
-  return <View style={styles.listFooter}></View>
-}
+const listHeader = () => (
+  <View>
+    <StatusBar barStyle="light-content" backgroundColor={myColors.primary} />
+  </View>
+)
 
 const ScrobblesScreen = (props) => {
   const [recentTracks, setRecentTracks] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [error, setError] = useState()
 
   const getScrobblesHandler = useCallback(async () => {
-    const getRecentTracks = `?method=user.getrecenttracks&user=${username}&api_key=${api_key}&format=json&limit=50&page=1`
+    const getRecentTracks = `?method=user.getrecenttracks&user=${username}&api_key=${api_key}&format=json`
     setIsRefreshing(true)
-    setError(null)
 
-    try {
-      const response = await fetch(baseUrl + getRecentTracks)
+    const response = await fetch(baseUrl + getRecentTracks)
+    const resData = await response.json()
+    setRecentTracks(resData.recenttracks.track)
 
-      const resData = await response.json()
-      setRecentTracks(resData.recenttracks.track)
-      setIsRefreshing(false)
-    } catch (errorInLog) {
-      throw errorInLog
-    }
-  }, [getScrobblesHandler, setError, setIsLoading, setIsRefreshing])
-
-  useEffect(() => {
-    if (error) {
-      Alert.alert('An error occured', error, [{ text: 'OK' }])
-    }
-  }, [error])
+    setIsRefreshing(false)
+  }, [setRecentTracks, setIsRefreshing])
 
   useEffect(() => {
     setIsLoading(true)
@@ -78,53 +69,19 @@ const ScrobblesScreen = (props) => {
     )
   }, [])
 
-  const keyExtractor = useCallback(
-    (item) => item.name + Math.random().toString(),
-    []
-  )
-
-  const listItemSeparator = () => <View style={styles.listItemSeparator} />
-
   if (isLoading) {
     return <LoadingContainer />
   } else {
     return (
-      <View style={styles.container}>
-        <StatusBar
-          barStyle="light-content"
-          backgroundColor={myColors.primary}
-        />
-        <FlatList
-          data={recentTracks}
-          initialNumToRender={10}
-          renderItem={listItem}
-          onRefresh={getScrobblesHandler}
-          refreshing={isRefreshing}
-          keyExtractor={keyExtractor}
-          ItemSeparatorComponent={listItemSeparator}
-          ListFooterComponent={listFooter}
-          style={styles.listContainer}
-        />
-      </View>
+      <FlatListItems
+        data={recentTracks}
+        renderItem={listItem}
+        ListHeaderComponent={listHeader}
+        onRefresh={getScrobblesHandler}
+        isRefreshing={isRefreshing}
+      />
     )
   }
 }
-
-const styles = StyleSheet.create({
-  container: {
-    backgroundColor: myColors.white,
-  },
-  listContainer: {
-    width: '100%',
-    paddingTop: 10,
-  },
-  listFooter: {
-    height: 20,
-  },
-  listItemSeparator: {
-    backgroundColor: myColors.white,
-    height: 10,
-  },
-})
 
 export default ScrobblesScreen

@@ -11,16 +11,14 @@ const TopAlbumsScreen = (props) => {
 
   const getTopAlbumsHandler = useCallback(async () => {
     const getTopAlbums = `?method=user.gettopalbums&user=${username}&api_key=${api_key}&limit=20&period=7day&format=json`
+    setIsRefreshing(true)
 
-    try {
-      const response = await fetch(baseUrl + getTopAlbums)
-      const resData = await response.json()
-      setTopAlbums(resData.topalbums.album)
-      // console.log(topAlbums)
-    } catch (error) {
-      console.log(error)
-    }
-  }, [getTopAlbumsHandler, setIsLoading])
+    const response = await fetch(baseUrl + getTopAlbums)
+    const resData = await response.json()
+    setTopAlbums(resData.topalbums.album)
+
+    setIsRefreshing(false)
+  }, [getTopAlbumsHandler, setIsRefreshing])
 
   const itemSelectHandler = (artistName, albumName, albumArt) => {
     props.navigation.navigate('Album Details', {
@@ -52,7 +50,7 @@ const TopAlbumsScreen = (props) => {
     getTopAlbumsHandler().then(() => {
       setIsLoading(false)
     })
-  }, [getTopAlbumsHandler, setIsLoading])
+  }, [])
 
   if (isLoading) {
     return <LoadingContainer />

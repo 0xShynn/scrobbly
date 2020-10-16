@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useCallback } from 'react'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import { api_key, baseUrl, username } from '../utils/lastfm'
 
@@ -9,19 +9,17 @@ const TopArtistsScreen = (props) => {
   const [topArtists, setTopArtists] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [error, setError] = useState()
 
-  const getTopArtistsHandler = async () => {
+  const getTopArtistsHandler = useCallback(async () => {
     const getTopArtists = `?method=user.gettopartists&user=${username}&api_key=${api_key}&period=7day&limit=20&format=json`
+    setIsRefreshing(true)
 
-    try {
-      const response = await fetch(baseUrl + getTopArtists)
-      const resData = await response.json()
-      setTopArtists(resData.topartists.artist)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+    const response = await fetch(baseUrl + getTopArtists)
+    const resData = await response.json()
+    setTopArtists(resData.topartists.artist)
+
+    setIsRefreshing(false)
+  }, [setIsRefreshing, setTopArtists])
 
   const itemSelectHandler = (artist, playCount) => {
     props.navigation.navigate('Artist Details', { artist, playCount })
@@ -46,10 +44,6 @@ const TopArtistsScreen = (props) => {
     setIsLoading(true)
     getTopArtistsHandler().then(() => setIsLoading(false))
   }, [])
-
-  const handleChange = (newValue) => {
-    setIsRefreshing(newValue)
-  }
 
   if (isLoading) {
     return <LoadingContainer />
