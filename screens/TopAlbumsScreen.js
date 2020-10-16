@@ -7,6 +7,7 @@ import FlatListItemsCover from '../components/FlatListItemsCover'
 const TopAlbumsScreen = (props) => {
   const [topAlbums, setTopAlbums] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isRefreshing, setIsRefreshing] = useState(false)
 
   const getTopAlbumsHandler = useCallback(async () => {
     const getTopAlbums = `?method=user.gettopalbums&user=${username}&api_key=${api_key}&limit=20&period=7day&format=json`
@@ -56,7 +57,14 @@ const TopAlbumsScreen = (props) => {
   if (isLoading) {
     return <LoadingContainer />
   } else {
-    return <FlatListItemsCover data={topAlbums} renderItem={listItem} />
+    return (
+      <FlatListItemsCover
+        data={topAlbums}
+        renderItem={listItem}
+        onRefresh={getTopAlbumsHandler}
+        isRefreshing={isRefreshing}
+      />
+    )
   }
 }
 

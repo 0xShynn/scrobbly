@@ -47,10 +47,21 @@ const TopArtistsScreen = (props) => {
     getTopArtistsHandler().then(() => setIsLoading(false))
   }, [])
 
+  const handleChange = (newValue) => {
+    setIsRefreshing(newValue)
+  }
+
   if (isLoading) {
     return <LoadingContainer />
   } else {
-    return <FlatListItemsCover data={topArtists} renderItem={listItem} />
+    return (
+      <FlatListItemsCover
+        data={topArtists}
+        renderItem={listItem}
+        onRefresh={getTopArtistsHandler}
+        isRefreshing={isRefreshing}
+      />
+    )
   }
 }
 

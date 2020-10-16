@@ -22,6 +22,8 @@ const FlatListItemsCover = (props) => {
       keyExtractor={keyExtractor}
       horizontal={false}
       numColumns={2}
+      onRefresh={props.onRefresh}
+      refreshing={props.isRefreshing}
       style={styles.listContainer}
     />
   )
