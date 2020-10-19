@@ -6,6 +6,7 @@ import {
   Inter_700Bold,
   useFonts,
 } from '@expo-google-fonts/inter'
+import { OverflowMenuProvider } from 'react-navigation-header-buttons'
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -16,6 +17,10 @@ export default function App() {
   if (!fontsLoaded) {
     return <AppLoading />
   } else {
-    return <AppNavigator />
+    return (
+      <OverflowMenuProvider>
+        <AppNavigator />
+      </OverflowMenuProvider>
+    )
   }
 }

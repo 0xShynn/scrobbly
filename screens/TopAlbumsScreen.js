@@ -1,35 +1,50 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import LoadingContainer from '../components/UI/LoadingContainer'
-import { api_key, baseUrl, username } from '../utils/lastfm'
+import { api_key, baseUrl, periods, username } from '../utils/lastfm'
 import ListItemCover from '../components/ListItemCover'
 import FlatListItemsCover from '../components/FlatListItemsCover'
+import PeriodSelector from '../components/PeriodSelector'
 
-const TopAlbumsScreen = (props) => {
+const TopAlbumsScreen = ({ navigation }) => {
   const [topAlbums, setTopAlbums] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [periodSelected, setPeriodSelected] = useState(periods[0])
 
-  const getTopAlbumsHandler = useCallback(async () => {
-    const getTopAlbums = `?method=user.gettopalbums&user=${username}&api_key=${api_key}&limit=20&period=7day&format=json`
-    setIsRefreshing(true)
+  const getTopAlbumsHandler = useCallback(
+    async (period) => {
+      const getTopAlbums = `?method=user.gettopalbums&user=${username}&api_key=${api_key}&limit=20&period=${period.duration}&format=json`
+      setIsRefreshing(true)
 
-    const response = await fetch(baseUrl + getTopAlbums)
-    const resData = await response.json()
-    setTopAlbums(resData.topalbums.album)
-
-    setIsRefreshing(false)
-  }, [getTopAlbumsHandler, setIsRefreshing])
+      const response = await fetch(baseUrl + getTopAlbums)
+      const resData = await response.json()
+      setTopAlbums(resData.topalbums.album)
+      setPeriodSelected(period)
+      setIsRefreshing(false)
+    },
+    [getTopAlbumsHandler, setIsRefreshing, setPeriodSelected]
+  )
 
   const itemSelectHandler = (artistName, albumName, albumArt) => {
-    props.navigation.navigate('Album Details', {
+    navigation.navigate('Album Details', {
       artistName,
       albumArt,
       albumName,
     })
   }
 
+  const periodSelectorHandler = () => {
+    return <PeriodSelector onSelect={getTopAlbumsHandler} />
+  }
+
+  const onRefreshHandler = () => {
+    return getTopAlbumsHandler
+  }
+
   const listItem = ({ item }) => {
     const albumArt = item.image[3]['#text']
+      ? item.image[3]['#text']
+      : 'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png'
     const artistName = item.artist.name
     const albumName = item.name
     const playCount = item.playcount
@@ -47,10 +62,18 @@ const TopAlbumsScreen = (props) => {
 
   useEffect(() => {
     setIsLoading(true)
-    getTopAlbumsHandler().then(() => {
+    getTopAlbumsHandler(periodSelected).then(() => {
       setIsLoading(false)
     })
-  }, [])
+  }, [periodSelected])
+
+  // Set the header title
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: 'Top Albums ' + periodSelected.name,
+      headerRight: periodSelectorHandler,
+    })
+  }, [navigation, periodSelected])
 
   if (isLoading) {
     return <LoadingContainer />
@@ -59,8 +82,8 @@ const TopAlbumsScreen = (props) => {
       <FlatListItemsCover
         data={topAlbums}
         renderItem={listItem}
-        onRefresh={getTopAlbumsHandler}
-        isRefreshing={isRefreshing}
+        // onRefresh={onRefreshHandler}
+        // isRefreshing={isRefreshing}
       />
     )
   }
