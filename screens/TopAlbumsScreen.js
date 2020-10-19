@@ -14,13 +14,11 @@ const TopAlbumsScreen = ({ navigation }) => {
   const getTopAlbumsHandler = useCallback(
     async (period) => {
       const getTopAlbums = `?method=user.gettopalbums&user=${username}&api_key=${api_key}&limit=20&period=${period.duration}&format=json`
-      setIsRefreshing(true)
 
       const response = await fetch(baseUrl + getTopAlbums)
       const resData = await response.json()
       setTopAlbums(resData.topalbums.album)
       setPeriodSelected(period)
-      setIsRefreshing(false)
     },
     [getTopAlbumsHandler, setIsRefreshing, setPeriodSelected]
   )
@@ -62,8 +60,10 @@ const TopAlbumsScreen = ({ navigation }) => {
 
   useEffect(() => {
     setIsLoading(true)
+    setIsRefreshing(true)
     getTopAlbumsHandler(periodSelected).then(() => {
       setIsLoading(false)
+      setIsRefreshing(false)
     })
   }, [periodSelected])
 
@@ -82,8 +82,8 @@ const TopAlbumsScreen = ({ navigation }) => {
       <FlatListItemsCover
         data={topAlbums}
         renderItem={listItem}
-        // onRefresh={onRefreshHandler}
-        // isRefreshing={isRefreshing}
+        onRefresh={onRefreshHandler}
+        isRefreshing={isRefreshing}
       />
     )
   }
