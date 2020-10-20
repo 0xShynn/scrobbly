@@ -1,9 +1,12 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+
 import LoadingContainer from '../components/UI/LoadingContainer'
-import { api_key, baseUrl, periods, username } from '../utils/lastfm'
 import ListItemCover from '../components/ListItemCover'
 import FlatListItemsCover from '../components/FlatListItemsCover'
 import PeriodSelector from '../components/PeriodSelector'
+import CustomHeaderTitle from '../components/CustomHeaderTitle'
+
+import { api_key, baseUrl, periods, username } from '../utils/lastfm'
 import Album from '../models/album'
 
 const TopAlbumsScreen = ({ navigation }) => {
@@ -14,7 +17,7 @@ const TopAlbumsScreen = ({ navigation }) => {
 
   const getTopAlbumsHandler = useCallback(
     async (period) => {
-      const getTopAlbums = `?method=user.gettopalbums&user=${username}&api_key=${api_key}&limit=20&period=${period.duration}&format=json`
+      const getTopAlbums = `?method=user.gettopalbums&user=${username}&api_key=${api_key}&period=${period.duration}&format=json`
 
       const response = await fetch(baseUrl + getTopAlbums)
       const resData = await response.json()
@@ -36,7 +39,7 @@ const TopAlbumsScreen = ({ navigation }) => {
       setTopAlbums(loadedAlbums)
       setPeriodSelected(period)
     },
-    [getTopAlbumsHandler, setIsRefreshing, setPeriodSelected]
+    [getTopAlbumsHandler, setPeriodSelected]
   )
 
   const itemSelectHandler = (artistName, albumName, albumArt) => {
@@ -84,7 +87,12 @@ const TopAlbumsScreen = ({ navigation }) => {
   // Set the header title
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: 'Top Albums ' + periodSelected.name,
+      headerTitle: (
+        <CustomHeaderTitle
+          title="Top Albums"
+          periodSelected={periodSelected.name}
+        />
+      ),
       headerRight: periodSelectorHandler,
     })
   }, [navigation, periodSelected])

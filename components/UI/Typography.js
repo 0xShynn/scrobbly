@@ -32,6 +32,21 @@ export const TextH3 = (props) => {
   )
 }
 
+export const TextH4 = (props) => {
+  return (
+    <Text
+      {...props}
+      style={{
+        ...styles.textWeightRegular,
+        ...styles.titleH4,
+        ...props.style,
+      }}
+    >
+      {props.children}
+    </Text>
+  )
+}
+
 export const TextH5 = (props) => {
   return (
     <Text

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { View, StatusBar } from 'react-native'
 
 import LoadingContainer from '../components/UI/LoadingContainer'
@@ -8,6 +8,7 @@ import NewListItem from '../components/NewListItem'
 import { api_key, baseUrl, username } from '../utils/lastfm'
 import myColors from '../constants/myColors'
 import Scrobble from '../models/scrobble'
+import CustomHeaderTitle from '../components/CustomHeaderTitle'
 
 const listHeader = () => (
   <View>
@@ -15,7 +16,7 @@ const listHeader = () => (
   </View>
 )
 
-const ScrobblesScreen = (props) => {
+const ScrobblesScreen = ({ navigation }) => {
   const [recentTracks, setRecentTracks] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -45,13 +46,8 @@ const ScrobblesScreen = (props) => {
     setIsRefreshing(false)
   }, [setRecentTracks, setIsRefreshing])
 
-  useEffect(() => {
-    setIsLoading(true)
-    getScrobblesHandler().then(() => setIsLoading(false))
-  }, [getScrobblesHandler, setIsLoading])
-
   const itemSelectHandler = (artist, title, image, album) => {
-    props.navigation.navigate('Details', {
+    navigation.navigate('Details', {
       artist,
       title,
       image,
@@ -77,6 +73,19 @@ const ScrobblesScreen = (props) => {
       />
     )
   }, [])
+
+  useEffect(() => {
+    setIsLoading(true)
+    getScrobblesHandler().then(() => setIsLoading(false))
+  }, [getScrobblesHandler, setIsLoading])
+
+  // Set the header title
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      // title: 'Top Artists / ' + periodSelected.name,
+      headerTitle: <CustomHeaderTitle title="Scrobbles" />,
+    })
+  }, [navigation])
 
   if (isLoading) {
     return <LoadingContainer />
