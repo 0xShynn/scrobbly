@@ -4,6 +4,7 @@ import { api_key, baseUrl, periods, username } from '../utils/lastfm'
 import ListItemCover from '../components/ListItemCover'
 import FlatListItemsCover from '../components/FlatListItemsCover'
 import PeriodSelector from '../components/PeriodSelector'
+import Album from '../models/album'
 
 const TopAlbumsScreen = ({ navigation }) => {
   const [topAlbums, setTopAlbums] = useState([])
@@ -17,7 +18,22 @@ const TopAlbumsScreen = ({ navigation }) => {
 
       const response = await fetch(baseUrl + getTopAlbums)
       const resData = await response.json()
-      setTopAlbums(resData.topalbums.album)
+
+      const loadedAlbums = []
+      for (const album of resData.topalbums.album) {
+        loadedAlbums.push(
+          new Album(
+            album.artist.name,
+            album.name,
+            album.image[3]['#text']
+              ? album.image[3]['#text']
+              : 'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png',
+            album.playcount
+          )
+        )
+      }
+      loadedAlbums.slice(0, 20)
+      setTopAlbums(loadedAlbums)
       setPeriodSelected(period)
     },
     [getTopAlbumsHandler, setIsRefreshing, setPeriodSelected]
@@ -40,20 +56,18 @@ const TopAlbumsScreen = ({ navigation }) => {
   }
 
   const listItem = ({ item }) => {
-    const albumArt = item.image[3]['#text']
-      ? item.image[3]['#text']
-      : 'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png'
-    const artistName = item.artist.name
-    const albumName = item.name
-    const playCount = item.playcount
-
     return (
       <ListItemCover
-        image={albumArt}
-        title={albumName}
-        subtitle={artistName}
-        playcount={playCount}
-        onSelect={itemSelectHandler.bind(this, artistName, albumName, albumArt)}
+        image={item.albumArt}
+        title={item.albumName}
+        subtitle={item.artistName}
+        playcount={item.playCount}
+        onSelect={itemSelectHandler.bind(
+          this,
+          item.artistName,
+          item.albumName,
+          item.albumArt
+        )}
       />
     )
   }
