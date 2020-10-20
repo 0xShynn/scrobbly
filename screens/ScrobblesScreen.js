@@ -9,6 +9,7 @@ import { api_key, baseUrl, username } from '../utils/lastfm'
 import myColors from '../constants/myColors'
 import Scrobble from '../models/scrobble'
 import CustomHeaderTitle from '../components/CustomHeaderTitle'
+import { SimpleLineIcons } from '@expo/vector-icons'
 
 const listHeader = () => (
   <View>
@@ -74,6 +75,17 @@ const ScrobblesScreen = ({ navigation }) => {
     )
   }, [])
 
+  const settingsSelector = () => {
+    return (
+      <SimpleLineIcons
+        name="settings"
+        size={24}
+        color="white"
+        style={{ marginHorizontal: 10 }}
+      />
+    )
+  }
+
   useEffect(() => {
     setIsLoading(true)
     getScrobblesHandler().then(() => setIsLoading(false))
@@ -84,6 +96,7 @@ const ScrobblesScreen = ({ navigation }) => {
     navigation.setOptions({
       // title: 'Top Artists / ' + periodSelected.name,
       headerTitle: <CustomHeaderTitle title="Scrobbles" />,
+      headerRight: settingsSelector,
     })
   }, [navigation])
 

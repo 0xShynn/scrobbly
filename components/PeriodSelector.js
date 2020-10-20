@@ -1,13 +1,13 @@
 import React from 'react'
 import { HiddenItem, OverflowMenu } from 'react-navigation-header-buttons'
-import { AntDesign } from '@expo/vector-icons'
+import { SimpleLineIcons } from '@expo/vector-icons'
 import { periods } from '../utils/lastfm'
 
 const PeriodSelector = (props) => {
   return (
     <OverflowMenu
       style={{ marginHorizontal: 10 }}
-      OverflowIcon={<AntDesign name="calendar" size={22} color="white" />}
+      OverflowIcon={<SimpleLineIcons name="calendar" size={24} color="white" />}
     >
       {periods.map((item) => {
         return (

@@ -1,10 +1,11 @@
-import React, { useEffect, useState, useCallback, useLayoutEffect } from 'react'
+import React, { useEffect, useState, useLayoutEffect } from 'react'
 import LoadingContainer from '../components/UI/LoadingContainer'
 
 import ListItemCover from '../components/ListItemCover'
 import FlatListItemsCover from '../components/FlatListItemsCover'
 import PeriodSelector from '../components/PeriodSelector'
 import CustomHeaderTitle from '../components/CustomHeaderTitle'
+import ErrorContainer from '../components/UI/ErrorContainer'
 
 import { api_key, baseUrl, username, periods } from '../utils/lastfm'
 import Artist from '../models/artist'
@@ -14,16 +15,24 @@ const TopArtistsScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [periodSelected, setPeriodSelected] = useState(periods[0])
+  const [error, setError] = useState()
 
-  const getTopArtistsHandler = useCallback(
-    async (period) => {
-      const getTopArtists = `?method=user.gettopartists&user=${username}&api_key=${api_key}&period=${period.duration}&format=json`
+  const getTopArtistsHandler = async (period) => {
+    setIsLoading(true)
+    setError(null)
 
-      const response = await fetch(baseUrl + getTopArtists)
-      const resData = await response.json()
+    const getTopArtists = `?method=user.gettopartists&user=${username}&api_key=${api_key}&period=${period.duration}&limit=20&format=json`
 
+    const response = await fetch(baseUrl + getTopArtists).then((res) =>
+      res.json()
+    )
+
+    if (response.hasOwnProperty('error')) {
+      setError(response.message)
+      setIsLoading(false)
+    } else {
       const loadedArtists = []
-      for (const artist of resData.topartists.artist) {
+      for (const artist of response.topartists.artist) {
         loadedArtists.push(
           new Artist(
             artist.name,
@@ -37,9 +46,9 @@ const TopArtistsScreen = ({ navigation }) => {
 
       setTopArtists(loadedArtists)
       setPeriodSelected(period)
-    },
-    [setIsRefreshing, setTopArtists]
-  )
+      setIsLoading(false)
+    }
+  }
 
   const itemSelectHandler = (artist, playCount) => {
     navigation.navigate('Artist Details', { artist, playCount })
@@ -60,6 +69,10 @@ const TopArtistsScreen = ({ navigation }) => {
     return <PeriodSelector onSelect={getTopArtistsHandler} />
   }
 
+  const onRefreshHandler = () => {
+    return getTopArtistsHandler
+  }
+
   useEffect(() => {
     setIsLoading(true)
     setIsRefreshing(true)
@@ -67,12 +80,11 @@ const TopArtistsScreen = ({ navigation }) => {
       setIsLoading(false)
       setIsRefreshing(false)
     })
-  }, [])
+  }, [periodSelected])
 
   // Set the header title
   useLayoutEffect(() => {
     navigation.setOptions({
-      // title: 'Top Artists / ' + periodSelected.name,
       headerTitle: (
         <CustomHeaderTitle
           title="Top Artists"
@@ -83,6 +95,10 @@ const TopArtistsScreen = ({ navigation }) => {
     })
   }, [navigation, periodSelected])
 
+  if (error) {
+    return <ErrorContainer message={error} />
+  }
+
   if (isLoading) {
     return <LoadingContainer />
   } else {
@@ -90,7 +106,7 @@ const TopArtistsScreen = ({ navigation }) => {
       <FlatListItemsCover
         data={topArtists}
         renderItem={listItem}
-        onRefresh={getTopArtistsHandler}
+        onRefresh={onRefreshHandler}
         isRefreshing={isRefreshing}
       />
     )

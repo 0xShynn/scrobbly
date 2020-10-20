@@ -1,9 +1,8 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-import TopArtistsScreen from '../screens/TopArtistsScreen'
-import TopTracksScreen from '../screens/TopTracksScreen'
 
-import { Ionicons } from '@expo/vector-icons'
+import { SimpleLineIcons } from '@expo/vector-icons'
+
 import DetailsStackScreen from './DetailsStackScreen'
 import TopAlbumsStackScreen from './TopAlbumsStackScreen'
 import myColors from '../constants/myColors'
@@ -22,25 +21,25 @@ const MainBottomTabNavigator = () => {
 
           switch (route.name) {
             case 'Scrobbles':
-              iconName = 'ios-list'
+              iconName = 'list'
               break
             case 'Artists':
-              iconName = 'md-star'
+              iconName = 'star'
               break
             case 'Albums':
-              iconName = 'ios-disc'
+              iconName = 'disc'
               break
             case 'Tracks':
-              iconName = 'ios-musical-notes'
+              iconName = 'music-tone-alt'
               break
             case 'My Account':
-              iconName = 'md-person'
+              iconName = 'user'
               break
             default:
-              iconName = 'ios-musical-note'
+              iconName = 'music-tone-alt'
           }
 
-          return <Ionicons name={iconName} size={30} color={color} />
+          return <SimpleLineIcons name={iconName} size={26} color={color} />
         },
       })}
       tabBarOptions={{
