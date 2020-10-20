@@ -2,10 +2,12 @@ import React, { useCallback, useEffect, useState } from 'react'
 import { View, StatusBar } from 'react-native'
 
 import LoadingContainer from '../components/UI/LoadingContainer'
+import FlatListItems from '../components/FlatListItems'
 import NewListItem from '../components/NewListItem'
+
 import { api_key, baseUrl, username } from '../utils/lastfm'
 import myColors from '../constants/myColors'
-import FlatListItems from '../components/FlatListItems'
+import Scrobble from '../models/scrobble'
 
 const listHeader = () => (
   <View>
@@ -19,13 +21,27 @@ const ScrobblesScreen = (props) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
 
   const getScrobblesHandler = useCallback(async () => {
-    const getRecentTracks = `?method=user.getrecenttracks&user=${username}&api_key=${api_key}&format=json`
+    const getRecentTracks = `?method=user.getrecenttracks&user=${username}&api_key=${api_key}&limit=50&page=1&format=json`
     setIsRefreshing(true)
 
     const response = await fetch(baseUrl + getRecentTracks)
     const resData = await response.json()
-    setRecentTracks(resData.recenttracks.track)
 
+    const loadedScrobbles = []
+    for (const track of resData.recenttracks.track) {
+      loadedScrobbles.push(
+        new Scrobble(
+          track.artist['#text'],
+          track.name,
+          track.album['#text'],
+          track.image[3]['#text'],
+          track.hasOwnProperty(['@attr']) ? true : false,
+          track.hasOwnProperty('date') ? track.date['#text'] : undefined
+        )
+      )
+    }
+    loadedScrobbles.slice(0, 50)
+    setRecentTracks(loadedScrobbles)
     setIsRefreshing(false)
   }, [setRecentTracks, setIsRefreshing])
 
@@ -44,26 +60,19 @@ const ScrobblesScreen = (props) => {
   }
 
   const listItem = useCallback(({ item }) => {
-    const albumArt = item.image[3]['#text']
-    const albumName = item.album['#text']
-    const artistName = item.artist['#text']
-    const trackName = item.name
-    const isNowPlaying = item['@attr']
-    const date = item.date
-
     return (
       <NewListItem
-        image={albumArt}
-        title={trackName}
-        subtitle={artistName}
-        nowPlaying={isNowPlaying ? isNowPlaying : false}
-        date={date}
+        image={item.albumArt}
+        title={item.trackName}
+        subtitle={item.artistName}
+        nowPlaying={item.isNowPlaying}
+        date={item.date}
         onSelect={itemSelectHandler.bind(
           this,
-          artistName,
-          trackName,
-          albumArt,
-          albumName
+          item.artistName,
+          item.trackName,
+          item.albumArt,
+          item.albumName
         )}
       />
     )
