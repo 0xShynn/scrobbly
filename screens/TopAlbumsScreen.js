@@ -14,7 +14,7 @@ const TopAlbumsScreen = ({ navigation }) => {
   const [topAlbums, setTopAlbums] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [periodSelected, setPeriodSelected] = useState(periods[0])
+  const [periodSelected, setPeriodSelected] = useState({})
   const [error, setError] = useState()
 
   const getTopAlbumsHandler = async (period) => {
@@ -51,6 +51,7 @@ const TopAlbumsScreen = ({ navigation }) => {
       loadedAlbums.slice(0, 20)
       setTopAlbums(loadedAlbums)
       setPeriodSelected(period)
+      setIsLoading(false)
     }
   }
 
@@ -90,11 +91,11 @@ const TopAlbumsScreen = ({ navigation }) => {
   useEffect(() => {
     setIsLoading(true)
     setIsRefreshing(true)
-    getTopAlbumsHandler(periodSelected).then(() => {
+    getTopAlbumsHandler(periods[0]).then(() => {
       setIsLoading(false)
       setIsRefreshing(false)
     })
-  }, [periodSelected])
+  }, [])
 
   // Set the header title
   useLayoutEffect(() => {

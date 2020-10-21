@@ -14,7 +14,7 @@ const TopTracksScreen = ({ navigation }) => {
   const [topTracks, setTopTracks] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [periodSelected, setPeriodSelected] = useState(periods[0])
+  const [periodSelected, setPeriodSelected] = useState({})
   const [error, setError] = useState()
 
   const getTopTracksHandler = async (period) => {
@@ -75,11 +75,11 @@ const TopTracksScreen = ({ navigation }) => {
   useEffect(() => {
     setIsLoading(true)
     setIsRefreshing(true)
-    getTopTracksHandler(periodSelected).then(() => {
+    getTopTracksHandler(periods[0]).then(() => {
       setIsLoading(false)
       setIsRefreshing(false)
     })
-  }, [periodSelected])
+  }, [])
 
   // Set the header title
   useLayoutEffect(() => {

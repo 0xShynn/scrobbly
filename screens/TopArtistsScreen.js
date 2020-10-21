@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react'
-import LoadingContainer from '../components/UI/LoadingContainer'
 
+import LoadingContainer from '../components/UI/LoadingContainer'
 import ListItemCover from '../components/ListItemCover'
 import FlatListItemsCover from '../components/FlatListItemsCover'
 import PeriodSelector from '../components/PeriodSelector'
@@ -14,7 +14,7 @@ const TopArtistsScreen = ({ navigation }) => {
   const [topArtists, setTopArtists] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const [periodSelected, setPeriodSelected] = useState(periods[0])
+  const [periodSelected, setPeriodSelected] = useState({})
   const [error, setError] = useState()
 
   const getTopArtistsHandler = async (period) => {
@@ -80,11 +80,11 @@ const TopArtistsScreen = ({ navigation }) => {
   useEffect(() => {
     setIsLoading(true)
     setIsRefreshing(true)
-    getTopArtistsHandler(periodSelected).then(() => {
+    getTopArtistsHandler(periods[0]).then(() => {
       setIsLoading(false)
       setIsRefreshing(false)
     })
-  }, [periodSelected])
+  }, [])
 
   // Set the header title
   useLayoutEffect(() => {
