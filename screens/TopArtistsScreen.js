@@ -18,6 +18,10 @@ const TopArtistsScreen = ({ navigation }) => {
   const [error, setError] = useState()
 
   const getTopArtistsHandler = async (period) => {
+    if (period === periodSelected) {
+      return
+    }
+
     setIsLoading(true)
     setError(null)
 

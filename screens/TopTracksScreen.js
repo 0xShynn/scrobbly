@@ -18,6 +18,10 @@ const TopTracksScreen = ({ navigation }) => {
   const [error, setError] = useState()
 
   const getTopTracksHandler = async (period) => {
+    if (period === periodSelected) {
+      return
+    }
+
     setIsLoading(true)
     setError(null)
     const getTopTracks = `?method=user.gettoptracks&user=${username}&api_key=${api_key}&period=${period.duration}&format=json`

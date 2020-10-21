@@ -18,6 +18,10 @@ const TopAlbumsScreen = ({ navigation }) => {
   const [error, setError] = useState()
 
   const getTopAlbumsHandler = async (period) => {
+    if (period === periodSelected) {
+      return
+    }
+
     setIsLoading(true)
     setError(null)
 
