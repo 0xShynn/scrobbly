@@ -8,6 +8,18 @@ import {
 } from '@expo-google-fonts/inter'
 import { OverflowMenuProvider } from 'react-navigation-header-buttons'
 
+import { createStore, combineReducers, applyMiddleware } from 'redux'
+import { Provider } from 'react-redux'
+import ReduxThunk from 'redux-thunk'
+
+import authReducer from './store/authReducer'
+
+const roorReducer = combineReducers({
+  auth: authReducer,
+})
+
+const store = createStore(roorReducer, applyMiddleware(ReduxThunk))
+
 export default function App() {
   let [fontsLoaded] = useFonts({
     Inter_400Regular,
@@ -18,9 +30,11 @@ export default function App() {
     return <AppLoading />
   } else {
     return (
-      <OverflowMenuProvider>
-        <AppNavigator />
-      </OverflowMenuProvider>
+      <Provider store={store}>
+        <OverflowMenuProvider>
+          <AppNavigator />
+        </OverflowMenuProvider>
+      </Provider>
     )
   }
 }
