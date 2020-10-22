@@ -24,6 +24,7 @@
     "expo-secure-store": "~9.2.0",
     "expo-status-bar": "~1.0.2",
     "expo-web-browser": "~8.5.0",
+    "formik": "^2.2.0",
     "react": "16.13.1",
     "react-dom": "16.13.1",
     "react-native": "https://github.com/expo/react-native/archive/sdk-39.0.2.tar.gz",
@@ -36,7 +37,8 @@
     "react-navigation-header-buttons": "^6.0.0",
     "react-redux": "^7.2.1",
     "redux": "^4.0.5",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "yup": "^0.29.3"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

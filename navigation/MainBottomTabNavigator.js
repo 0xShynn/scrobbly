@@ -9,6 +9,7 @@ import myColors from '../constants/myColors'
 import MyAccountScreen from '../screens/MyAccountScreen'
 import TopArtistsStackScreen from './TopArtistsStackScreen'
 import TopTracksStackScreen from './TopTracksStackScreen'
+import AuthScreen from '../screens/user/AuthScreen'
 
 const Tab = createBottomTabNavigator()
 
