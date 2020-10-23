@@ -1,16 +1,19 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import MainBottomTabNavigator from './MainBottomTabNavigator'
 import AuthScreen from '../screens/user/AuthScreen'
 import { useSelector } from 'react-redux'
+import StartupScreen from '../screens/StartupScreen'
 
 const AppNavigator = () => {
   const isAuth = useSelector((state) => !!state.auth.token)
+  const didTryAutoLogin = useSelector((state) => !!state.auth.didTryAutoLogin)
 
   return (
     <NavigationContainer>
       {isAuth && <MainBottomTabNavigator />}
-      {!isAuth && <AuthScreen />}
+      {!isAuth && didTryAutoLogin && <AuthScreen />}
+      {!isAuth && !didTryAutoLogin && <StartupScreen />}
     </NavigationContainer>
   )
 }

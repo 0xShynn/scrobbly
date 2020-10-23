@@ -4,6 +4,11 @@ import { baseUrl } from '../utils/lastfm'
 
 export const AUTHENTICATE = 'AUTHENTICATE'
 export const LOGOUT = 'LOGOUT'
+export const SET_DID_TRY_AUTOLOGIN = 'SET_DID_TRY_AUTOLOGIN'
+
+export const setDidTryAutoLogin = () => {
+  return { type: SET_DID_TRY_AUTOLOGIN }
+}
 
 export const authenticate = (username, token) => {
   return (dispatch) => {
