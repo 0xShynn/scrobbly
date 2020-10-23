@@ -1,5 +1,5 @@
 import * as Crypto from 'expo-crypto'
-import AsyncStorage from '@react-native-async-storage/async-storage'
+import AsyncStorage from '@react-native-community/async-storage'
 import { baseUrl } from '../utils/lastfm'
 
 export const AUTHENTICATE = 'AUTHENTICATE'
