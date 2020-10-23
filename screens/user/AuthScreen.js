@@ -1,11 +1,17 @@
 import React, { useRef } from 'react'
-import { View, StyleSheet, Alert } from 'react-native'
+import { View, StyleSheet } from 'react-native'
+import { StatusBar } from 'expo-status-bar'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+
 import CenteredContainer from '../../components/UI/CenteredContainer'
-import myColors from '../../constants/myColors'
 import MyTextInput from '../../components/UI/MyTextInput'
 import CustomButton from '../../components/UI/CustomButton'
+import { TextH6 } from '../../components/UI/Typography'
+import myColors from '../../constants/myColors'
+
+import { useDispatch } from 'react-redux'
+import * as authActions from '../../store/authActions'
 
 const authValidationSchema = Yup.object({
   username: Yup.string().required(),
@@ -13,6 +19,7 @@ const authValidationSchema = Yup.object({
 })
 
 const AuthScreen = (props) => {
+  const dispatch = useDispatch()
   const password = useRef(null)
 
   const { handleChange, handleBlur, handleSubmit, errors, touched } = useFormik(
@@ -20,15 +27,22 @@ const AuthScreen = (props) => {
       validationSchema: authValidationSchema,
       initialValues: { username: '', password: '' },
       onSubmit: (values) => {
-        Alert.alert(
-          `username: ${values.username}, password: ${values.password}`
-        )
+        authHandler(values.username, values.password)
       },
     }
   )
 
+  const authHandler = async (username, password) => {
+    try {
+      await dispatch(authActions.logIn(username, password))
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
-    <CenteredContainer style={{ backgroundColor: myColors.blue_gray_800 }}>
+    <CenteredContainer style={{ backgroundColor: myColors.blue_gray_900 }}>
+      <StatusBar barStyle="light-content" />
       <View style={styles.container}>
         <View style={styles.inputSpacing}>
           <MyTextInput
@@ -54,8 +68,8 @@ const AuthScreen = (props) => {
             autoCapitalize="none"
             autoCompleteType="password"
             secureTextEntry
-            returnKeyType="next"
-            returnKeyLabel="next"
+            returnKeyType="go"
+            returnKeyLabel="go"
             onChangeText={handleChange('password')}
             onBlur={handleBlur('password')}
             error={errors.password}
@@ -66,9 +80,12 @@ const AuthScreen = (props) => {
             }}
           />
         </View>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'center', marginTop: 20 }}>
           <CustomButton label="Login" onPress={handleSubmit} />
         </View>
+        <TextH6 style={{ color: 'white', textAlign: 'center', marginTop: 20 }}>
+          Doesn't have an last.fm account ? Sign Up
+        </TextH6>
       </View>
     </CenteredContainer>
   )

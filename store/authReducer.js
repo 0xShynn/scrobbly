@@ -1,14 +1,22 @@
-import { AUTHENTICATE } from './authActions'
+import { AUTHENTICATE, LOGOUT } from './authActions'
 
 const initialState = {
-  token: null,
   username: null,
+  token: null,
 }
 
-export default (state = initialState, { type, payload }) => {
-  switch (type) {
+export default (state = initialState, action) => {
+  switch (action.type) {
     case AUTHENTICATE:
-      return { ...state, ...payload }
+      return {
+        username: action.username,
+        token: action.token,
+      }
+
+    case LOGOUT:
+      return {
+        ...initialState,
+      }
 
     default:
       return state

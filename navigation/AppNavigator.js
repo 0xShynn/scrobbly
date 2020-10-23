@@ -1,10 +1,11 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import MainBottomTabNavigator from './MainBottomTabNavigator'
 import AuthScreen from '../screens/user/AuthScreen'
+import { useSelector } from 'react-redux'
 
 const AppNavigator = () => {
-  const isAuth = false
+  const isAuth = useSelector((state) => !!state.auth.token)
 
   return (
     <NavigationContainer>
