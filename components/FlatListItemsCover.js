@@ -1,10 +1,26 @@
 import React, { useCallback } from 'react'
-import { FlatList, StyleSheet, View } from 'react-native'
+import { FlatList, View } from 'react-native'
+import { TextH6 } from './UI/Typography'
 
-const listItemSeparator = () => <View style={styles.listItemSeparator} />
+const listItemSeparator = () => <View style={{ height: 12 }} />
 
 const listFooter = () => {
-  return <View style={styles.listFooter} />
+  return <View style={{ height: 40 }} />
+}
+
+const listEmpty = () => {
+  return (
+    <View
+      style={{
+        flex: 1,
+        minHeight: 520,
+        justifyContent: 'center',
+        alignItems: 'center',
+      }}
+    >
+      <TextH6>No items found. Start scrobbling!</TextH6>
+    </View>
+  )
 }
 
 const FlatListItemsCover = (props) => {
@@ -19,28 +35,15 @@ const FlatListItemsCover = (props) => {
       renderItem={props.renderItem}
       ItemSeparatorComponent={listItemSeparator}
       ListFooterComponent={listFooter}
+      ListEmptyComponent={listEmpty}
       keyExtractor={keyExtractor}
       horizontal={false}
       numColumns={2}
       onRefresh={props.onRefresh}
       refreshing={props.isRefreshing}
-      style={styles.listContainer}
+      style={{ paddingHorizontal: 4, paddingVertical: 20 }}
     />
   )
 }
 
 export default FlatListItemsCover
-
-const styles = StyleSheet.create({
-  listContainer: {
-    paddingHorizontal: 4,
-    paddingTop: 20,
-    paddingBottom: 20,
-  },
-  listFooter: {
-    height: 40,
-  },
-  listItemSeparator: {
-    height: 12,
-  },
-})
