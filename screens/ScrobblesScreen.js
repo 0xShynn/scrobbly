@@ -1,14 +1,14 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { View, StatusBar, Button } from 'react-native'
+import { View, StatusBar } from 'react-native'
+import { useDispatch, useSelector } from 'react-redux'
+import * as scrobblesActions from '../store/scrobblesActions'
 
 import LoadingContainer from '../components/UI/LoadingContainer'
 import FlatListItems from '../components/FlatListItems'
 import NewListItem from '../components/NewListItem'
-
-import { api_key, baseUrl, username } from '../utils/lastfm'
-import myColors from '../constants/myColors'
-import Scrobble from '../models/scrobble'
 import CustomHeaderTitle from '../components/CustomHeaderTitle'
+
+import myColors from '../constants/myColors'
 import { SimpleLineIcons } from '@expo/vector-icons'
 
 const listHeader = () => (
@@ -18,34 +18,21 @@ const listHeader = () => (
 )
 
 const ScrobblesScreen = ({ navigation }) => {
-  const [recentTracks, setRecentTracks] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const username = useSelector((state) => state.auth.username)
+  const recentTracks = useSelector((state) => state.scrobbles.recentScrobbles)
+  const dispatch = useDispatch()
 
   const getScrobblesHandler = useCallback(async () => {
-    const getRecentTracks = `?method=user.getrecenttracks&user=${username}&api_key=${api_key}&limit=50&page=1&format=json`
     setIsRefreshing(true)
-
-    const response = await fetch(baseUrl + getRecentTracks)
-    const resData = await response.json()
-
-    const loadedScrobbles = []
-    for (const track of resData.recenttracks.track) {
-      loadedScrobbles.push(
-        new Scrobble(
-          track.artist['#text'],
-          track.name,
-          track.album['#text'],
-          track.image[3]['#text'],
-          track.hasOwnProperty(['@attr']) ? true : false,
-          track.hasOwnProperty('date') ? track.date['#text'] : undefined
-        )
-      )
+    try {
+      await dispatch(scrobblesActions.fetchScrobbles(username))
+    } catch (error) {
+      console.log(error)
     }
-    loadedScrobbles.slice(0, 50)
-    setRecentTracks(loadedScrobbles)
     setIsRefreshing(false)
-  }, [setRecentTracks, setIsRefreshing])
+  }, [])
 
   const itemSelectHandler = (artist, title, image, album) => {
     navigation.navigate('Details', {
@@ -89,7 +76,7 @@ const ScrobblesScreen = ({ navigation }) => {
   useEffect(() => {
     setIsLoading(true)
     getScrobblesHandler().then(() => setIsLoading(false))
-  }, [getScrobblesHandler, setIsLoading])
+  }, [])
 
   // Set the header title
   useLayoutEffect(() => {
@@ -102,17 +89,17 @@ const ScrobblesScreen = ({ navigation }) => {
 
   if (isLoading) {
     return <LoadingContainer />
-  } else {
-    return (
-      <FlatListItems
-        data={recentTracks}
-        renderItem={listItem}
-        ListHeaderComponent={listHeader}
-        onRefresh={getScrobblesHandler}
-        isRefreshing={isRefreshing}
-      />
-    )
   }
+
+  return (
+    <FlatListItems
+      data={recentTracks}
+      renderItem={listItem}
+      ListHeaderComponent={listHeader}
+      onRefresh={getScrobblesHandler}
+      isRefreshing={isRefreshing}
+    />
+  )
 }
 
 export default ScrobblesScreen

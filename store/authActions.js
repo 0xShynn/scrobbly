@@ -28,6 +28,7 @@ export const logIn = (username, password) => {
       username +
       process.env.LASTFM_SECRET
 
+    // LastFM api_sig requirement
     const hashedSignature = await Crypto.digestStringAsync(
       Crypto.CryptoDigestAlgorithm.MD5,
       signature
@@ -45,8 +46,9 @@ export const logIn = (username, password) => {
     if (resData.hasOwnProperty('error')) {
       throw new Error(resData.message)
     } else {
-      dispatch(authenticate(resData.session.key, resData.session.name))
-      saveDataToStorage(resData.session.key, resData.session.name)
+      dispatch(authenticate(resData.session.name, resData.session.key))
+      saveDataToStorage(resData.session.name, resData.session.key)
+      storeSpotifyToken()
     }
   }
 }
@@ -64,4 +66,19 @@ const saveDataToStorage = (username, token) => {
       token,
     })
   )
+}
+
+const storeSpotifyToken = async () => {
+  await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      Authorization: `Basic ${process.env.SPOTIFY_BASE64_KEY}`,
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+    },
+    body: 'grant_type=client_credentials',
+  })
+    .then((res) => res.json())
+    .then((data) => {
+      AsyncStorage.setItem('spotifyToken', JSON.stringify(data.access_token))
+    })
 }

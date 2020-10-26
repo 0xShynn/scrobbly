@@ -1,59 +1,39 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 
 import LoadingContainer from '../components/UI/LoadingContainer'
 import ListItemCover from '../components/ListItemCover'
 import FlatListItemsCover from '../components/FlatListItemsCover'
 import PeriodSelector from '../components/PeriodSelector'
 import CustomHeaderTitle from '../components/CustomHeaderTitle'
-import ErrorContainer from '../components/UI/ErrorContainer'
 
-import { api_key, baseUrl, periods, username } from '../utils/lastfm'
-import Album from '../models/album'
+import { periods } from '../utils/lastfm'
+
+import * as scrobblesActions from '../store/scrobblesActions'
+import { useDispatch, useSelector } from 'react-redux'
 
 const TopAlbumsScreen = ({ navigation }) => {
-  const [topAlbums, setTopAlbums] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isFirstLoading, setIsFirstLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [periodSelected, setPeriodSelected] = useState({})
-  const [error, setError] = useState()
 
-  const getTopAlbumsHandler = async (period) => {
-    if (period === periodSelected) {
-      return
-    }
+  const dispatch = useDispatch()
+  const username = useSelector((state) => state.auth.username)
+  const topAlbums = useSelector((state) => state.scrobbles.topAlbums)
 
-    setIsLoading(true)
-    setError(null)
-
-    const getTopAlbums = `?method=user.gettopalbums&user=${username}&api_key=${api_key}&period=${period.duration}&format=json`
-
-    const response = await fetch(baseUrl + getTopAlbums).then((res) =>
-      res.json()
-    )
-
-    if (response.hasOwnProperty('error')) {
-      setError(response.message)
-      setIsLoading(false)
-    } else {
-      const loadedAlbums = []
-      for (const album of response.topalbums.album) {
-        loadedAlbums.push(
-          new Album(
-            album.artist.name,
-            album.name,
-            album.image[3]['#text']
-              ? album.image[3]['#text']
-              : 'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png',
-            album.playcount
-          )
-        )
+  const getTopAlbumsHandler = useCallback(
+    async (period) => {
+      setIsLoading(true)
+      try {
+        await dispatch(scrobblesActions.fetchTopAlbums(username, period))
+      } catch (error) {
+        console.log(error)
       }
-      loadedAlbums.slice(0, 20)
-      setTopAlbums(loadedAlbums)
       setPeriodSelected(period)
       setIsLoading(false)
-    }
-  }
+    },
+    [dispatch]
+  )
 
   const itemSelectHandler = (artistName, albumName, albumArt) => {
     navigation.navigate('Album Details', {
@@ -61,14 +41,6 @@ const TopAlbumsScreen = ({ navigation }) => {
       albumArt,
       albumName,
     })
-  }
-
-  const periodSelectorHandler = () => {
-    return <PeriodSelector onSelect={getTopAlbumsHandler} />
-  }
-
-  const onRefreshHandler = () => {
-    return getTopAlbumsHandler
   }
 
   const listItem = ({ item }) => {
@@ -84,16 +56,27 @@ const TopAlbumsScreen = ({ navigation }) => {
           item.albumName,
           item.albumArt
         )}
+        isLoading={isLoading}
+        isRefreshing={isRefreshing}
       />
     )
   }
 
-  useEffect(() => {
-    setIsLoading(true)
+  const periodSelectorHandler = () => {
+    return <PeriodSelector onSelect={getTopAlbumsHandler} />
+  }
+
+  const onRefreshHandler = () => {
     setIsRefreshing(true)
-    getTopAlbumsHandler(periods[0]).then(() => {
-      setIsLoading(false)
+    getTopAlbumsHandler(periodSelected).then(() => {
       setIsRefreshing(false)
+    })
+  }
+
+  useEffect(() => {
+    setIsFirstLoading(true)
+    getTopAlbumsHandler(periods[0]).then(() => {
+      setIsFirstLoading(false)
     })
   }, [])
 
@@ -110,22 +93,18 @@ const TopAlbumsScreen = ({ navigation }) => {
     })
   }, [navigation, periodSelected])
 
-  if (error) {
-    return <ErrorContainer message={error} />
+  if (isFirstLoading) {
+    return <LoadingContainer />
   }
 
-  if (isLoading) {
-    return <LoadingContainer />
-  } else {
-    return (
-      <FlatListItemsCover
-        data={topAlbums}
-        renderItem={listItem}
-        onRefresh={onRefreshHandler}
-        isRefreshing={isRefreshing}
-      />
-    )
-  }
+  return (
+    <FlatListItemsCover
+      data={topAlbums}
+      renderItem={listItem}
+      onRefresh={onRefreshHandler}
+      isRefreshing={isRefreshing}
+    />
+  )
 }
 
 export default TopAlbumsScreen

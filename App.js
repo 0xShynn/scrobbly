@@ -13,9 +13,11 @@ import { Provider } from 'react-redux'
 import ReduxThunk from 'redux-thunk'
 
 import authReducer from './store/authReducer'
+import scrobblesReducer from './store/scrobblesReducer'
 
 const roorReducer = combineReducers({
   auth: authReducer,
+  scrobbles: scrobblesReducer,
 })
 
 const store = createStore(roorReducer, applyMiddleware(ReduxThunk))

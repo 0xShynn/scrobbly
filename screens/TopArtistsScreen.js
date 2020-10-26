@@ -1,58 +1,39 @@
-import React, { useEffect, useState, useLayoutEffect } from 'react'
+import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react'
 
 import LoadingContainer from '../components/UI/LoadingContainer'
 import ListItemCover from '../components/ListItemCover'
 import FlatListItemsCover from '../components/FlatListItemsCover'
 import PeriodSelector from '../components/PeriodSelector'
 import CustomHeaderTitle from '../components/CustomHeaderTitle'
-import ErrorContainer from '../components/UI/ErrorContainer'
 
-import { api_key, baseUrl, username, periods } from '../utils/lastfm'
-import Artist from '../models/artist'
+import { periods } from '../utils/lastfm'
+
+import * as scrobblesActions from '../store/scrobblesActions'
+import { useDispatch, useSelector } from 'react-redux'
 
 const TopArtistsScreen = ({ navigation }) => {
-  const [topArtists, setTopArtists] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isFirstLoading, setIsFirstLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [periodSelected, setPeriodSelected] = useState({})
-  const [error, setError] = useState()
 
-  const getTopArtistsHandler = async (period) => {
-    if (period === periodSelected) {
-      return
-    }
+  const dispatch = useDispatch()
+  const username = useSelector((state) => state.auth.username)
+  const topArtists = useSelector((state) => state.scrobbles.topArtists)
 
-    setIsLoading(true)
-    setError(null)
-
-    const getTopArtists = `?method=user.gettopartists&user=${username}&api_key=${api_key}&period=${period.duration}&limit=20&format=json`
-
-    const response = await fetch(baseUrl + getTopArtists).then((res) =>
-      res.json()
-    )
-
-    if (response.hasOwnProperty('error')) {
-      setError(response.message)
-      setIsLoading(false)
-    } else {
-      const loadedArtists = []
-      for (const artist of response.topartists.artist) {
-        loadedArtists.push(
-          new Artist(
-            artist.name,
-            artist.image[3]['#text']
-              ? artist.image[3]['#text']
-              : 'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png',
-            artist.playcount
-          )
-        )
+  const getTopArtistsHandler = useCallback(
+    async (period) => {
+      setIsLoading(true)
+      try {
+        await dispatch(scrobblesActions.fetchTopArtists(username, period))
+      } catch (error) {
+        console.log(error)
       }
-
-      setTopArtists(loadedArtists)
       setPeriodSelected(period)
       setIsLoading(false)
-    }
-  }
+    },
+    [dispatch]
+  )
 
   const itemSelectHandler = (artist, playCount) => {
     navigation.navigate('Artist Details', { artist, playCount })
@@ -65,6 +46,8 @@ const TopArtistsScreen = ({ navigation }) => {
         playcount={item.playCount}
         image={item.artistImage}
         onSelect={itemSelectHandler.bind(this, item.artistName, item.playCount)}
+        isLoading={isLoading}
+        isRefreshing={isRefreshing}
       />
     )
   }
@@ -74,15 +57,16 @@ const TopArtistsScreen = ({ navigation }) => {
   }
 
   const onRefreshHandler = () => {
-    return getTopArtistsHandler
+    setIsRefreshing(true)
+    getTopArtistsHandler(periodSelected).then(() => {
+      setIsRefreshing(false)
+    })
   }
 
   useEffect(() => {
-    setIsLoading(true)
-    setIsRefreshing(true)
+    setIsFirstLoading(true)
     getTopArtistsHandler(periods[0]).then(() => {
-      setIsLoading(false)
-      setIsRefreshing(false)
+      setIsFirstLoading(false)
     })
   }, [])
 
@@ -99,22 +83,18 @@ const TopArtistsScreen = ({ navigation }) => {
     })
   }, [navigation, periodSelected])
 
-  if (error) {
-    return <ErrorContainer message={error} />
+  if (isFirstLoading) {
+    return <LoadingContainer />
   }
 
-  if (isLoading) {
-    return <LoadingContainer />
-  } else {
-    return (
-      <FlatListItemsCover
-        data={topArtists}
-        renderItem={listItem}
-        onRefresh={onRefreshHandler}
-        isRefreshing={isRefreshing}
-      />
-    )
-  }
+  return (
+    <FlatListItemsCover
+      data={topArtists}
+      renderItem={listItem}
+      onRefresh={onRefreshHandler}
+      isRefreshing={isRefreshing}
+    />
+  )
 }
 
 export default TopArtistsScreen
