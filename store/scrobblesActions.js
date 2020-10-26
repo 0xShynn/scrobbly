@@ -89,18 +89,15 @@ export const fetchTopArtists = (username, period) => {
         throw new Error()
       }
 
-      const spotifyToken = await getSpotifyToken()
-
       const loadedArtists = []
+
+      const spotifyToken = await getSpotifyToken()
+      let imageFromSpotify
+
       for (const artist of response.topartists.artist) {
+        imageFromSpotify = await getSpotifyImage(artist.name, spotifyToken)
         loadedArtists.push(
-          new Artist(
-            artist.name,
-            artist.image[3]['#text']
-              ? artist.image[3]['#text']
-              : 'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png',
-            artist.playcount
-          )
+          new Artist(artist.name, imageFromSpotify, artist.playcount)
         )
       }
       dispatch({ type: SET_TOP_ARTISTS, payload: loadedArtists })
@@ -114,4 +111,18 @@ const getSpotifyToken = async () => {
   return await AsyncStorage.getItem('spotifyToken').then((res) =>
     JSON.parse(res)
   )
+}
+
+const getSpotifyImage = async (artist, spotifyToken) => {
+  const response = await fetch(
+    `https://api.spotify.com/v1/search?q=${artist}&type=artist`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${spotifyToken}`,
+      },
+    }
+  )
+  const resData = await response.json()
+  return resData.artists.items[0].images[0].url
 }
