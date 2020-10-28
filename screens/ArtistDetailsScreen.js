@@ -1,10 +1,10 @@
 import React, { useLayoutEffect } from 'react'
-import { StyleSheet, View } from 'react-native'
-import { TextH6 } from '../components/UI/Typography'
+import { ImageBackground, ScrollView, StyleSheet, View } from 'react-native'
+import { TitleH2 } from '../components/UI/Typography'
+import { LinearGradient } from 'expo-linear-gradient'
 
 const ArtistDetailsScreen = (props) => {
-  const artistName = props.route.params.artist
-  const playCount = props.route.params.playCount
+  const { artistName, artistImage } = props.route.params
 
   // Set the header title
   useLayoutEffect(() => {
@@ -14,13 +14,44 @@ const ArtistDetailsScreen = (props) => {
   }, [props.navigation])
 
   return (
-    <View>
-      <TextH6>{artistName}</TextH6>
-      <TextH6>{playCount}</TextH6>
-    </View>
+    <ScrollView>
+      <ImageBackground
+        source={{ uri: artistImage }}
+        style={styles.imageBackground}
+      >
+        <View style={styles.artistTitle}>
+          <LinearGradient
+            colors={['transparent', 'rgba(0,0,0,0.3)', 'rgba(0,0,0,0.8)']}
+            style={styles.itemGradientInfo}
+          />
+          <TitleH2 style={{ color: 'white' }}>{artistName}</TitleH2>
+        </View>
+      </ImageBackground>
+    </ScrollView>
   )
 }
 
 export default ArtistDetailsScreen
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+  imageBackground: {
+    width: '100%',
+    height: 300,
+  },
+  artistTitle: {
+    flexDirection: 'row',
+    padding: 20,
+    position: 'absolute',
+    bottom: 0,
+    width: '100%',
+    alignItems: 'center',
+  },
+  itemGradientInfo: {
+    position: 'absolute',
+    left: 0,
+    right: 0,
+    bottom: 0,
+    height: 140,
+    flex: 1,
+  },
+})

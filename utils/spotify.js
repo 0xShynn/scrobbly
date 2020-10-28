@@ -23,7 +23,9 @@ export const getSpotifyToken = async () => {
   }
 }
 
-export const getSpotifyTrackImage = async (artist, track, spotifyToken) => {
+export const getSpotifyTrackImage = async (artist, track) => {
+  const spotifyToken = await getSpotifyToken()
+
   const response = await fetch(
     `https://api.spotify.com/v1/search?q=track:${track}+artist:${artist}&type=track`,
     {
@@ -37,7 +39,9 @@ export const getSpotifyTrackImage = async (artist, track, spotifyToken) => {
   return trackImage
 }
 
-export const getSpotifyArtistImage = async (artist, spotifyToken) => {
+export const getSpotifyArtistImage = async (artist) => {
+  const spotifyToken = await getSpotifyToken()
+
   const response = await fetch(
     `https://api.spotify.com/v1/search?q=${artist}&type=artist`,
     {

@@ -3,11 +3,7 @@ import Scrobble from '../models/scrobble'
 import Album from '../models/album'
 import Artist from '../models/artist'
 import Track from '../models/track'
-import {
-  getSpotifyToken,
-  getSpotifyArtistImage,
-  getSpotifyTrackImage,
-} from '../utils/spotify'
+import { getSpotifyArtistImage, getSpotifyTrackImage } from '../utils/spotify'
 
 export const SET_SCROBBLES = 'SET_SCROBBLES'
 export const SET_TOP_ALBUMS = 'SET_TOP_ALBUMS'
@@ -97,14 +93,12 @@ export const fetchTopTracks = (username, period) => {
       }
 
       const loadedTracks = []
-      const spotifyToken = await getSpotifyToken()
       let spotifyTrackImage
 
       for (const track of response.toptracks.track) {
         spotifyTrackImage = await getSpotifyTrackImage(
           track.artist.name,
-          track.name,
-          spotifyToken
+          track.name
         )
         loadedTracks.push(
           new Track(
@@ -141,14 +135,10 @@ export const fetchTopArtists = (username, period) => {
       }
 
       const loadedArtists = []
-      const spotifyToken = await getSpotifyToken()
       let imageFromSpotify
 
       for (const artist of response.topartists.artist) {
-        imageFromSpotify = await getSpotifyArtistImage(
-          artist.name,
-          spotifyToken
-        )
+        imageFromSpotify = await getSpotifyArtistImage(artist.name)
         loadedArtists.push(
           new Artist(artist.name, imageFromSpotify, artist.playcount)
         )
