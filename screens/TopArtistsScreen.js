@@ -47,12 +47,12 @@ const TopArtistsScreen = ({ navigation }) => {
     return (
       <ListItemCover
         title={item.artistName}
-        image={item.artistImage}
+        image={item.artistImage300}
         playcount={item.playCount}
         onSelect={itemSelectHandler.bind(
           this,
           item.artistName,
-          item.artistImage,
+          item.artistImage640,
           item.playCount
         )}
         isLoading={isLoading}

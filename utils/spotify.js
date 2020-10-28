@@ -35,8 +35,10 @@ export const getSpotifyTrackImage = async (artist, track) => {
       },
     }
   ).then((res) => res.json())
-  const trackImage = response.tracks.items[0].album.images[1].url
-  return trackImage
+  const image640 = response.tracks.items[0].album.images[0].url
+  const image300 = response.tracks.items[0].album.images[1].url
+
+  return { image640, image300 }
 }
 
 export const getSpotifyArtistImage = async (artist) => {
@@ -51,6 +53,8 @@ export const getSpotifyArtistImage = async (artist) => {
       },
     }
   ).then((res) => res.json())
-  const artistImage = response.artists.items[0].images[1].url
-  return artistImage
+  const image640 = response.artists.items[0].images[0].url
+  const image300 = response.artists.items[0].images[1].url
+
+  return { image640, image300 }
 }

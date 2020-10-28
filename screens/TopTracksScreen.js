@@ -35,15 +35,25 @@ const TopTracksScreen = ({ navigation }) => {
     [dispatch]
   )
 
+  const itemSelectHandler = (artist, track, albumImage) => {
+    navigation.navigate('Track Details', { artist, track, albumImage })
+  }
+
   const listItem = ({ item }) => {
     return (
       <NewListItem
-        image={item.albumArt}
+        image={item.albumImage300}
         title={item.trackName}
         subtitle={item.artistName}
         playCount={item.playCount}
         isLoading={isLoading}
         isRefreshing={isRefreshing}
+        onSelect={itemSelectHandler.bind(
+          this,
+          item.artistName,
+          item.trackName,
+          item.albumImage640
+        )}
       />
     )
   }

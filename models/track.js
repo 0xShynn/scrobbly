@@ -1,8 +1,16 @@
 class Track {
-  constructor(artistName, trackName, albumArt, duration, playCount) {
+  constructor(
+    artistName,
+    trackName,
+    albumImage640,
+    albumImage300,
+    duration,
+    playCount
+  ) {
     this.artistName = artistName
     this.trackName = trackName
-    this.albumArt = albumArt
+    this.albumImage640 = albumImage640
+    this.albumImage300 = albumImage300
     this.duration = duration
     this.playCount = playCount
   }

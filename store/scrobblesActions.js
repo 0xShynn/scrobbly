@@ -104,7 +104,8 @@ export const fetchTopTracks = (username, period) => {
           new Track(
             track.artist.name,
             track.name,
-            spotifyTrackImage,
+            spotifyTrackImage.image640,
+            spotifyTrackImage.image300,
             track.duration,
             track.playcount
           )
@@ -140,7 +141,12 @@ export const fetchTopArtists = (username, period) => {
       for (const artist of response.topartists.artist) {
         imageFromSpotify = await getSpotifyArtistImage(artist.name)
         loadedArtists.push(
-          new Artist(artist.name, imageFromSpotify, artist.playcount)
+          new Artist(
+            artist.name,
+            imageFromSpotify.image640,
+            imageFromSpotify.image300,
+            artist.playcount
+          )
         )
       }
       dispatch({ type: SET_TOP_ARTISTS, payload: loadedArtists })
