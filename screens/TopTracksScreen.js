@@ -1,61 +1,39 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react'
 
 import LoadingContainer from '../components/UI/LoadingContainer'
 import FlatListItems from '../components/FlatListItems'
 import NewListItem from '../components/NewListItem'
 import CustomHeaderTitle from '../components/CustomHeaderTitle'
 import PeriodSelector from '../components/PeriodSelector'
-import ErrorContainer from '../components/UI/ErrorContainer'
 
-import { api_key, baseUrl, username, periods } from '../utils/lastfm'
-import Track from '../models/track'
+import { periods } from '../utils/lastfm'
+
+import * as scrobblesActions from '../store/scrobblesActions'
+import { useDispatch, useSelector } from 'react-redux'
 
 const TopTracksScreen = ({ navigation }) => {
-  const [topTracks, setTopTracks] = useState([])
   const [isLoading, setIsLoading] = useState(false)
+  const [isFirstLoading, setIsFirstLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [periodSelected, setPeriodSelected] = useState({})
-  const [error, setError] = useState()
 
-  const getTopTracksHandler = async (period) => {
-    if (period === periodSelected) {
-      return
-    }
+  const dispatch = useDispatch()
+  const username = useSelector((state) => state.auth.username)
+  const topTracks = useSelector((state) => state.scrobbles.topTracks)
 
-    setIsLoading(true)
-    setError(null)
-    const getTopTracks = `?method=user.gettoptracks&user=${username}&api_key=${api_key}&period=${period.duration}&format=json`
-
-    const response = await fetch(baseUrl + getTopTracks).then((res) =>
-      res.json()
-    )
-
-    if (response.hasOwnProperty('error')) {
-      setError(response.message)
-      setIsLoading(false)
-    } else {
-      const loadedTracks = []
-      for (const track of response.toptracks.track) {
-        loadedTracks.push(
-          new Track(
-            track.artist.name,
-            track.name,
-            track.image[3]['#text'],
-            track.duration,
-            track.playcount
-          )
-        )
+  const getTopTracksHandler = useCallback(
+    async (period) => {
+      setIsLoading(true)
+      try {
+        await dispatch(scrobblesActions.fetchTopTracks(username, period))
+      } catch (error) {
+        console.log(error)
       }
-      loadedTracks.slice(0, 30)
-      setTopTracks(loadedTracks)
       setPeriodSelected(period)
       setIsLoading(false)
-    }
-  }
-
-  const periodSelectorHandler = () => {
-    return <PeriodSelector onSelect={getTopTracksHandler} />
-  }
+    },
+    [dispatch]
+  )
 
   const listItem = ({ item }) => {
     return (
@@ -64,20 +42,27 @@ const TopTracksScreen = ({ navigation }) => {
         title={item.trackName}
         subtitle={item.artistName}
         playCount={item.playCount}
+        isLoading={isLoading}
+        isRefreshing={isRefreshing}
       />
     )
   }
 
+  const periodSelectorHandler = () => {
+    return <PeriodSelector onSelect={getTopTracksHandler} />
+  }
+
   const onRefreshHandler = () => {
-    return getTopTracksHandler
+    setIsRefreshing(true)
+    getTopTracksHandler(periodSelected).then(() => {
+      setIsRefreshing(false)
+    })
   }
 
   useEffect(() => {
-    setIsLoading(true)
-    setIsRefreshing(true)
+    setIsFirstLoading(true)
     getTopTracksHandler(periods[0]).then(() => {
-      setIsLoading(false)
-      setIsRefreshing(false)
+      setIsFirstLoading(false)
     })
   }, [])
 
@@ -94,22 +79,18 @@ const TopTracksScreen = ({ navigation }) => {
     })
   }, [navigation, periodSelected])
 
-  if (error) {
-    return <ErrorContainer message={error} />
+  if (isFirstLoading) {
+    return <LoadingContainer />
   }
 
-  if (isLoading) {
-    return <LoadingContainer />
-  } else {
-    return (
-      <FlatListItems
-        data={topTracks}
-        renderItem={listItem}
-        onRefresh={onRefreshHandler}
-        isRefreshing={isRefreshing}
-      />
-    )
-  }
+  return (
+    <FlatListItems
+      data={topTracks}
+      renderItem={listItem}
+      onRefresh={onRefreshHandler}
+      isRefreshing={isRefreshing}
+    />
+  )
 }
 
 export default TopTracksScreen

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import MainBottomTabNavigator from './MainBottomTabNavigator'
 import AuthScreen from '../screens/user/AuthScreen'

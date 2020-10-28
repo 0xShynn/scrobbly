@@ -14,6 +14,17 @@ const NewListItem = (props) => {
   return (
     <TouchableOpacity onPress={props.onSelect}>
       <View style={styles.itemContainer}>
+        {props.isLoading && !props.isRefreshing ? (
+          <View
+            style={{
+              width: '100%',
+              height: '100%',
+              position: 'absolute',
+              backgroundColor: 'rgba(255,255,255, 0.3)',
+              zIndex: 1,
+            }}
+          />
+        ) : null}
         <Image source={{ uri: props.image }} style={styles.albumArt} />
         <View style={styles.infoContainer}>
           <TitleH5 numberOfLines={1} children={props.title} />
@@ -59,6 +70,7 @@ const styles = StyleSheet.create({
   infoContainer: {
     flex: 1,
     paddingRight: 20,
+    zIndex: 2,
   },
   nowPlaying: {
     marginRight: 20,

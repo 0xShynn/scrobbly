@@ -45,15 +45,15 @@ export const logIn = (username, password) => {
 
     if (resData.hasOwnProperty('error')) {
       throw new Error(resData.message)
-    } else {
-      dispatch(authenticate(resData.session.name, resData.session.key))
-      saveDataToStorage(resData.session.name, resData.session.key)
-      storeSpotifyToken()
     }
+
+    dispatch(authenticate(resData.session.name, resData.session.key))
+    saveDataToStorage(resData.session.name, resData.session.key)
   }
 }
 
 export const logOut = () => {
+  AsyncStorage.removeItem('spotifyToken')
   AsyncStorage.removeItem('userData')
   return { type: LOGOUT }
 }
@@ -66,19 +66,4 @@ const saveDataToStorage = (username, token) => {
       token,
     })
   )
-}
-
-const storeSpotifyToken = async () => {
-  await fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: {
-      Authorization: `Basic ${process.env.SPOTIFY_BASE64_KEY}`,
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-    },
-    body: 'grant_type=client_credentials',
-  })
-    .then((res) => res.json())
-    .then((data) => {
-      AsyncStorage.setItem('spotifyToken', JSON.stringify(data.access_token))
-    })
 }

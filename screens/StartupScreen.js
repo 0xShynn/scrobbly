@@ -1,6 +1,6 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import React, { useEffect } from 'react'
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text } from 'react-native'
 import { useDispatch } from 'react-redux'
 import CenteredContainer from '../components/UI/CenteredContainer'
 import * as authActions from '../store/authActions'
