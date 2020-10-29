@@ -8,9 +8,6 @@ import TopAlbumsStackScreen from './TopAlbumsStackScreen'
 import myColors from '../constants/myColors'
 import TopArtistsStackScreen from './TopArtistsStackScreen'
 import TopTracksStackScreen from './TopTracksStackScreen'
-// import MyAccountStackScreen from './MyAccountStackScreen'
-import MyAccountScreen from '../screens/MyAccountScreen'
-import HomeStackScreen from './HomeStackScreen'
 
 const Tab = createBottomTabNavigator()
 
