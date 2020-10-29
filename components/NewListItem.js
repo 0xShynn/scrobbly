@@ -25,6 +25,18 @@ const NewListItem = (props) => {
             }}
           />
         ) : null}
+        {props.playCount ? (
+          <TitleH5
+            style={{
+              marginLeft: 8,
+              minWidth: 36,
+              textAlign: 'center',
+            }}
+          >
+            {props.playCount}
+          </TitleH5>
+        ) : null}
+
         <Image source={{ uri: props.image }} style={styles.albumArt} />
         <View style={styles.infoContainer}>
           <TitleH5 numberOfLines={1} children={props.title} />
@@ -43,9 +55,9 @@ const NewListItem = (props) => {
               style={styles.nowPlaying}
             />
           </View>
-        ) : (
-          <Badge>{props.date ? timestamp : props.playCount}</Badge>
-        )}
+        ) : props.date ? (
+          <Badge>{timestamp}</Badge>
+        ) : null}
       </View>
     </TouchableOpacity>
   )
