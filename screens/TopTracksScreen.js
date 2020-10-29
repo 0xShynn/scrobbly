@@ -5,6 +5,7 @@ import FlatListItems from '../components/FlatListItems'
 import NewListItem from '../components/NewListItem'
 import CustomHeaderTitle from '../components/CustomHeaderTitle'
 import PeriodSelector from '../components/PeriodSelector'
+import ErrorContainer from '../components/UI/ErrorContainer'
 
 import { periods } from '../utils/lastfm'
 
@@ -16,18 +17,20 @@ const TopTracksScreen = ({ navigation }) => {
   const [isFirstLoading, setIsFirstLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [periodSelected, setPeriodSelected] = useState({})
+  const [error, setError] = useState(null)
 
   const dispatch = useDispatch()
-  const username = useSelector((state) => state.auth.username)
   const topTracks = useSelector((state) => state.scrobbles.topTracks)
 
   const getTopTracksHandler = useCallback(
     async (period) => {
       setIsLoading(true)
+      setError(null)
       try {
-        await dispatch(scrobblesActions.fetchTopTracks(username, period))
+        await dispatch(scrobblesActions.fetchTopTracks(period))
       } catch (error) {
-        console.log(error)
+        console.log('izi', error)
+        setError(error.message)
       }
       setPeriodSelected(period)
       setIsLoading(false)
@@ -35,8 +38,8 @@ const TopTracksScreen = ({ navigation }) => {
     [dispatch]
   )
 
-  const itemSelectHandler = (artist, track, albumImage) => {
-    navigation.navigate('Track Details', { artist, track, albumImage })
+  const itemSelectHandler = (artistName, trackName, albumImage) => {
+    navigation.navigate('Track Details', { artistName, trackName, albumImage })
   }
 
   const listItem = ({ item }) => {
@@ -91,6 +94,10 @@ const TopTracksScreen = ({ navigation }) => {
 
   if (isFirstLoading) {
     return <LoadingContainer />
+  }
+
+  if (error) {
+    return <ErrorContainer error={error} />
   }
 
   return (

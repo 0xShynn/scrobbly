@@ -7,6 +7,7 @@ import LoadingContainer from '../components/UI/LoadingContainer'
 import FlatListItems from '../components/FlatListItems'
 import NewListItem from '../components/NewListItem'
 import CustomHeaderTitle from '../components/CustomHeaderTitle'
+import ErrorContainer from '../components/UI/ErrorContainer'
 
 import myColors from '../constants/myColors'
 import { SimpleLineIcons } from '@expo/vector-icons'
@@ -20,16 +21,17 @@ const listHeader = () => (
 const ScrobblesScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
-  const username = useSelector((state) => state.auth.username)
+  const [error, setError] = useState(null)
   const recentTracks = useSelector((state) => state.scrobbles.recentScrobbles)
   const dispatch = useDispatch()
 
   const getScrobblesHandler = useCallback(async () => {
     setIsRefreshing(true)
+    setError(null)
     try {
-      await dispatch(scrobblesActions.fetchScrobbles(username))
+      await dispatch(scrobblesActions.fetchScrobbles())
     } catch (error) {
-      console.log(error)
+      setError(error.message)
     }
     setIsRefreshing(false)
   }, [])
@@ -89,6 +91,10 @@ const ScrobblesScreen = ({ navigation }) => {
 
   if (isLoading) {
     return <LoadingContainer />
+  }
+
+  if (error) {
+    return <ErrorContainer error={error} />
   }
 
   return (

@@ -8,7 +8,9 @@ import TopAlbumsStackScreen from './TopAlbumsStackScreen'
 import myColors from '../constants/myColors'
 import TopArtistsStackScreen from './TopArtistsStackScreen'
 import TopTracksStackScreen from './TopTracksStackScreen'
-import MyAccountStackScreen from './MyAccountStackScreen'
+// import MyAccountStackScreen from './MyAccountStackScreen'
+import MyAccountScreen from '../screens/MyAccountScreen'
+import HomeStackScreen from './HomeStackScreen'
 
 const Tab = createBottomTabNavigator()
 
@@ -22,6 +24,9 @@ const MainBottomTabNavigator = () => {
           switch (route.name) {
             case 'Scrobbles':
               iconName = 'list'
+              break
+            case 'Home':
+              iconName = 'home'
               break
             case 'Artists':
               iconName = 'star'
@@ -53,9 +58,8 @@ const MainBottomTabNavigator = () => {
     >
       <Tab.Screen name="Scrobbles" component={DetailsStackScreen} />
       <Tab.Screen name="Albums" component={TopAlbumsStackScreen} />
-      <Tab.Screen name="Artists" component={TopArtistsStackScreen} />
       <Tab.Screen name="Tracks" component={TopTracksStackScreen} />
-      <Tab.Screen name="My Account" component={MyAccountStackScreen} />
+      <Tab.Screen name="Artists" component={TopArtistsStackScreen} />
     </Tab.Navigator>
   )
 }

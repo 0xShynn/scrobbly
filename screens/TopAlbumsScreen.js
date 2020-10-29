@@ -5,6 +5,7 @@ import ListItemCover from '../components/ListItemCover'
 import FlatListItemsCover from '../components/FlatListItemsCover'
 import PeriodSelector from '../components/PeriodSelector'
 import CustomHeaderTitle from '../components/CustomHeaderTitle'
+import ErrorContainer from '../components/UI/ErrorContainer'
 
 import { periods } from '../utils/lastfm'
 
@@ -16,18 +17,19 @@ const TopAlbumsScreen = ({ navigation }) => {
   const [isFirstLoading, setIsFirstLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [periodSelected, setPeriodSelected] = useState({})
+  const [error, setError] = useState(null)
 
   const dispatch = useDispatch()
-  const username = useSelector((state) => state.auth.username)
   const topAlbums = useSelector((state) => state.scrobbles.topAlbums)
 
   const getTopAlbumsHandler = useCallback(
     async (period) => {
       setIsLoading(true)
+      setError(null)
       try {
-        await dispatch(scrobblesActions.fetchTopAlbums(username, period))
+        await dispatch(scrobblesActions.fetchTopAlbums(period, '30'))
       } catch (error) {
-        console.log(error)
+        setError(error.message)
       }
       setPeriodSelected(period)
       setIsLoading(false)
@@ -95,6 +97,10 @@ const TopAlbumsScreen = ({ navigation }) => {
 
   if (isFirstLoading) {
     return <LoadingContainer />
+  }
+
+  if (error) {
+    return <ErrorContainer error={error} />
   }
 
   return (

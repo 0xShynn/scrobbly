@@ -24,10 +24,7 @@ const listEmpty = () => {
 }
 
 const FlatListItemsCover = (props) => {
-  const keyExtractor = useCallback(
-    (item) => item + Math.random().toString(),
-    []
-  )
+  const keyExtractor = useCallback((item) => item.id, [])
 
   return (
     <FlatList
