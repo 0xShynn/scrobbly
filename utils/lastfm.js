@@ -2,13 +2,12 @@ import Album from '../models/album'
 import Artist from '../models/artist'
 import Scrobble from '../models/scrobble'
 import Track from '../models/track'
+import { blankImage, image_blank_300, image_blank_640 } from './expo'
 
 import { getSpotifyTrackImage, getSpotifyArtistImage } from './spotify'
 
 export const baseUrl = 'https://ws.audioscrobbler.com/2.0/'
 export const api_key = process.env.LASTFM_API_KEY
-export const emptyImage =
-  'https://lastfm.freetls.fastly.net/i/u/300x300/2a96cbd8b46e442fc41c2b86b821562f.png'
 
 export const periods = [
   { duration: '7day', name: 'Last 7 days' },
@@ -70,8 +69,8 @@ export const getTopTracks = async (username, period) => {
         new Track(
           track.artist.name,
           track.name,
-          spotifyTrackImage.image640,
-          spotifyTrackImage.image300,
+          spotifyTrackImage.image_640,
+          spotifyTrackImage.image_300,
           track.duration,
           track.playcount
         )
@@ -99,7 +98,8 @@ export const getTopAlbums = async (username, period) => {
         new Album(
           album.artist.name,
           album.name,
-          album.image[3]['#text'] ? album.image[3]['#text'] : emptyImage,
+          album.image[3]['#text'] ? album.image[3]['#text'] : image_blank_640,
+          album.image[2]['#text'] ? album.image[2]['#text'] : image_blank_300,
           album.playcount
         )
       )
@@ -125,11 +125,12 @@ export const getTopArtists = async (username, period) => {
 
     for (const artist of response.topartists.artist) {
       imageFromSpotify = await getSpotifyArtistImage(artist.name)
+
       data.push(
         new Artist(
           artist.name,
-          imageFromSpotify.image640,
-          imageFromSpotify.image300,
+          imageFromSpotify.image_640,
+          imageFromSpotify.image_300,
           artist.playcount
         )
       )
@@ -146,6 +147,11 @@ export const getSimilarTracks = async (artist, track) => {
   try {
     const response = await fetch(baseUrl + method).then((res) => res.json())
 
+    if (response.similartracks.track.length === 0) {
+      console.log('No similar tracks were found.')
+      return
+    }
+
     const data = []
     let spotifyTrackImage
     for (const track of response.similartracks.track) {
@@ -158,7 +164,7 @@ export const getSimilarTracks = async (artist, track) => {
           track.artist.name,
           track.name,
           undefined,
-          spotifyTrackImage.image300,
+          spotifyTrackImage.image_300,
           false,
           undefined
         )

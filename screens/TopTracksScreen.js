@@ -29,7 +29,6 @@ const TopTracksScreen = ({ navigation }) => {
       try {
         await dispatch(scrobblesActions.fetchTopTracks(period))
       } catch (error) {
-        console.log('izi', error)
         setError(error.message)
       }
       setPeriodSelected(period)
