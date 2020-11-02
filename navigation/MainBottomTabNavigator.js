@@ -20,7 +20,7 @@ const MainBottomTabNavigator = () => {
 
           switch (route.name) {
             case 'Scrobbles':
-              iconName = 'list'
+              iconName = 'playlist'
               break
             case 'Home':
               iconName = 'home'
@@ -46,7 +46,7 @@ const MainBottomTabNavigator = () => {
       })}
       tabBarOptions={{
         activeTintColor: myColors.primary,
-        inactiveTintColor: myColors.blue_gray_500,
+        inactiveTintColor: myColors.cool_gray_500,
         labelStyle: {
           fontSize: 10,
           fontFamily: 'Inter_400Regular',
