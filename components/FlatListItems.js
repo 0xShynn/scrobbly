@@ -10,10 +10,7 @@ const listFooter = () => {
 }
 
 const FlatListItems = (props) => {
-  const keyExtractor = useCallback(
-    (item) => item + Math.random().toString(),
-    []
-  )
+  const keyExtractor = useCallback((item) => item.id, [])
 
   return (
     <FlatList

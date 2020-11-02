@@ -54,7 +54,7 @@ const ListItemCover = (props) => {
 
             {props.subtitle && (
               <TextH6
-                style={{ color: myColors.blue_gray_200 }}
+                style={{ color: myColors.cool_gray_200 }}
                 numberOfLines={1}
                 children={props.subtitle}
               />

@@ -42,7 +42,7 @@ const NewListItem = (props) => {
           <TitleH5 numberOfLines={1} children={props.title} />
           <TextH6
             numberOfLines={1}
-            style={{ marginTop: 2, color: myColors.blue_gray_700 }}
+            style={{ marginTop: 2, color: myColors.cool_gray_700 }}
             children={props.subtitle}
           />
         </View>
@@ -51,7 +51,7 @@ const NewListItem = (props) => {
             <Ionicons
               name="ios-musical-notes"
               size={20}
-              color={myColors.blue_gray_990}
+              color={myColors.cool_gray_990}
               style={styles.nowPlaying}
             />
           </View>

@@ -3,15 +3,15 @@ import { ImageBackground, ScrollView, StyleSheet, View } from 'react-native'
 import { TitleH2 } from '../components/UI/Typography'
 import { LinearGradient } from 'expo-linear-gradient'
 
-const ArtistDetailsScreen = (props) => {
-  const { artistName, artistImage } = props.route.params
+const ArtistDetailsScreen = ({ navigation, route }) => {
+  const { artistName, artistImage } = route.params
 
   // Set the header title
   useLayoutEffect(() => {
-    props.navigation.setOptions({
+    navigation.setOptions({
       title: `${artistName}`,
     })
-  }, [props.navigation])
+  }, [navigation])
 
   return (
     <ScrollView>
@@ -36,7 +36,7 @@ export default ArtistDetailsScreen
 const styles = StyleSheet.create({
   imageBackground: {
     width: '100%',
-    height: 300,
+    height: 280,
   },
   artistTitle: {
     flexDirection: 'row',

@@ -9,7 +9,7 @@ const Counter = (props) => {
     <View style={styles.counter}>
       <TextH6 style={styles.titleInfo} children={props.title} />
       <View style={styles.iconContainer}>
-        <Ionicons name={props.icon} size={24} color={myColors.blue_gray_990} />
+        <Ionicons name={props.icon} size={24} color={myColors.cool_gray_990} />
         <TitleH2 style={{ marginLeft: 8 }}>{props.value}</TitleH2>
       </View>
     </View>
@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
   },
   titleInfo: {
     textTransform: 'uppercase',
-    color: myColors.blue_gray_700,
+    color: myColors.cool_gray_700,
     marginBottom: 4,
   },
   iconContainer: {

@@ -41,7 +41,7 @@ const AuthScreen = (props) => {
   }
 
   return (
-    <CenteredContainer style={{ backgroundColor: myColors.blue_gray_900 }}>
+    <CenteredContainer style={{ backgroundColor: myColors.cool_gray_900 }}>
       <StatusBar barStyle="light-content" />
       <View style={styles.container}>
         <View style={styles.inputSpacing}>

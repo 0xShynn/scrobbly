@@ -304,11 +304,11 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap',
     backgroundColor: myColors.white,
     borderBottomWidth: 1,
-    borderBottomColor: myColors.blue_gray_200,
+    borderBottomColor: myColors.cool_gray_200,
   },
   mainContainer: {
     padding: 20,
-    backgroundColor: myColors.blue_gray_100,
+    backgroundColor: myColors.cool_gray_100,
   },
   albumDetailsContainer: {
     flexDirection: 'row',
