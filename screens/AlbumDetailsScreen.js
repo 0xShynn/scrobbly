@@ -9,14 +9,14 @@ import {
 } from 'react-native'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import { TextH5, TextH6, TitleH3, TitleH6 } from '../components/UI/Typography'
-import { api_key, baseUrl, username } from '../utils/lastfm'
 import myColors from '../constants/myColors'
+import { getSpotifyAlbumInfo } from '../utils/spotify'
 
 const itemList = ({ item }) => {
   return (
     <View style={styles.trackItem}>
-      <TitleH6 style={{ minWidth: 25 }} children={item['@attr'].rank} />
-      <TextH6 numberOfLines={1} style={{ flex: 1 }} children={item.name} />
+      <TitleH6 style={{ minWidth: 25 }} children={item.trackNumber} />
+      <TextH6 numberOfLines={1} style={{ flex: 1 }} children={item.trackName} />
       <TextH6 children={item.duration} />
     </View>
   )
@@ -30,35 +30,15 @@ const AlbumDetailsScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [albumTracklist, setAlbumTracklist] = useState([])
 
-  const getAlbumInfoHandler = useCallback(
-    async (artistName, albumName) => {
-      const getAlbumInfo = `?method=album.getinfo&api_key=${api_key}&artist=${artistName}&album=${albumName}&username=${username}&format=json`
-
-      try {
-        const response = await fetch(baseUrl + getAlbumInfo)
-        const resData = await response.json()
-        // console.log('getAlbumInfoHandler', resData)
-
-        if (!resData.hasOwnProperty('error')) {
-          setAlbumTracklist(resData.album.tracks.track)
-          // console.log('album tracklist', albumTracklist)
-        }
-      } catch (error) {
-        console.log('getAlbumInfoHandler erreur', error)
-      }
-    },
-    [getAlbumInfoHandler]
-  )
-
   useEffect(() => {
-    setIsLoading(true)
-    getAlbumInfoHandler(artistName, albumName).then(() => setIsLoading(false))
-  }, [setIsLoading, getAlbumInfoHandler, artistName, albumName])
+    const fetchData = async () => {
+      const data = await getSpotifyAlbumInfo(artistName, albumName)
+      setAlbumTracklist(data)
+    }
+    fetchData()
+  }, [])
 
-  const keyExtractor = useCallback(
-    (item) => item + Math.random().toString(),
-    []
-  )
+  const keyExtractor = useCallback((item) => item + item.id, [])
 
   const ListHeader = () => (
     <View style={styles.albumInfoContainer}>
@@ -119,7 +99,7 @@ export default AlbumDetailsScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: myColors.blue_gray_100,
+    backgroundColor: myColors.cool_gray_100,
   },
   listContainer: {
     height: Dimensions.get('window').height,
@@ -148,12 +128,12 @@ const styles = StyleSheet.create({
   },
   trackItem: {
     flexDirection: 'row',
-    paddingHorizontal: 40,
-    paddingVertical: 10,
+    paddingHorizontal: 30,
+    paddingVertical: 14,
     backgroundColor: 'white',
   },
   itemSeparator: {
     height: 1,
-    backgroundColor: myColors.blue_gray_100,
+    backgroundColor: myColors.cool_gray_100,
   },
 })
