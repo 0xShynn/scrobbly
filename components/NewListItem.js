@@ -78,6 +78,7 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     marginHorizontal: 10,
     overflow: 'hidden',
+    backgroundColor: myColors.cool_gray_200,
   },
   infoContainer: {
     flex: 1,
