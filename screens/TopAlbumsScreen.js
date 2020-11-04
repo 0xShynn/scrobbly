@@ -48,7 +48,7 @@ const TopAlbumsScreen = ({ navigation }) => {
   const listItem = ({ item }) => {
     return (
       <ListItemCover
-        image={item.albumArt640}
+        image={item.albumArt}
         title={item.albumName}
         subtitle={item.artistName}
         playcount={item.playCount}
@@ -56,7 +56,7 @@ const TopAlbumsScreen = ({ navigation }) => {
           this,
           item.artistName,
           item.albumName,
-          item.albumArt300
+          item.albumArt
         )}
         isLoading={isLoading}
         isRefreshing={isRefreshing}

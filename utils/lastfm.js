@@ -2,7 +2,7 @@ import Album from '../models/album'
 import Artist from '../models/artist'
 import Scrobble from '../models/scrobble'
 import Track from '../models/track'
-import { blankImage, image_blank_300, image_blank_640 } from './expo'
+import { image_blank_300 } from './expo'
 
 import { getSpotifyTrackImage, getSpotifyArtistImage } from './spotify'
 
@@ -83,7 +83,7 @@ export const getTopTracks = async (username, period) => {
 }
 
 export const getTopAlbums = async (username, period) => {
-  const method = `?method=user.gettopalbums&user=${username}&api_key=${api_key}&period=${period.duration}&limit=30&format=json`
+  const method = `?method=user.gettopalbums&user=${username}&api_key=${api_key}&period=${period.duration}&limit=20&format=json`
 
   try {
     const response = await fetch(baseUrl + method).then((res) => res.json())
@@ -98,8 +98,9 @@ export const getTopAlbums = async (username, period) => {
         new Album(
           album.artist.name,
           album.name,
-          album.image[3]['#text'] ? album.image[3]['#text'] : image_blank_640,
-          album.image[2]['#text'] ? album.image[2]['#text'] : image_blank_300,
+          album.image[3]['#text'] === ''
+            ? image_blank_300
+            : album.image[3]['#text'],
           album.playcount
         )
       )

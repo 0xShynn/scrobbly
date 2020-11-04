@@ -8,6 +8,7 @@ import TopAlbumsStackScreen from './TopAlbumsStackScreen'
 import myColors from '../constants/myColors'
 import TopArtistsStackScreen from './TopArtistsStackScreen'
 import TopTracksStackScreen from './TopTracksStackScreen'
+import MyAccountScreen from '../screens/MyAccountScreen'
 
 const Tab = createBottomTabNavigator()
 
@@ -57,6 +58,7 @@ const MainBottomTabNavigator = () => {
       <Tab.Screen name="Albums" component={TopAlbumsStackScreen} />
       <Tab.Screen name="Tracks" component={TopTracksStackScreen} />
       <Tab.Screen name="Artists" component={TopArtistsStackScreen} />
+      <Tab.Screen name="My Account" component={MyAccountScreen} />
     </Tab.Navigator>
   )
 }
