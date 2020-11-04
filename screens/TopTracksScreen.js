@@ -54,7 +54,7 @@ const TopTracksScreen = ({ navigation }) => {
           this,
           item.artistName,
           item.trackName,
-          item.albumImage640
+          item.albumImage300
         )}
       />
     )
