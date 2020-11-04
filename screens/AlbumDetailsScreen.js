@@ -32,8 +32,12 @@ const AlbumDetailsScreen = (props) => {
 
   useEffect(() => {
     const fetchData = async () => {
-      const data = await getSpotifyAlbumInfo(artistName, albumName)
-      setAlbumTracklist(data)
+      setIsLoading(true)
+
+      const { tracklist } = await getSpotifyAlbumInfo(artistName, albumName)
+
+      setAlbumTracklist(tracklist)
+      // setIsLoading(false)
     }
     fetchData()
   }, [])
@@ -60,12 +64,25 @@ const AlbumDetailsScreen = (props) => {
     </View>
   )
 
-  const ListEmpty = () => (
-    <View style={{ ...styles.listContainer, ...styles.listEmpty }}>
-      <TextH6 style={{ textAlign: 'center' }} children="Tracklist not found" />
-      <Button title="Go Back" onPress={() => props.navigation.goBack()} />
-    </View>
-  )
+  const ListEmpty = () => {
+    if (isLoading) {
+      return (
+        <View style={{ padding: 100 }}>
+          <LoadingContainer />
+        </View>
+      )
+    } else {
+      return (
+        <View style={{ ...styles.listContainer, ...styles.listEmpty }}>
+          <TextH6
+            style={{ textAlign: 'center' }}
+            children="Tracklist not found"
+          />
+          <Button title="Go Back" onPress={() => props.navigation.goBack()} />
+        </View>
+      )
+    }
+  }
 
   // Set the header title
   useLayoutEffect(() => {
@@ -74,24 +91,21 @@ const AlbumDetailsScreen = (props) => {
     })
   }, [props.navigation])
 
-  if (isLoading) {
-    return <LoadingContainer />
-  } else {
-    return (
-      <View style={styles.container}>
-        <FlatList
-          data={albumTracklist}
-          renderItem={itemList}
-          keyExtractor={keyExtractor}
-          ItemSeparatorComponent={itemSeparator}
-          ListHeaderComponent={ListHeader}
-          ListEmptyComponent={ListEmpty}
-          onEndReachedThreshold={0.2}
-          style={styles.listContainer}
-        />
-      </View>
-    )
-  }
+  return (
+    <View style={styles.container}>
+      <FlatList
+        data={albumTracklist}
+        renderItem={itemList}
+        keyExtractor={keyExtractor}
+        ItemSeparatorComponent={itemSeparator}
+        ListHeaderComponent={ListHeader}
+        ListEmptyComponent={ListEmpty}
+        onEndReachedThreshold={0.2}
+        initialNumToRender={12}
+        style={styles.listContainer}
+      />
+    </View>
+  )
 }
 
 export default AlbumDetailsScreen
