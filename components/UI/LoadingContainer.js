@@ -5,7 +5,7 @@ import CenteredContainer from './CenteredContainer'
 const LoadingContainer = () => {
   return (
     <CenteredContainer>
-      <ActivityIndicator size="large" color="black" />
+      <ActivityIndicator size="large" color="white" />
     </CenteredContainer>
   )
 }

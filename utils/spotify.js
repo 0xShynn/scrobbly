@@ -73,14 +73,14 @@ export const getSpotifyArtistImage = async (artist) => {
   let image_640 = image_blank_640
   let image_300 = image_blank_300
 
-  console.log('the artist name is : ', artist)
+  // console.log('the artist name is : ', artist)
 
   try {
     const {
       artists: { items },
     } = await spotifySearch(encodeURI(artist), 'artist')
 
-    console.log('les items', items)
+    // console.log('les items', items)
 
     if (items.length === 0) {
       return { image_640, image_300 }
@@ -88,7 +88,7 @@ export const getSpotifyArtistImage = async (artist) => {
 
     const selectedArtist = items.find((item) => item.name === artist)
 
-    console.log('selectedArtist', selectedArtist)
+    // console.log('selectedArtist', selectedArtist)
 
     image_640 = items[0].images[0].url
     image_300 = items[0].images[1].url
@@ -159,30 +159,33 @@ export const getSpotifyAlbumInfo = async (artist, album) => {
     },
   }).then((res) => res.json())
 
-  console.log(response)
+  // The album ID wasn't found, so we return blank images and empty tracklist
+  if (response.hasOwnProperty('error')) {
+    return null
+  }
 
-  let image_640
-  let image_300
-  let tracklist = []
+  // console.log(response)
+
+  const data = {
+    albumArt640: response.images[0].url,
+    albumArt300: response.images[1].url,
+    albumId: response.id,
+    artistName: response.artists[0].name,
+    artistId: response.artists[0].id,
+    copyrights: response.copyrights[0]['text'],
+    label: response.label,
+    release_date: response.release_date,
+    total_tracks: response.total_tracks,
+    tracklist: [],
+  }
 
   for (const item of response.tracks.items) {
-    tracklist.push(
+    data.tracklist.push(
       new AlbumTrack(item.id, item.name, item.track_number, item.duration_ms)
     )
   }
 
-  // // The album ID wasn't found, so we return blank images for the album art and also an empty tracklist
-  // if (response.hasOwnProperty('error')) {
-  //   image_640 = undefined
-  //   image_300 = undefined
-
-  //   return { image_640, image_300, tracklist }
-  // }
-
-  image_640 = response.images[0].url
-  image_300 = response.images[1].url
-
-  return { image_640, image_300, tracklist }
+  return data
 }
 
 const spotifySearch = async (item, type) => {

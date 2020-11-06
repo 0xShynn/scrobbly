@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, StyleSheet, TouchableOpacity, Image } from 'react-native'
+import { View, TouchableOpacity, Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import dayjs from 'dayjs'
 import { updatedLocale } from '../utils/dayjs'
@@ -13,7 +13,9 @@ const NewListItem = (props) => {
 
   return (
     <TouchableOpacity onPress={props.onSelect}>
-      <View style={styles.itemContainer}>
+      <View
+        style={{ flexDirection: 'row', alignItems: 'center', paddingRight: 10 }}
+      >
         {props.isLoading && !props.isRefreshing ? (
           <View
             style={{
@@ -31,18 +33,32 @@ const NewListItem = (props) => {
               marginLeft: 8,
               minWidth: 36,
               textAlign: 'center',
+              color: 'white',
             }}
           >
             {props.playCount}
           </TitleH5>
         ) : null}
 
-        <Image source={{ uri: props.image }} style={styles.albumArt} />
-        <View style={styles.infoContainer}>
-          <TitleH5 numberOfLines={1} children={props.title} />
+        <Image
+          source={{ uri: props.image }}
+          style={{
+            width: 70,
+            height: 70,
+            borderRadius: 6,
+            marginHorizontal: 10,
+            overflow: 'hidden',
+          }}
+        />
+        <View style={{ flex: 1, paddingRight: 20, zIndex: 2 }}>
+          <TitleH5
+            numberOfLines={1}
+            style={{ color: 'white' }}
+            children={props.title}
+          />
           <TextH6
             numberOfLines={1}
-            style={{ marginTop: 2, color: myColors.cool_gray_700 }}
+            style={{ marginTop: 2, color: myColors.cool_gray_200 }}
             children={props.subtitle}
           />
         </View>
@@ -51,8 +67,8 @@ const NewListItem = (props) => {
             <Ionicons
               name="ios-musical-notes"
               size={20}
-              color={myColors.cool_gray_990}
-              style={styles.nowPlaying}
+              color="white"
+              style={{ marginRight: 20 }}
             />
           </View>
         ) : props.date ? (
@@ -64,28 +80,3 @@ const NewListItem = (props) => {
 }
 
 export default NewListItem
-
-const styles = StyleSheet.create({
-  itemContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    paddingRight: 10,
-    backgroundColor: 'white',
-  },
-  albumArt: {
-    width: 70,
-    height: 70,
-    borderRadius: 6,
-    marginHorizontal: 10,
-    overflow: 'hidden',
-    backgroundColor: myColors.cool_gray_200,
-  },
-  infoContainer: {
-    flex: 1,
-    paddingRight: 20,
-    zIndex: 2,
-  },
-  nowPlaying: {
-    marginRight: 20,
-  },
-})

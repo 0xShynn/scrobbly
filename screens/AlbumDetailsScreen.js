@@ -1,22 +1,23 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import {
-  Button,
-  Dimensions,
-  FlatList,
-  Image,
-  StyleSheet,
-  View,
-} from 'react-native'
+import { Button, Dimensions, FlatList, StyleSheet, View } from 'react-native'
+import DetailsHeader from '../components/DetailsHeader'
 import LoadingContainer from '../components/UI/LoadingContainer'
-import { TextH5, TextH6, TitleH3, TitleH6 } from '../components/UI/Typography'
+import { TextH6, TitleH6 } from '../components/UI/Typography'
 import myColors from '../constants/myColors'
 import { getSpotifyAlbumInfo } from '../utils/spotify'
 
 const itemList = ({ item }) => {
   return (
     <View style={styles.trackItem}>
-      <TitleH6 style={{ minWidth: 25 }} children={item.trackNumber} />
-      <TextH6 numberOfLines={1} style={{ flex: 1 }} children={item.trackName} />
+      <TitleH6
+        style={{ minWidth: 25, color: 'white' }}
+        children={item.trackNumber}
+      />
+      <TextH6
+        numberOfLines={1}
+        style={{ flex: 1, color: 'white' }}
+        children={item.trackName}
+      />
       <TextH6 children={item.duration} />
     </View>
   )
@@ -29,15 +30,16 @@ const AlbumDetailsScreen = (props) => {
 
   const [isLoading, setIsLoading] = useState(false)
   const [albumTracklist, setAlbumTracklist] = useState([])
+  const [data, setData] = useState({})
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
 
-      const { tracklist } = await getSpotifyAlbumInfo(artistName, albumName)
-
-      setAlbumTracklist(tracklist)
-      // setIsLoading(false)
+      const spotifyData = await getSpotifyAlbumInfo(artistName, albumName)
+      setData(spotifyData)
+      setAlbumTracklist(spotifyData.tracklist)
+      setIsLoading(false)
     }
     fetchData()
   }, [])
@@ -45,24 +47,23 @@ const AlbumDetailsScreen = (props) => {
   const keyExtractor = useCallback((item) => item + item.id, [])
 
   const ListHeader = () => (
-    <View style={styles.albumInfoContainer}>
-      <View>
-        <Image source={{ uri: albumArt }} style={styles.albumArt} />
-      </View>
-      <View style={styles.albumInfo}>
-        <TitleH3
-          style={{ color: 'white' }}
-          numberOfLines={2}
-          children={albumName}
-        />
-        <TextH5
-          style={{ marginTop: 2, color: 'white' }}
-          numberOfLines={1}
-          children={artistName}
-        />
-      </View>
-    </View>
+    <DetailsHeader title={albumName} subtitle={artistName} image={albumArt} />
   )
+
+  const ListFooter = () => {
+    return (
+      <View
+        style={{
+          paddingVertical: 20,
+          paddingHorizontal: 30,
+        }}
+      >
+        <TextH6 style={{ color: myColors.cool_gray_500 }}>
+          {data.copyrights}
+        </TextH6>
+      </View>
+    )
+  }
 
   const ListEmpty = () => {
     if (isLoading) {
@@ -100,6 +101,7 @@ const AlbumDetailsScreen = (props) => {
         ItemSeparatorComponent={itemSeparator}
         ListHeaderComponent={ListHeader}
         ListEmptyComponent={ListEmpty}
+        ListFooterComponent={ListFooter}
         onEndReachedThreshold={0.2}
         initialNumToRender={12}
         style={styles.listContainer}
@@ -113,7 +115,7 @@ export default AlbumDetailsScreen
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: myColors.cool_gray_100,
+    backgroundColor: myColors.dark_gray,
   },
   listContainer: {
     height: Dimensions.get('window').height,
@@ -123,31 +125,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
   },
-  albumInfoContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: myColors.dark_gray,
-    paddingHorizontal: 40,
-    paddingVertical: 30,
-  },
-  albumInfo: {
-    marginLeft: 20,
-    flex: 1,
-  },
-  albumArt: {
-    width: 120,
-    height: 120,
-    borderRadius: 6,
-    overflow: 'hidden',
-  },
+
   trackItem: {
     flexDirection: 'row',
     paddingHorizontal: 30,
     paddingVertical: 14,
-    backgroundColor: 'white',
+    backgroundColor: myColors.dark_gray,
   },
   itemSeparator: {
     height: 1,
-    backgroundColor: myColors.cool_gray_100,
+    backgroundColor: myColors.cool_gray_990,
   },
 })

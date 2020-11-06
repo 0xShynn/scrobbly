@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useLayoutEffect } from 'react'
 
 import { FlatList, StyleSheet, Image, View } from 'react-native'
+import DetailsHeader from '../components/DetailsHeader'
 import { TextH5 } from '../components/UI/Typography'
+import myColors from '../constants/myColors'
 import { getSimilarTracks } from '../utils/lastfm'
 
-const TrackDetailsScreen = ({ route }) => {
+const TrackDetailsScreen = ({ route, navigation }) => {
   const { artistName, trackName, albumImage } = route.params
   const [similarTracks, setSimilarTracks] = useState([])
 
@@ -15,6 +17,13 @@ const TrackDetailsScreen = ({ route }) => {
     }
     fetchData()
   }, [])
+
+  // Set the header title
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      title: `${artistName} - ${trackName}`,
+    })
+  }, [navigation])
 
   const itemList = ({ item }) => {
     return (
@@ -31,16 +40,11 @@ const TrackDetailsScreen = ({ route }) => {
 
   const listHeader = () => {
     return (
-      <View
-        style={{ justifyContent: 'center', alignItems: 'center', padding: 30 }}
-      >
-        <TextH5>{artistName}</TextH5>
-        <TextH5>{trackName}</TextH5>
-        <Image
-          source={{ uri: albumImage }}
-          style={{ width: 180, height: 180, borderRadius: 10, marginTop: 20 }}
-        />
-      </View>
+      <DetailsHeader
+        image={albumImage}
+        title={trackName}
+        subtitle={artistName}
+      />
     )
   }
 
@@ -51,11 +55,10 @@ const TrackDetailsScreen = ({ route }) => {
         renderItem={itemList}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={listHeader}
+        style={{ backgroundColor: myColors.dark_gray }}
       />
     </View>
   )
 }
 
 export default TrackDetailsScreen
-
-const styles = StyleSheet.create({})

@@ -48,7 +48,7 @@ const ListItemCover = (props) => {
             </View>
             <TitleH5
               style={{ color: 'white' }}
-              numberOfLines={2}
+              numberOfLines={1}
               children={props.title}
             />
 
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   listImageBackground: {
     width: '100%',
-    height: 190,
+    height: 180,
     flex: 1,
     borderRadius: 10,
     marginHorizontal: 6,

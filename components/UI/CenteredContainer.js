@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
+import myColors from '../../constants/myColors'
 
 const CenteredContainer = (props) => {
   return (
@@ -14,5 +15,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    backgroundColor: myColors.dark_gray,
   },
 })

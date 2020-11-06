@@ -1,12 +1,13 @@
 import React from 'react'
 import { useCallback } from 'react'
-import { FlatList, StyleSheet, View } from 'react-native'
+import { FlatList, View } from 'react-native'
 import myColors from '../constants/myColors'
+import CustomRefreshControl from './UI/CustomRefreshControl'
 
-const listItemSeparator = () => <View style={styles.listItemSeparator} />
+const listItemSeparator = () => <View style={{ height: 10 }} />
 
 const listFooter = () => {
-  return <View style={styles.listFooter} />
+  return <View style={{ height: 20 }} />
 }
 
 const FlatListItems = (props) => {
@@ -20,26 +21,19 @@ const FlatListItems = (props) => {
       ItemSeparatorComponent={listItemSeparator}
       ListFooterComponent={listFooter}
       ListHeaderComponent={props.ListHeaderComponent}
-      onRefresh={props.onRefresh}
-      refreshing={props.isRefreshing}
-      style={styles.listContainer}
+      style={{
+        width: '100%',
+        paddingTop: 10,
+        backgroundColor: myColors.dark_gray,
+      }}
+      refreshControl={
+        <CustomRefreshControl
+          onRefresh={props.onRefresh}
+          refreshing={props.isRefreshing}
+        />
+      }
     />
   )
 }
 
 export default FlatListItems
-
-const styles = StyleSheet.create({
-  listContainer: {
-    width: '100%',
-    paddingTop: 10,
-    backgroundColor: myColors.white,
-  },
-  listFooter: {
-    height: 20,
-  },
-  listItemSeparator: {
-    backgroundColor: myColors.white,
-    height: 10,
-  },
-})
