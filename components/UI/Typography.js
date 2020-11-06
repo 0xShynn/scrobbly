@@ -174,7 +174,7 @@ export const DetailsTitle = (props) => {
         marginBottom: 12,
         textTransform: 'uppercase',
         fontFamily: 'Inter_400Regular',
-        color: myColors.cool_gray_700,
+        color: 'white',
       }}
     >
       {props.children}
@@ -185,11 +185,11 @@ export const DetailsTitle = (props) => {
 const styles = StyleSheet.create({
   textWeightRegular: {
     fontFamily: 'Inter_400Regular',
-    color: myColors.cool_gray_990,
+    color: 'white',
   },
   textWeightBold: {
     fontFamily: 'Inter_700Bold',
-    color: myColors.cool_gray_990,
+    color: 'white',
   },
   titleH1: {
     fontSize: 30,

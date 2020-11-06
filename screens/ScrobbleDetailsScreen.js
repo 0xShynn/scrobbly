@@ -20,8 +20,9 @@ import {
   DetailsTitle,
 } from '../components/UI/Typography'
 import myColors from '../constants/myColors'
+import DetailsHeader from '../components/DetailsHeader'
 
-const DetailsScreen = (props) => {
+const ScrobbleDetailsScreen = ({ navigation, route }) => {
   const [trackInfo, setTrackInfo] = useState({})
   const [artistData, setArtistData] = useState({})
   const [similarTracks, setSimilarTracks] = useState([])
@@ -30,10 +31,10 @@ const DetailsScreen = (props) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState()
 
-  const artistName = props.route.params.artist
-  const trackName = props.route.params.title
-  const albumArt = props.route.params.image
-  const albumName = props.route.params.album
+  const artistName = route.params.artist
+  const trackName = route.params.title
+  const albumArt = route.params.image
+  const albumName = route.params.album
 
   const getTrackInfoHandler = useCallback(async () => {
     const getTrackInfo = `?method=track.getInfo&api_key=${api_key}&artist=${artistName}&track=${trackName}&username=${username}&format=json`
@@ -109,7 +110,7 @@ const DetailsScreen = (props) => {
   }, [getAlbumInfoHandler])
 
   const itemSelectHandler = (artist, title, image) => {
-    props.navigation.push('Details', {
+    navigation.push('Details', {
       artist,
       title,
       image,
@@ -120,7 +121,7 @@ const DetailsScreen = (props) => {
     if (albumTrackList.length <= 0) {
       return
     }
-    props.navigation.navigate('Album Details', {
+    navigation.navigate('Album Details', {
       artistName,
       albumArt,
       albumName,
@@ -144,37 +145,27 @@ const DetailsScreen = (props) => {
 
   // Set the header title
   useLayoutEffect(() => {
-    props.navigation.setOptions({
+    navigation.setOptions({
       title: `${artistName} - ${trackName}`,
     })
-  }, [props.navigation])
+  }, [navigation])
 
   if (isLoading) {
     return <LoadingContainer />
   } else {
     return (
-      <View>
+      <View style={styles.container}>
         {error && (
           <ErrorBanner>Sorry there's some missing information.</ErrorBanner>
         )}
 
         <ScrollView>
           <View>
-            <View style={styles.headerContainer}>
-              <Image source={{ uri: albumArt }} style={styles.albumArt} />
-              <View style={styles.headerTitle}>
-                <TitleH3
-                  style={{ color: 'white' }}
-                  numberOfLines={2}
-                  children={trackName}
-                />
-                <TextH5
-                  style={{ marginTop: 4, color: 'white' }}
-                  numberOfLines={2}
-                  children={artistName}
-                />
-              </View>
-            </View>
+            <DetailsHeader
+              title={trackName}
+              subtitle={artistName}
+              image={albumArt}
+            />
 
             <View style={styles.countersContainer}>
               <Counter
@@ -198,7 +189,7 @@ const DetailsScreen = (props) => {
               />
 
               <Counter
-                title="Your Scrob"
+                title="Played"
                 value={
                   trackInfo.hasOwnProperty('userplaycount')
                     ? abbreviateNumber(trackInfo.userplaycount)
@@ -283,32 +274,17 @@ const DetailsScreen = (props) => {
 }
 
 const styles = StyleSheet.create({
-  headerContainer: {
+  container: {
     backgroundColor: myColors.dark_gray,
-    paddingHorizontal: 20,
-    paddingVertical: 30,
-  },
-  albumArt: {
-    width: 200,
-    height: 200,
-    borderRadius: 10,
-    alignSelf: 'center',
-    marginBottom: 20,
-  },
-  headerTitle: {
-    justifyContent: 'center',
-    alignItems: 'center',
   },
   countersContainer: {
     flexDirection: 'row',
     flexWrap: 'wrap',
-    backgroundColor: myColors.white,
-    borderBottomWidth: 1,
-    borderBottomColor: myColors.cool_gray_200,
+    backgroundColor: myColors.dark_gray,
   },
   mainContainer: {
     padding: 20,
-    backgroundColor: myColors.cool_gray_100,
+    backgroundColor: myColors.dark_gray,
   },
   albumDetailsContainer: {
     flexDirection: 'row',
@@ -325,4 +301,4 @@ const styles = StyleSheet.create({
   },
 })
 
-export default DetailsScreen
+export default ScrobbleDetailsScreen

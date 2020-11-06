@@ -9,6 +9,7 @@ import myColors from '../constants/myColors'
 import TopArtistsStackScreen from './TopArtistsStackScreen'
 import TopTracksStackScreen from './TopTracksStackScreen'
 import MyAccountScreen from '../screens/MyAccountScreen'
+import MyAccountStackScreen from './MyAccountStackScreen'
 
 const Tab = createBottomTabNavigator()
 
@@ -46,11 +47,20 @@ const MainBottomTabNavigator = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: myColors.primary,
-        inactiveTintColor: myColors.cool_gray_500,
+        activeTintColor: 'white',
+        inactiveTintColor: myColors.cool_gray_600,
+        inactiveBackgroundColor: myColors.cool_gray_990,
+        activeBackgroundColor: myColors.cool_gray_990,
         labelStyle: {
           fontSize: 10,
-          fontFamily: 'Inter_400Regular',
+          fontFamily: 'Inter_700Bold',
+          paddingTop: 8,
+        },
+        style: {
+          backgroundColor: myColors.cool_gray_990,
+          borderTopColor: myColors.cool_gray_900,
+          paddingVertical: 10,
+          height: 88,
         },
       }}
     >
@@ -58,7 +68,7 @@ const MainBottomTabNavigator = () => {
       <Tab.Screen name="Albums" component={TopAlbumsStackScreen} />
       <Tab.Screen name="Tracks" component={TopTracksStackScreen} />
       <Tab.Screen name="Artists" component={TopArtistsStackScreen} />
-      <Tab.Screen name="My Account" component={MyAccountScreen} />
+      <Tab.Screen name="My Account" component={MyAccountStackScreen} />
     </Tab.Navigator>
   )
 }
