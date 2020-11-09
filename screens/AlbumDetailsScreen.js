@@ -1,18 +1,15 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { Button, Dimensions, FlatList, StyleSheet, View } from 'react-native'
+
 import DetailsHeader from '../components/DetailsHeader'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import { TextH6, TitleH6 } from '../components/UI/Typography'
+
+import { Ionicons } from '@expo/vector-icons'
 import myColors from '../constants/myColors'
 import { getSpotifyAlbumInfo } from '../utils/spotify'
-import prettyMilliseconds from 'pretty-ms'
 
 const itemList = ({ item }) => {
-  const updatedDuration = prettyMilliseconds(item.duration + 500, {
-    secondsDecimalDigits: 0,
-    colonNotation: true,
-  })
-
   return (
     <View style={styles.trackItem}>
       <TitleH6
@@ -24,7 +21,7 @@ const itemList = ({ item }) => {
         style={{ flex: 1, color: 'white' }}
         children={item.trackName}
       />
-      <TextH6 children={updatedDuration} />
+      <TextH6 children={item.duration} />
     </View>
   )
 }
@@ -44,7 +41,10 @@ const AlbumDetailsScreen = (props) => {
 
       const spotifyData = await getSpotifyAlbumInfo(artistName, albumName)
       setData(spotifyData)
-      setAlbumTracklist(spotifyData.tracklist)
+
+      if (spotifyData !== null) {
+        setAlbumTracklist(spotifyData.tracklist)
+      }
       setIsLoading(false)
     }
     fetchData()
@@ -60,8 +60,43 @@ const AlbumDetailsScreen = (props) => {
           subtitle={artistName}
           image={albumArt}
         />
-        <TextH6>{data.release_date}</TextH6>
-        <TextH6></TextH6>
+        {data && (
+          <View
+            style={{ alignItems: 'center', marginBottom: 20, marginTop: 15 }}
+          >
+            <TextH6 style={{ color: myColors.cool_gray_500 }}>
+              {data.release_year +
+                ' • ' +
+                data.total_tracks +
+                data.track_word +
+                ', ' +
+                data.total_length_text}
+            </TextH6>
+          </View>
+        )}
+        <View
+          style={{
+            flexDirection: 'row',
+            borderBottomWidth: 1,
+            borderBottomColor: myColors.cool_gray_990,
+            paddingVertical: 10,
+          }}
+        >
+          <TextH6 style={{ marginLeft: 30, color: myColors.cool_gray_600 }}>
+            #
+          </TextH6>
+          <TextH6
+            style={{ marginLeft: 15, flex: 1, color: myColors.cool_gray_600 }}
+          >
+            TITLE
+          </TextH6>
+          <Ionicons
+            name="md-time"
+            size={18}
+            color={myColors.cool_gray_700}
+            style={{ justifyContent: 'flex-end', marginRight: 37 }}
+          />
+        </View>
       </>
     )
   }
@@ -71,13 +106,15 @@ const AlbumDetailsScreen = (props) => {
       <View
         style={{
           paddingTop: 10,
-          paddingBottom: 20,
+          paddingBottom: 40,
           paddingHorizontal: 30,
         }}
       >
-        <TextH6 style={{ color: myColors.cool_gray_500 }}>
-          {data.copyrights}
-        </TextH6>
+        {data && (
+          <TextH6 style={{ color: myColors.cool_gray_500 }}>
+            {data.copyrights}
+          </TextH6>
+        )}
       </View>
     )
   }
@@ -89,17 +126,17 @@ const AlbumDetailsScreen = (props) => {
           <LoadingContainer />
         </View>
       )
-    } else {
-      return (
-        <View style={{ ...styles.listContainer, ...styles.listEmpty }}>
-          <TextH6
-            style={{ textAlign: 'center' }}
-            children="Tracklist not found"
-          />
-          <Button title="Go Back" onPress={() => props.navigation.goBack()} />
-        </View>
-      )
     }
+
+    return (
+      <View style={{ ...styles.listContainer, ...styles.listEmpty }}>
+        <TextH6
+          style={{ textAlign: 'center' }}
+          children="Tracklist not found"
+        />
+        <Button title="Go Back" onPress={() => props.navigation.goBack()} />
+      </View>
+    )
   }
 
   // Set the header title
@@ -119,7 +156,6 @@ const AlbumDetailsScreen = (props) => {
         ListHeaderComponent={ListHeader}
         ListEmptyComponent={ListEmpty}
         ListFooterComponent={ListFooter}
-        onEndReachedThreshold={0.2}
         initialNumToRender={12}
         style={styles.listContainer}
       />
@@ -138,11 +174,13 @@ const styles = StyleSheet.create({
     height: Dimensions.get('window').height,
   },
   listEmpty: {
-    height: Dimensions.get('window').height / 2,
+    height: Dimensions.get('window').height / 4,
     justifyContent: 'center',
     alignItems: 'center',
   },
-
+  tracklistHeader: {
+    color: myColors.cool_gray_500,
+  },
   trackItem: {
     flexDirection: 'row',
     paddingHorizontal: 30,

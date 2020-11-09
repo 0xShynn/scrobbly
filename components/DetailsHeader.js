@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, View, Image } from 'react-native'
 import myColors from '../constants/myColors'
-import { TitleH3, TextH5 } from './UI/Typography'
+import { TitleH3, TextH4 } from './UI/Typography'
 
 const DetailsHeader = (props) => {
   return (
@@ -15,7 +15,7 @@ const DetailsHeader = (props) => {
           numberOfLines={2}
           children={props.title}
         />
-        <TextH5
+        <TextH4
           style={{ marginTop: 4, color: 'white', textAlign: 'center' }}
           numberOfLines={2}
           children={props.subtitle}
@@ -32,7 +32,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: myColors.dark_gray,
     paddingHorizontal: 40,
-    paddingVertical: 40,
+    paddingTop: 40,
   },
   albumInfo: {
     flex: 1,
@@ -42,6 +42,6 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 6,
     overflow: 'hidden',
-    marginBottom: 20,
+    marginBottom: 30,
   },
 })

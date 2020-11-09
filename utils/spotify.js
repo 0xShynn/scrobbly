@@ -1,6 +1,8 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import AlbumTrack from '../models/albumTrack'
 import { image_blank_300, image_blank_640 } from './expo'
+import prettyMilliseconds from 'pretty-ms'
+import dayjs from 'dayjs'
 
 export const getSpotifyToken = async () => {
   let spotifyToken = await AsyncStorage.getItem('spotifyToken').then((res) =>
@@ -175,14 +177,36 @@ export const getSpotifyAlbumInfo = async (artist, album) => {
     copyrights: response.copyrights[0]['text'],
     label: response.label,
     release_date: response.release_date,
+    release_year: dayjs(response.release_date).format('YYYY'),
+    total_length_text: '',
     total_tracks: response.total_tracks,
+    track_word: ' tracks',
     tracklist: [],
   }
 
+  let total_length_ms = 0
+  let updatedDuration
+
   for (const item of response.tracks.items) {
+    updatedDuration = prettyMilliseconds(item.duration_ms + 500, {
+      secondsDecimalDigits: 0,
+      colonNotation: true,
+    })
     data.tracklist.push(
-      new AlbumTrack(item.id, item.name, item.track_number, item.duration_ms)
+      new AlbumTrack(item.id, item.name, item.track_number, updatedDuration)
     )
+    total_length_ms += item.duration_ms
+  }
+
+  // Set the tracks total length in minutes
+  if (total_length_ms !== undefined) {
+    data.total_length_text = prettyMilliseconds(total_length_ms + 500, {
+      compact: true,
+    })
+  }
+
+  if (data.tracklist.length <= 1) {
+    data.track_word = ' track'
   }
 
   return data
