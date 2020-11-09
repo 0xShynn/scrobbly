@@ -23,7 +23,7 @@ const ListItemCover = (props) => {
               width: '100%',
               height: '100%',
               position: 'absolute',
-              backgroundColor: 'rgba(255,255,255, 0.3)',
+              backgroundColor: 'rgba(0,0,0, 0.5)',
               zIndex: 1,
             }}
           />
@@ -31,7 +31,12 @@ const ListItemCover = (props) => {
         <TouchableWithoutFeedback onPress={props.onSelect}>
           <View style={styles.listItem}>
             <LinearGradient
-              colors={['transparent', 'rgba(0,0,0,0.3)', 'rgba(0,0,0,0.8)']}
+              colors={[
+                'transparent',
+                'rgba(0,0,0,0.2)',
+                'rgba(0,0,0,0.5)',
+                'rgba(0,0,0,0.8)',
+              ]}
               style={styles.itemGradientInfo}
             />
             <View style={styles.itemPlaycountContainer}>

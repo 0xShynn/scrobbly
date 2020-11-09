@@ -39,7 +39,7 @@ const FlatListItemsCover = (props) => {
       horizontal={false}
       numColumns={2}
       style={{
-        paddingHorizontal: 10,
+        paddingHorizontal: 6,
         paddingVertical: 20,
         backgroundColor: myColors.dark_gray,
       }}
