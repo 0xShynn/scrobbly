@@ -5,8 +5,14 @@ import LoadingContainer from '../components/UI/LoadingContainer'
 import { TextH6, TitleH6 } from '../components/UI/Typography'
 import myColors from '../constants/myColors'
 import { getSpotifyAlbumInfo } from '../utils/spotify'
+import prettyMilliseconds from 'pretty-ms'
 
 const itemList = ({ item }) => {
+  const updatedDuration = prettyMilliseconds(item.duration + 500, {
+    secondsDecimalDigits: 0,
+    colonNotation: true,
+  })
+
   return (
     <View style={styles.trackItem}>
       <TitleH6
@@ -18,7 +24,7 @@ const itemList = ({ item }) => {
         style={{ flex: 1, color: 'white' }}
         children={item.trackName}
       />
-      <TextH6 children={item.duration} />
+      <TextH6 children={updatedDuration} />
     </View>
   )
 }
@@ -46,15 +52,26 @@ const AlbumDetailsScreen = (props) => {
 
   const keyExtractor = useCallback((item) => item + item.id, [])
 
-  const ListHeader = () => (
-    <DetailsHeader title={albumName} subtitle={artistName} image={albumArt} />
-  )
+  const ListHeader = () => {
+    return (
+      <>
+        <DetailsHeader
+          title={albumName}
+          subtitle={artistName}
+          image={albumArt}
+        />
+        <TextH6>{data.release_date}</TextH6>
+        <TextH6></TextH6>
+      </>
+    )
+  }
 
   const ListFooter = () => {
     return (
       <View
         style={{
-          paddingVertical: 20,
+          paddingTop: 10,
+          paddingBottom: 20,
           paddingHorizontal: 30,
         }}
       >

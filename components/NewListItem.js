@@ -8,8 +8,7 @@ import { TextH6, TitleH5 } from './UI/Typography'
 import myColors from '../constants/myColors'
 
 const NewListItem = (props) => {
-  const date = props.date
-  const timestamp = dayjs(date).utc(true).fromNow()
+  const timestamp = dayjs(props.date).utc(true).fromNow()
 
   return (
     <TouchableOpacity onPress={props.onSelect}>
