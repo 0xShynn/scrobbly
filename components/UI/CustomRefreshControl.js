@@ -8,6 +8,7 @@ export default function CustomRefreshControl(props) {
       tintColor="white"
       onRefresh={props.onRefresh}
       refreshing={props.isRefreshing}
+      enabled={true}
     />
   )
 }

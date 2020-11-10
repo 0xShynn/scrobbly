@@ -1,6 +1,6 @@
 import React from 'react'
 import { useCallback } from 'react'
-import { FlatList, View } from 'react-native'
+import { FlatList, View, RefreshControl } from 'react-native'
 import myColors from '../constants/myColors'
 import CustomRefreshControl from './UI/CustomRefreshControl'
 
@@ -27,9 +27,12 @@ const FlatListItems = (props) => {
         backgroundColor: myColors.dark_gray,
       }}
       refreshControl={
-        <CustomRefreshControl
+        <RefreshControl
+          colors={['white', 'black']}
+          tintColor="white"
           onRefresh={props.onRefresh}
           refreshing={props.isRefreshing}
+          enabled={true}
         />
       }
     />

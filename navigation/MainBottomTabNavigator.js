@@ -1,14 +1,13 @@
 import React from 'react'
+import { Platform } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
-
 import { SimpleLineIcons } from '@expo/vector-icons'
+import myColors from '../constants/myColors'
 
 import DetailsStackScreen from './DetailsStackScreen'
 import TopAlbumsStackScreen from './TopAlbumsStackScreen'
-import myColors from '../constants/myColors'
 import TopArtistsStackScreen from './TopArtistsStackScreen'
 import TopTracksStackScreen from './TopTracksStackScreen'
-import MyAccountScreen from '../screens/MyAccountScreen'
 import MyAccountStackScreen from './MyAccountStackScreen'
 
 const Tab = createBottomTabNavigator()
@@ -55,12 +54,16 @@ const MainBottomTabNavigator = () => {
           fontSize: 10,
           fontFamily: 'Inter_700Bold',
           paddingTop: 8,
+          marginBottom: Platform.OS === 'android' ? 8 : 0,
         },
         style: {
           backgroundColor: myColors.cool_gray_990,
           borderTopColor: myColors.cool_gray_900,
           paddingVertical: 10,
-          height: 88,
+          height: Platform.OS === 'android' ? 64 : 88,
+        },
+        iconStyle: {
+          marginTop: Platform.OS === 'android' ? 4 : 0,
         },
       }}
     >
