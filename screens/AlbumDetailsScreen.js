@@ -60,43 +60,49 @@ const AlbumDetailsScreen = (props) => {
           subtitle={artistName}
           image={albumArt}
         />
-        {data && (
-          <View
-            style={{ alignItems: 'center', marginBottom: 20, marginTop: 15 }}
-          >
-            <TextH6 style={{ color: myColors.cool_gray_500 }}>
-              {data.release_year +
-                ' • ' +
-                data.total_tracks +
-                data.track_word +
-                ', ' +
-                data.total_length_text}
-            </TextH6>
+        {data && !isLoading ? (
+          <View>
+            <View
+              style={{ alignItems: 'center', marginBottom: 20, marginTop: 15 }}
+            >
+              <TextH6 style={{ color: myColors.cool_gray_500 }}>
+                {data.release_year}
+                {' • '}
+                {data.total_tracks} {data.track_word}
+                {', '}
+                {data.total_length_text}
+              </TextH6>
+            </View>
+
+            <View
+              style={{
+                flexDirection: 'row',
+                borderBottomWidth: 1,
+                borderBottomColor: myColors.cool_gray_990,
+                paddingVertical: 10,
+              }}
+            >
+              <TextH6 style={{ marginLeft: 30, color: myColors.cool_gray_600 }}>
+                #
+              </TextH6>
+              <TextH6
+                style={{
+                  marginLeft: 15,
+                  flex: 1,
+                  color: myColors.cool_gray_600,
+                }}
+              >
+                TITLE
+              </TextH6>
+              <Ionicons
+                name="md-time"
+                size={18}
+                color={myColors.cool_gray_700}
+                style={{ justifyContent: 'flex-end', marginRight: 37 }}
+              />
+            </View>
           </View>
-        )}
-        <View
-          style={{
-            flexDirection: 'row',
-            borderBottomWidth: 1,
-            borderBottomColor: myColors.cool_gray_990,
-            paddingVertical: 10,
-          }}
-        >
-          <TextH6 style={{ marginLeft: 30, color: myColors.cool_gray_600 }}>
-            #
-          </TextH6>
-          <TextH6
-            style={{ marginLeft: 15, flex: 1, color: myColors.cool_gray_600 }}
-          >
-            TITLE
-          </TextH6>
-          <Ionicons
-            name="md-time"
-            size={18}
-            color={myColors.cool_gray_700}
-            style={{ justifyContent: 'flex-end', marginRight: 37 }}
-          />
-        </View>
+        ) : null}
       </>
     )
   }

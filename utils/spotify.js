@@ -180,7 +180,7 @@ export const getSpotifyAlbumInfo = async (artist, album) => {
     release_year: dayjs(response.release_date).format('YYYY'),
     total_length_text: '',
     total_tracks: response.total_tracks,
-    track_word: ' tracks',
+    track_word: 'tracks',
     tracklist: [],
   }
 
@@ -206,7 +206,7 @@ export const getSpotifyAlbumInfo = async (artist, album) => {
   }
 
   if (data.tracklist.length <= 1) {
-    data.track_word = ' track'
+    data.track_word = 'track'
   }
 
   return data
