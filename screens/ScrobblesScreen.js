@@ -36,12 +36,12 @@ const ScrobblesScreen = ({ navigation }) => {
     setIsRefreshing(false)
   }, [])
 
-  const itemSelectHandler = (artist, title, image, album) => {
+  const itemSelectHandler = (artistName, trackName, albumArt, albumName) => {
     navigation.navigate('Details', {
-      artist,
-      title,
-      image,
-      album,
+      artistName,
+      trackName,
+      albumArt,
+      albumName,
     })
   }
 

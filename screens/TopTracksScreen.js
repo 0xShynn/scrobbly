@@ -37,8 +37,20 @@ const TopTracksScreen = ({ navigation }) => {
     [dispatch]
   )
 
-  const itemSelectHandler = (artistName, trackName, albumImage) => {
-    navigation.navigate('Track Details', { artistName, trackName, albumImage })
+  const itemSelectHandler = (
+    artistName,
+    trackName,
+    albumImage,
+    artistId,
+    playcount
+  ) => {
+    navigation.navigate('Track Details', {
+      artistName,
+      trackName,
+      albumImage,
+      artistId,
+      playcount,
+    })
   }
 
   const listItem = ({ item }) => {
@@ -48,13 +60,17 @@ const TopTracksScreen = ({ navigation }) => {
         title={item.trackName}
         subtitle={item.artistName}
         playCount={item.playCount}
+        rank={item.rank}
         isLoading={isLoading}
         isRefreshing={isRefreshing}
         onSelect={itemSelectHandler.bind(
           this,
           item.artistName,
           item.trackName,
-          item.albumImage300
+          item.albumImage300,
+          item.artistId,
+          item.playCount,
+          item.rank
         )}
       />
     )

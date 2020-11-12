@@ -1,11 +1,10 @@
 import React from 'react'
 import { StyleSheet, View, Image } from 'react-native'
-import myColors from '../constants/myColors'
 import { TitleH3, TextH4 } from './UI/Typography'
 
 const DetailsHeader = (props) => {
   return (
-    <View style={styles.header}>
+    <View style={{ ...styles.header, ...props.style }}>
       <View>
         <Image source={{ uri: props.image }} style={styles.image} />
       </View>
@@ -30,7 +29,6 @@ export default DetailsHeader
 const styles = StyleSheet.create({
   header: {
     alignItems: 'center',
-    backgroundColor: myColors.dark_gray,
     paddingHorizontal: 40,
     paddingTop: 40,
   },
@@ -42,6 +40,6 @@ const styles = StyleSheet.create({
     height: 200,
     borderRadius: 6,
     overflow: 'hidden',
-    marginBottom: 30,
+    marginBottom: 20,
   },
 })

@@ -15,18 +15,7 @@ const NewListItem = (props) => {
       <View
         style={{ flexDirection: 'row', alignItems: 'center', paddingRight: 10 }}
       >
-        {props.isLoading && !props.isRefreshing ? (
-          <View
-            style={{
-              width: '100%',
-              height: '100%',
-              position: 'absolute',
-              backgroundColor: 'rgba(255,255,255, 0.3)',
-              zIndex: 1,
-            }}
-          />
-        ) : null}
-        {props.playCount ? (
+        {props.rank ? (
           <TitleH5
             style={{
               marginLeft: 8,
@@ -35,10 +24,9 @@ const NewListItem = (props) => {
               color: 'white',
             }}
           >
-            {props.playCount}
+            {props.rank}
           </TitleH5>
         ) : null}
-
         <Image
           source={{ uri: props.image }}
           style={{
@@ -57,9 +45,14 @@ const NewListItem = (props) => {
           />
           <TextH6
             numberOfLines={1}
-            style={{ marginTop: 2, color: myColors.cool_gray_200 }}
+            style={{ marginTop: 2, color: 'white' }}
             children={props.subtitle}
           />
+          {props.playCount ? (
+            <TextH6 style={{ marginTop: 2, color: myColors.cool_gray_400 }}>
+              {props.playCount} scrobbles
+            </TextH6>
+          ) : null}
         </View>
         {props.nowPlaying ? (
           <View>

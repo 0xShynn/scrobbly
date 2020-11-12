@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import {
   View,
   StyleSheet,
@@ -11,103 +11,33 @@ import RoundedContainer from '../components/UI/RoundedContainer'
 import Counter from '../components/UI/Counter'
 import ErrorBanner from '../components/UI/ErrorBanner'
 import LoadingContainer from '../components/UI/LoadingContainer'
-import { api_key, baseUrl, username } from '../utils/lastfm'
+import {
+  getAlbumInfo,
+  getArtistInfo,
+  getSimilarTracks,
+  getTrackInfo,
+} from '../utils/lastfm'
 import { abbreviateNumber } from '../utils/numbers'
 import {
   TextH5,
   TextH6,
-  TitleH3,
   DetailsTitle,
+  TitleH4,
 } from '../components/UI/Typography'
 import myColors from '../constants/myColors'
 import DetailsHeader from '../components/DetailsHeader'
+import { useSelector } from 'react-redux'
 
 const ScrobbleDetailsScreen = ({ navigation, route }) => {
   const [trackInfo, setTrackInfo] = useState({})
-  const [artistData, setArtistData] = useState({})
+  const [artistInfo, setArtistInfo] = useState({})
   const [similarTracks, setSimilarTracks] = useState([])
   const [albumInfo, setAlbumInfo] = useState()
-  const [albumTrackList, setAlbumTrackList] = useState()
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState()
+  const username = useSelector((state) => state.auth.username)
 
-  const artistName = route.params.artist
-  const trackName = route.params.title
-  const albumArt = route.params.image
-  const albumName = route.params.album
-
-  const getTrackInfoHandler = useCallback(async () => {
-    const getTrackInfo = `?method=track.getInfo&api_key=${api_key}&artist=${artistName}&track=${trackName}&username=${username}&format=json`
-
-    try {
-      const response = await fetch(baseUrl + getTrackInfo)
-      const resData = await response.json()
-      // console.log('trackInfo', resData)
-
-      if (resData.hasOwnProperty('error')) {
-        setError(resData)
-      } else {
-        setTrackInfo(resData.track)
-      }
-    } catch (error) {
-      console.log('getTrackInfoHandler erreur', error)
-    }
-  }, [getTrackInfoHandler])
-
-  const getArtistInfoHandler = useCallback(async () => {
-    const getArtistInfo = `?method=artist.getinfo&artist=${artistName}&username=${username}&api_key=${api_key}&format=json`
-
-    try {
-      const response = await fetch(baseUrl + getArtistInfo)
-      const resData = await response.json()
-
-      if (resData.hasOwnProperty('error')) {
-        setError(resData)
-      } else {
-        setArtistData({
-          artistBio: resData.artist.bio.content,
-          artistSummary: resData.artist.bio.summary,
-          artistName: resData.artist.name,
-          artistScrobbled: resData.artist.stats.playcount,
-          artistListeners: resData.artist.stats.listeners,
-        })
-      }
-    } catch (error) {
-      console.log('getArtistInfoHandler erreur', error)
-    }
-  }, [getArtistInfoHandler])
-
-  const getSimilarTracksHandler = useCallback(async () => {
-    const getSimilarTracks = `?method=track.getsimilar&artist=${artistName}&track=${trackName}&api_key=${api_key}&limit=5&format=json`
-
-    try {
-      const response = await fetch(baseUrl + getSimilarTracks)
-      const resData = await response.json()
-
-      if (!resData.hasOwnProperty('error')) {
-        setSimilarTracks(resData.similartracks.track)
-      }
-    } catch (error) {
-      console.log('getSimilarTracksHandler erreur', error)
-    }
-  }, [getSimilarTracksHandler])
-
-  const getAlbumInfoHandler = useCallback(async () => {
-    const getAlbumInfo = `?method=album.getinfo&api_key=${api_key}&artist=${artistName}&album=${albumName}&username=${username}&format=json`
-
-    try {
-      const response = await fetch(baseUrl + getAlbumInfo)
-      const resData = await response.json()
-
-      if (!resData.hasOwnProperty('error')) {
-        setAlbumInfo(resData.album)
-        setAlbumTrackList(resData.album.tracks.track)
-        // console.log('album tracklist', albumTrackList)
-      }
-    } catch (error) {
-      console.log('getAlbumInfoHandler erreur', error)
-    }
-  }, [getAlbumInfoHandler])
+  const { artistName, albumName, albumArt, trackName } = route.params
 
   const itemSelectHandler = (artist, title, image) => {
     navigation.push('Details', {
@@ -129,19 +59,25 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
   }
 
   useEffect(() => {
-    setIsLoading(true)
-    getTrackInfoHandler()
-      .then(() => getArtistInfoHandler())
-      .then(() => getAlbumInfoHandler())
-      .then(() => getSimilarTracksHandler())
-      .then(() => setIsLoading(false))
-  }, [
-    getArtistInfoHandler,
-    getSimilarTracksHandler,
-    getTrackInfoHandler,
-    getAlbumInfoHandler,
-    setIsLoading,
-  ])
+    const fetchData = async () => {
+      setIsLoading(true)
+
+      const trackInfoData = await getTrackInfo(username, artistName, trackName)
+      setTrackInfo(trackInfoData)
+
+      const similarTracksData = await getSimilarTracks(artistName, trackName)
+      setSimilarTracks(similarTracksData)
+
+      const artistInfoData = await getArtistInfo(username, artistName)
+      setArtistInfo(artistInfoData)
+
+      const albumInfoData = await getAlbumInfo(username, artistName, albumName)
+      setAlbumInfo(albumInfoData)
+
+      setIsLoading(false)
+    }
+    fetchData()
+  }, [])
 
   // Set the header title
   useLayoutEffect(() => {
@@ -150,76 +86,86 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
     })
   }, [navigation])
 
-  if (isLoading) {
-    return <LoadingContainer />
-  } else {
-    return (
-      <View style={styles.container}>
-        {error && (
-          <ErrorBanner>Sorry there's some missing information.</ErrorBanner>
-        )}
+  return (
+    <View style={{ flex: 1, backgroundColor: myColors.dark_gray }}>
+      {error && (
+        <ErrorBanner>Sorry there's some missing information.</ErrorBanner>
+      )}
 
-        <ScrollView>
-          <View>
-            <DetailsHeader
-              title={trackName}
-              subtitle={artistName}
-              image={albumArt}
-            />
+      <ScrollView>
+        <View style={{ flex: 1 }}>
+          <DetailsHeader
+            title={trackName}
+            subtitle={artistName}
+            image={albumArt}
+            style={{ marginBottom: 10 }}
+          />
 
-            <View style={styles.countersContainer}>
-              <Counter
-                title="Scrobbles"
-                icon="ios-musical-notes"
-                value={
-                  trackInfo.hasOwnProperty('playcount')
-                    ? abbreviateNumber(trackInfo.playcount)
-                    : '?'
-                }
-              />
-
-              <Counter
-                title="Listeners"
-                icon="md-person"
-                value={
-                  trackInfo.hasOwnProperty('listeners')
-                    ? abbreviateNumber(trackInfo.listeners)
-                    : '?'
-                }
-              />
-
-              <Counter
-                title="Played"
-                value={
-                  trackInfo.hasOwnProperty('userplaycount')
-                    ? abbreviateNumber(trackInfo.userplaycount)
-                    : '?'
-                }
-              />
+          {isLoading ? (
+            <View style={{ paddingVertical: 50 }}>
+              <LoadingContainer />
             </View>
+          ) : (
+            <View style={{ padding: 20 }}>
+              <RoundedContainer style={{ flex: 1, flexDirection: 'row' }}>
+                <Counter
+                  title="Played"
+                  icon="ios-musical-notes"
+                  value={
+                    trackInfo.hasOwnProperty('userplaycount')
+                      ? abbreviateNumber(trackInfo.userplaycount)
+                      : '?'
+                  }
+                />
 
-            <View style={styles.mainContainer}>
+                <Counter
+                  title="Scrobbles"
+                  icon="ios-globe"
+                  value={
+                    trackInfo.hasOwnProperty('playcount')
+                      ? abbreviateNumber(trackInfo.playcount)
+                      : '?'
+                  }
+                />
+
+                <Counter
+                  title="Listeners"
+                  icon="md-person"
+                  value={
+                    trackInfo.hasOwnProperty('listeners')
+                      ? abbreviateNumber(trackInfo.listeners)
+                      : '?'
+                  }
+                />
+              </RoundedContainer>
+
               {albumInfo && (
                 <RoundedContainer>
                   <TouchableOpacity onPress={albumDetailsHandler}>
-                    <DetailsTitle children="From the Album" />
-                    <View style={styles.albumDetailsContainer}>
+                    <DetailsTitle children="From the album" />
+                    <View style={{ flexDirection: 'row' }}>
                       <Image
                         source={{ uri: albumArt }}
-                        style={styles.albumDetailsArt}
+                        style={{
+                          width: 80,
+                          height: 80,
+                          borderRadius: 4,
+                          overflow: 'hidden',
+                        }}
                       />
-                      <View style={styles.albumInfoContainer}>
-                        <TitleH3
-                          numberOfLines={1}
+                      <View
+                        style={{
+                          marginLeft: 14,
+                          flex: 1,
+                          justifyContent: 'center',
+                        }}
+                      >
+                        <TitleH4
+                          numberOfLines={2}
                           style={styles.albumTitle}
                           children={albumInfo.name}
                         />
-                        <TextH5
-                          children={abbreviateNumber(albumInfo.listeners)}
-                        />
-                        <TextH5
-                          children={abbreviateNumber(albumInfo.playcount)}
-                        />
+                        <TextH5 children={albumInfo.listeners + ' listeners'} />
                       </View>
                     </View>
                   </TouchableOpacity>
@@ -230,18 +176,8 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                 <DetailsTitle children="Biography" />
                 <View>
                   <TextH6
-                    children={`Total Scrobbles: ${abbreviateNumber(
-                      artistData.artistScrobbled
-                    )}`}
-                  />
-                  <TextH6
-                    children={`Total Listeners: ${abbreviateNumber(
-                      artistData.artistListeners
-                    )}`}
-                  />
-                  <TextH6
                     numberOfLines={5}
-                    children={`Summary: ${artistData.artistSummary}`}
+                    children={artistInfo.artistSummary}
                   />
                 </View>
               </RoundedContainer>
@@ -249,55 +185,42 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
               {similarTracks.length !== 0 && (
                 <RoundedContainer>
                   <DetailsTitle children="Similar Tracks" />
-                  {similarTracks.map((itemData, index) => {
-                    return (
-                      <SimilarTrack
-                        item={itemData}
-                        index={index}
-                        key={index}
-                        onSelect={itemSelectHandler.bind(
-                          itemData.artist.name,
-                          itemData.name,
-                          itemData.image[3]['#text']
-                        )}
-                      />
-                    )
-                  })}
+                  {similarTracks.map((item) => (
+                    <SimilarTrack
+                      title={item.trackName}
+                      subtitle={item.artistName}
+                      image={item.albumArt}
+                      playcount={item.playcount}
+                      key={item.id}
+                      onSelect={itemSelectHandler.bind(
+                        this,
+                        item.artistName,
+                        item.trackName,
+                        item.albumArt
+                      )}
+                    />
+                  ))}
                 </RoundedContainer>
               )}
             </View>
-          </View>
-        </ScrollView>
-      </View>
-    )
-  }
+          )}
+        </View>
+      </ScrollView>
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    backgroundColor: myColors.dark_gray,
-  },
-  countersContainer: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
-    backgroundColor: myColors.dark_gray,
-  },
-  mainContainer: {
-    padding: 20,
-    backgroundColor: myColors.dark_gray,
-  },
   albumDetailsContainer: {
     flexDirection: 'row',
   },
   albumInfoContainer: {
     marginLeft: 14,
     flex: 1,
+    justifyContent: 'center',
   },
-  albumDetailsArt: {
-    width: 80,
-    height: 80,
-    borderRadius: 4,
-    overflow: 'hidden',
+  albumTitle: {
+    marginBottom: 4,
   },
 })
 

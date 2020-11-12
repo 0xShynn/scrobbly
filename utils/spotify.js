@@ -33,6 +33,7 @@ export const getSpotifyTrackImage = async (artist, track) => {
   const spotifyToken = await getSpotifyToken()
   let image_640 = image_blank_640
   let image_300 = image_blank_300
+  let artistId
 
   try {
     const response = await fetch(
@@ -58,16 +59,21 @@ export const getSpotifyTrackImage = async (artist, track) => {
 
       // Match the artist name
       const result = items.find((track) => track.artists[0].name === artist)
+
       image_640 = result.album.images[0].url
       image_300 = result.album.images[1].url
-      return { image_640, image_300 }
+      artistId = result.album.artists[0].id
+
+      return { image_640, image_300, artistId }
     }
 
     image_640 = response.tracks.items[0].album.images[0].url
     image_300 = response.tracks.items[0].album.images[1].url
-    return { image_640, image_300 }
+    artistId = response.tracks.items[0].artists[0].id
+
+    return { image_640, image_300, artistId }
   } catch (error) {
-    return { image_640, image_300 }
+    return { image_640, image_300, artistId }
   }
 }
 

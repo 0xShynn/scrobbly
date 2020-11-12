@@ -37,6 +37,7 @@ export const getScrobbles = async (username) => {
           track.album['#text'],
           track.image[3]['#text'],
           track.hasOwnProperty(['@attr']) ? true : false,
+          track.playcount,
           track.hasOwnProperty('date') ? track.date['#text'] : undefined
         )
       )
@@ -68,11 +69,13 @@ export const getTopTracks = async (username, period) => {
       data.push(
         new Track(
           track.artist.name,
+          spotifyTrackImage.artistId,
           track.name,
           spotifyTrackImage.image_640,
           spotifyTrackImage.image_300,
           track.duration,
-          track.playcount
+          track.playcount,
+          track['@attr'].rank
         )
       )
     }
@@ -142,18 +145,74 @@ export const getTopArtists = async (username, period) => {
   }
 }
 
-export const getSimilarTracks = async (artist, track) => {
-  const method = `?method=track.getsimilar&artist=${artist}&track=${track}&api_key=${api_key}&limit=6&format=json`
+export const getArtistInfo = async (username, artistName) => {
+  const method = `?method=artist.getinfo&artist=${artistName}&username=${username}&api_key=${api_key}&format=json`
 
   try {
     const response = await fetch(baseUrl + method).then((res) => res.json())
 
-    if (response.similartracks.track.length === 0) {
-      console.log('No similar tracks were found.')
-      return
+    if (response.hasOwnProperty('error')) {
+      throw new Error(response.message)
     }
 
+    const data = {
+      artistBio: response.artist.bio.content,
+      artistSummary: response.artist.bio.summary,
+      artistName: response.artist.name,
+      artistScrobbled: response.artist.stats.playcount,
+      artistListeners: response.artist.stats.listeners,
+    }
+    return data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getAlbumInfo = async (username, artistName, albumName) => {
+  const method = `?method=album.getinfo&api_key=${api_key}&artist=${artistName}&album=${albumName}&username=${username}&format=json`
+
+  try {
+    const response = await fetch(baseUrl + method).then((res) => res.json())
+
+    if (response.hasOwnProperty('error')) {
+      throw new Error(response.message)
+    }
+
+    const data = response.album
+    return data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getTrackInfo = async (username, artistName, trackName) => {
+  const method = `?method=track.getInfo&api_key=${api_key}&artist=${artistName}&track=${trackName}&username=${username}&format=json`
+
+  try {
+    const response = await fetch(baseUrl + method).then((res) => res.json())
+
+    if (response.hasOwnProperty('error')) {
+      throw new Error(response.message)
+    }
+    const data = response.track
+    return data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getSimilarTracks = async (artist, track) => {
+  const method = `?method=track.getsimilar&artist=${artist}&track=${track}&api_key=${api_key}&limit=5&format=json`
+
+  try {
+    const response = await fetch(baseUrl + method).then((res) => res.json())
     const data = []
+
+    if (response.similartracks.track.length === 0) {
+      console.log('No similar tracks were found.')
+      return data
+    }
+
     let spotifyTrackImage
     for (const track of response.similartracks.track) {
       spotifyTrackImage = await getSpotifyTrackImage(
@@ -167,6 +226,7 @@ export const getSimilarTracks = async (artist, track) => {
           undefined,
           spotifyTrackImage.image_300,
           false,
+          track.playcount,
           undefined
         )
       )

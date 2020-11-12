@@ -1,14 +1,23 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react'
 
-import { FlatList, StyleSheet, Image, View } from 'react-native'
+import { FlatList, View } from 'react-native'
 import DetailsHeader from '../components/DetailsHeader'
-import { TextH5 } from '../components/UI/Typography'
+import SimilarTrack from '../components/SimilarTrack'
+import { TextH6, TitleH3 } from '../components/UI/Typography'
 import myColors from '../constants/myColors'
 import { getSimilarTracks } from '../utils/lastfm'
 
 const TrackDetailsScreen = ({ route, navigation }) => {
-  const { artistName, trackName, albumImage } = route.params
+  const { artistName, trackName, albumImage, playcount } = route.params
   const [similarTracks, setSimilarTracks] = useState([])
+
+  const itemSelectHandler = (artist, title, image) => {
+    navigation.push('Details', {
+      artist,
+      title,
+      image,
+    })
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -27,35 +36,45 @@ const TrackDetailsScreen = ({ route, navigation }) => {
 
   const itemList = ({ item }) => {
     return (
-      <View style={{ marginBottom: 10 }}>
-        <TextH5>{item.artistName}</TextH5>
-        <TextH5>{item.trackName}</TextH5>
-        <Image
-          source={{ uri: item.albumArt }}
-          style={{ width: 80, height: 80, borderRadius: 6 }}
-        />
-      </View>
+      <SimilarTrack
+        title={item.trackName}
+        subtitle={item.artistName}
+        image={item.albumArt}
+        onSelect={itemSelectHandler.bind(
+          this,
+          item.artistName,
+          item.trackName,
+          item.albumArt
+        )}
+      />
     )
   }
 
   const listHeader = () => {
     return (
-      <DetailsHeader
-        image={albumImage}
-        title={trackName}
-        subtitle={artistName}
-      />
+      <>
+        <DetailsHeader
+          image={albumImage}
+          title={trackName}
+          subtitle={artistName}
+          style={{ marginBottom: 40 }}
+        />
+        <View>
+          <TextH6>{playcount}</TextH6>
+          <TitleH3>From the Album</TitleH3>
+        </View>
+      </>
     )
   }
 
   return (
-    <View>
+    <View style={{ backgroundColor: myColors.dark_gray, flex: 1 }}>
       <FlatList
         data={similarTracks}
         renderItem={itemList}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={listHeader}
-        style={{ backgroundColor: myColors.dark_gray }}
+        style={{ backgroundColor: myColors.dark_gray, padding: 20 }}
       />
     </View>
   )

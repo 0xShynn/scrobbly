@@ -1,6 +1,7 @@
 import React from 'react'
-import { StyleSheet, Text } from 'react-native'
+import { StyleSheet, Text, View } from 'react-native'
 import myColors from '../../constants/myColors'
+import { Ionicons } from '@expo/vector-icons'
 
 export const TextH2 = (props) => {
   return (
@@ -169,16 +170,30 @@ export const TitleH6 = (props) => {
 
 export const DetailsTitle = (props) => {
   return (
-    <TitleH4
+    <View
       style={{
+        flex: 1,
+        flexDirection: 'row',
+        alignItems: 'center',
         marginBottom: 12,
-        textTransform: 'uppercase',
-        fontFamily: 'Inter_400Regular',
-        color: 'white',
       }}
     >
-      {props.children}
-    </TitleH4>
+      <Ionicons
+        name="md-arrow-dropright"
+        size={24}
+        color={myColors.cool_gray_600}
+      />
+
+      <TitleH4
+        style={{
+          fontFamily: 'Inter_400Regular',
+          color: myColors.cool_gray_400,
+          marginLeft: 10,
+        }}
+      >
+        {props.children}
+      </TitleH4>
+    </View>
   )
 }
 
