@@ -29,11 +29,12 @@ export const getSpotifyToken = async () => {
   }
 }
 
-export const getSpotifyTrackImage = async (artist, track) => {
+export const getSpotifyTrackInfo = async (artist, track) => {
   const spotifyToken = await getSpotifyToken()
   let image_640 = image_blank_640
   let image_300 = image_blank_300
   let artistId
+  let albumName
 
   try {
     const response = await fetch(
@@ -63,17 +64,19 @@ export const getSpotifyTrackImage = async (artist, track) => {
       image_640 = result.album.images[0].url
       image_300 = result.album.images[1].url
       artistId = result.album.artists[0].id
+      albumName = response.album.name
 
-      return { image_640, image_300, artistId }
+      return { image_640, image_300, artistId, albumName }
     }
 
     image_640 = response.tracks.items[0].album.images[0].url
     image_300 = response.tracks.items[0].album.images[1].url
     artistId = response.tracks.items[0].artists[0].id
+    albumName = response.tracks.items[0].album.name
 
-    return { image_640, image_300, artistId }
+    return { image_640, image_300, artistId, albumName }
   } catch (error) {
-    return { image_640, image_300, artistId }
+    throw error
   }
 }
 

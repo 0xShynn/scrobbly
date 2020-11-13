@@ -39,11 +39,17 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
 
   const { artistName, albumName, albumArt, trackName } = route.params
 
-  const itemSelectHandler = (artist, title, image) => {
+  const itemSelectHandler = async (
+    artistName,
+    trackName,
+    albumArt,
+    albumName
+  ) => {
     navigation.push('Details', {
-      artist,
-      title,
-      image,
+      artistName,
+      trackName,
+      albumArt,
+      albumName,
     })
   }
 
@@ -196,7 +202,8 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                         this,
                         item.artistName,
                         item.trackName,
-                        item.albumArt
+                        item.albumArt,
+                        item.albumName
                       )}
                     />
                   ))}

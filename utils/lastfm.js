@@ -4,7 +4,7 @@ import Scrobble from '../models/scrobble'
 import Track from '../models/track'
 import { image_blank_300 } from './expo'
 
-import { getSpotifyTrackImage, getSpotifyArtistImage } from './spotify'
+import { getSpotifyTrackInfo, getSpotifyArtistImage } from './spotify'
 
 export const baseUrl = 'https://ws.audioscrobbler.com/2.0/'
 export const api_key = process.env.LASTFM_API_KEY
@@ -215,7 +215,7 @@ export const getSimilarTracks = async (artist, track) => {
 
     let spotifyTrackImage
     for (const track of response.similartracks.track) {
-      spotifyTrackImage = await getSpotifyTrackImage(
+      spotifyTrackImage = await getSpotifyTrackInfo(
         track.artist.name,
         track.name
       )
@@ -223,7 +223,7 @@ export const getSimilarTracks = async (artist, track) => {
         new Scrobble(
           track.artist.name,
           track.name,
-          undefined,
+          spotifyTrackImage.albumName,
           spotifyTrackImage.image_300,
           false,
           track.playcount,

@@ -3,7 +3,7 @@ import { View, Image } from 'react-native'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { abbreviateNumber } from '../utils/numbers'
 import Badge from './UI/Badge'
-import { TextH6, TitleH5 } from './UI/Typography'
+import { TextH6, TitleH5, TitleH6 } from './UI/Typography'
 import myColors from '../constants/myColors'
 
 const SimilarTrack = (props) => {
@@ -14,18 +14,18 @@ const SimilarTrack = (props) => {
       >
         <Image
           source={{ uri: props.image }}
-          style={{ width: 60, height: 60, borderRadius: 6, marginRight: 15 }}
+          style={{ width: 60, height: 60, borderRadius: 6, marginRight: 10 }}
         />
         <View style={{ flex: 1 }}>
-          <TitleH5 style={{ marginBottom: 2 }} numberOfLines={1}>
+          <TitleH6 style={{ marginBottom: 2 }} numberOfLines={1}>
             {props.title}
-          </TitleH5>
+          </TitleH6>
           <TextH6 style={{ color: myColors.cool_gray_400 }}>
             {props.subtitle}
           </TextH6>
         </View>
         {props.playcount ? (
-          <View>
+          <View style={{ marginLeft: 10 }}>
             <Badge>{abbreviateNumber(props.playcount)}</Badge>
           </View>
         ) : null}
