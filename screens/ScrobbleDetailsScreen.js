@@ -27,6 +27,7 @@ import {
 import myColors from '../constants/myColors'
 import DetailsHeader from '../components/DetailsHeader'
 import { useSelector } from 'react-redux'
+import { Ionicons } from '@expo/vector-icons'
 
 const ScrobbleDetailsScreen = ({ navigation, route }) => {
   const [trackInfo, setTrackInfo] = useState({})
@@ -36,7 +37,6 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState()
   const username = useSelector((state) => state.auth.username)
-
   const { artistName, albumName, albumArt, trackName } = route.params
 
   const itemSelectHandler = async (
@@ -45,7 +45,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
     albumArt,
     albumName
   ) => {
-    navigation.push('Details', {
+    navigation.push('Scrobble Details', {
       artistName,
       trackName,
       albumArt,
@@ -54,9 +54,6 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
   }
 
   const albumDetailsHandler = () => {
-    if (albumTrackList.length <= 0) {
-      return
-    }
     navigation.navigate('Album Details', {
       artistName,
       albumArt,
@@ -64,21 +61,39 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
     })
   }
 
+  const biographyDetailsHandler = () => {
+    navigation.navigate('Biography Details', { artistInfo, artistName })
+  }
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
 
-      const trackInfoData = await getTrackInfo(username, artistName, trackName)
-      setTrackInfo(trackInfoData)
+      try {
+        const trackInfoData = await getTrackInfo(
+          username,
+          artistName,
+          trackName
+        )
+        setTrackInfo(trackInfoData)
 
-      const similarTracksData = await getSimilarTracks(artistName, trackName)
-      setSimilarTracks(similarTracksData)
+        const artistInfoData = await getArtistInfo(username, artistName)
+        setArtistInfo(artistInfoData)
 
-      const artistInfoData = await getArtistInfo(username, artistName)
-      setArtistInfo(artistInfoData)
+        const similarTracksData = await getSimilarTracks(artistName, trackName)
+        setSimilarTracks(similarTracksData)
 
-      const albumInfoData = await getAlbumInfo(username, artistName, albumName)
-      setAlbumInfo(albumInfoData)
+        const albumInfoData = await getAlbumInfo(
+          username,
+          artistName,
+          albumName
+        )
+        setAlbumInfo(albumInfoData)
+      } catch (error) {
+        setError(error)
+        setIsLoading(false)
+        console.log(error)
+      }
 
       setIsLoading(false)
     }
@@ -94,9 +109,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: myColors.dark_gray }}>
-      {error && (
-        <ErrorBanner>Sorry there's some missing information.</ErrorBanner>
-      )}
+      {error && <ErrorBanner>{error.message}</ErrorBanner>}
 
       <ScrollView>
         <View style={{ flex: 1 }}>
@@ -178,15 +191,69 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                 </RoundedContainer>
               )}
 
-              <RoundedContainer>
-                <DetailsTitle children="Biography" />
+              {artistInfo && (
                 <View>
-                  <TextH6
-                    numberOfLines={5}
-                    children={artistInfo.artistSummary}
-                  />
+                  <View
+                    style={{
+                      alignItems: 'center',
+                      backgroundColor: '#1E1E1E',
+                      padding: 20,
+                      borderTopStartRadius: 20,
+                      borderTopEndRadius: 20,
+                      borderBottomWidth: 1,
+                      borderBottomColor: '#111',
+                    }}
+                  >
+                    <TouchableOpacity onPress={biographyDetailsHandler}>
+                      <Image
+                        source={{ uri: artistInfo.image }}
+                        style={{
+                          width: 140,
+                          height: 140,
+                          borderRadius: 70,
+                          marginBottom: 20,
+                        }}
+                      />
+                    </TouchableOpacity>
+                    <TitleH4 style={{ marginBottom: 4 }}>{artistName}</TitleH4>
+                    <TextH6
+                      style={{
+                        color: myColors.cool_gray_400,
+                      }}
+                    >
+                      Scrobbles {abbreviateNumber(artistInfo.playcount)} |
+                      Listeners {abbreviateNumber(artistInfo.listeners)}
+                    </TextH6>
+                  </View>
+                  <TouchableOpacity
+                    onPress={biographyDetailsHandler}
+                    style={{
+                      flexDirection: 'row',
+                      flex: 1,
+                      alignItems: 'center',
+                      backgroundColor: '#1A1A1A',
+                      padding: 20,
+                      borderBottomEndRadius: 20,
+                      borderBottomStartRadius: 20,
+                      marginBottom: 20,
+                      borderTopWidth: 1,
+                      borderTopColor: '#333',
+                    }}
+                  >
+                    <TextH6
+                      numberOfLines={5}
+                      children={artistInfo.summary}
+                      style={{ flex: 1 }}
+                    />
+                    <Ionicons
+                      name="ios-arrow-forward"
+                      size={24}
+                      color={myColors.cool_gray_500}
+                      style={{ paddingLeft: 15 }}
+                    />
+                  </TouchableOpacity>
                 </View>
-              </RoundedContainer>
+              )}
 
               {similarTracks.length !== 0 && (
                 <RoundedContainer>

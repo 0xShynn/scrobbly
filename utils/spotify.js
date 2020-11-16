@@ -62,13 +62,15 @@ export const getSpotifyTrackInfo = async (artist, track) => {
       }
 
       // Match the artist name
-      const result = items.find((track) => track.artists[0].name === artist)
+      const selectedTrack = items.find(
+        (track) => track.artists[0].name === artist
+      )
 
       data = {
-        image_640: result.album.images[0].url,
-        image_300: result.album.images[1].url,
-        artistId: result.album.artists[0].id,
-        albumName: result.album.name,
+        image_640: selectedTrack.album.images[0].url,
+        image_300: selectedTrack.album.images[1].url,
+        artistId: selectedTrack.album.artists[0].id,
+        albumName: selectedTrack.album.name,
       }
 
       return data
@@ -91,22 +93,16 @@ export const getSpotifyArtistImage = async (artist) => {
   let image_640 = image_blank_640
   let image_300 = image_blank_300
 
-  // console.log('the artist name is : ', artist)
-
   try {
     const {
       artists: { items },
     } = await spotifySearch(encodeURI(artist), 'artist')
 
-    // console.log('les items', items)
-
     if (items.length === 0) {
       return { image_640, image_300 }
     }
 
-    const selectedArtist = items.find((item) => item.name === artist)
-
-    // console.log('selectedArtist', selectedArtist)
+    // const selectedArtist = items.find((item) => item.name === artist)
 
     image_640 = items[0].images[0].url
     image_300 = items[0].images[1].url
