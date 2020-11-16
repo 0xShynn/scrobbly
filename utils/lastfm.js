@@ -59,20 +59,17 @@ export const getTopTracks = async (username, period) => {
     }
 
     const data = []
-    let spotifyTrackImage
+    let spotifyData
 
     for (const track of response.toptracks.track) {
-      spotifyTrackImage = await getSpotifyTrackImage(
-        track.artist.name,
-        track.name
-      )
+      spotifyData = await getSpotifyTrackInfo(track.artist.name, track.name)
       data.push(
         new Track(
           track.artist.name,
-          spotifyTrackImage.artistId,
+          spotifyData.artistId,
           track.name,
-          spotifyTrackImage.image_640,
-          spotifyTrackImage.image_300,
+          spotifyData.image_640,
+          spotifyData.image_300,
           track.duration,
           track.playcount,
           track['@attr'].rank
@@ -155,12 +152,14 @@ export const getArtistInfo = async (username, artistName) => {
       throw new Error(response.message)
     }
 
+    const artistImage = await getSpotifyArtistImage(artistName)
+
     const data = {
-      artistBio: response.artist.bio.content,
-      artistSummary: response.artist.bio.summary,
-      artistName: response.artist.name,
-      artistScrobbled: response.artist.stats.playcount,
-      artistListeners: response.artist.stats.listeners,
+      bio: response.artist.bio.content,
+      summary: response.artist.bio.summary,
+      playcount: response.artist.stats.playcount,
+      listeners: response.artist.stats.listeners,
+      image: artistImage.image_300,
     }
     return data
   } catch (error) {
@@ -173,7 +172,6 @@ export const getAlbumInfo = async (username, artistName, albumName) => {
 
   try {
     const response = await fetch(baseUrl + method).then((res) => res.json())
-
     if (response.hasOwnProperty('error')) {
       throw new Error(response.message)
     }
@@ -194,7 +192,13 @@ export const getTrackInfo = async (username, artistName, trackName) => {
     if (response.hasOwnProperty('error')) {
       throw new Error(response.message)
     }
-    const data = response.track
+
+    const data = {
+      listeners: response.track.listeners,
+      playcount: response.track.playcount,
+      userplaycount: response.track.userplaycount,
+    }
+
     return data
   } catch (error) {
     throw error
@@ -213,23 +217,26 @@ export const getSimilarTracks = async (artist, track) => {
       return data
     }
 
-    let spotifyTrackImage
+    let spotifyTrackData
     for (const track of response.similartracks.track) {
-      spotifyTrackImage = await getSpotifyTrackInfo(
+      spotifyTrackData = await getSpotifyTrackInfo(
         track.artist.name,
         track.name
       )
-      data.push(
-        new Scrobble(
-          track.artist.name,
-          track.name,
-          spotifyTrackImage.albumName,
-          spotifyTrackImage.image_300,
-          false,
-          track.playcount,
-          undefined
+
+      if (spotifyTrackData !== null) {
+        data.push(
+          new Scrobble(
+            track.artist.name,
+            track.name,
+            spotifyTrackData.albumName,
+            spotifyTrackData.image_300,
+            false,
+            track.playcount,
+            undefined
+          )
         )
-      )
+      }
     }
     return data
   } catch (error) {
