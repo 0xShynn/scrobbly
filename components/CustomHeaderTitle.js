@@ -20,7 +20,6 @@ export default CustomHeaderTitle
 const styles = StyleSheet.create({
   headerTitle: {
     flex: 1,
-
     flexDirection: 'row',
     alignItems: 'flex-end',
     paddingBottom: 8,

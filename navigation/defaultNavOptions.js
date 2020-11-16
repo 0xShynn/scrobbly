@@ -2,10 +2,10 @@ import myColors from '../constants/myColors'
 
 export const defaultNavOptions = {
   headerStyle: {
-    backgroundColor: myColors.primary,
+    backgroundColor: myColors.cool_gray_800,
     shadowColor: 'transparent',
     elevation: 0,
-    borderBottomColor: myColors.primary_darker,
+    borderBottomColor: myColors.cool_gray_700,
     borderBottomWidth: 1,
   },
   headerTitleStyle: {
