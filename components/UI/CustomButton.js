@@ -8,8 +8,9 @@ export default function CustomButton({ label, onPress }) {
     <TouchableOpacity
       style={{
         borderRadius: 10,
-        padding: 16,
-        minWidth: 200,
+        paddingVertical: 14,
+        paddingHorizontal: 12,
+        minWidth: 160,
         justifyContent: 'center',
         alignItems: 'center',
         backgroundColor: myColors.primary,
@@ -17,11 +18,7 @@ export default function CustomButton({ label, onPress }) {
       activeOpacity={0.7}
       onPress={onPress}
     >
-      <TitleH5
-        style={{ fontSize: 18, color: 'white', textTransform: 'uppercase' }}
-      >
-        {label}
-      </TitleH5>
+      <TitleH5 style={{ fontSize: 16, color: 'white' }}>{label}</TitleH5>
     </TouchableOpacity>
   )
 }

@@ -9,7 +9,6 @@ import {
 import SimilarTrack from '../components/SimilarTrack'
 import RoundedContainer from '../components/UI/RoundedContainer'
 import Counter from '../components/UI/Counter'
-import ErrorBanner from '../components/UI/ErrorBanner'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import {
   getAlbumInfo,
@@ -28,10 +27,11 @@ import myColors from '../constants/myColors'
 import DetailsHeader from '../components/DetailsHeader'
 import { useSelector } from 'react-redux'
 import { Ionicons } from '@expo/vector-icons'
+import CustomButton from '../components/UI/CustomButton'
 
 const ScrobbleDetailsScreen = ({ navigation, route }) => {
-  const [trackInfo, setTrackInfo] = useState({})
-  const [artistInfo, setArtistInfo] = useState({})
+  const [trackInfo, setTrackInfo] = useState()
+  const [artistInfo, setArtistInfo] = useState()
   const [similarTracks, setSimilarTracks] = useState([])
   const [albumInfo, setAlbumInfo] = useState()
   const [isLoading, setIsLoading] = useState(false)
@@ -95,6 +95,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
         console.log(error)
       }
 
+      console.log('ici', artistInfo)
       setIsLoading(false)
     }
     fetchData()
@@ -109,8 +110,6 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: myColors.dark_gray }}>
-      {error && <ErrorBanner>{error.message}</ErrorBanner>}
-
       <ScrollView>
         <View style={{ flex: 1 }}>
           <DetailsHeader
@@ -126,39 +125,57 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
             </View>
           ) : (
             <View style={{ padding: 20 }}>
-              <RoundedContainer style={{ flex: 1, flexDirection: 'row' }}>
-                <Counter
-                  title="Played"
-                  icon="ios-musical-notes"
-                  value={
-                    trackInfo.hasOwnProperty('userplaycount')
-                      ? abbreviateNumber(trackInfo.userplaycount)
-                      : '?'
-                  }
-                />
+              {error ? (
+                <>
+                  <RoundedContainer style={{ alignItems: 'center' }}>
+                    <TextH5 style={{ marginVertical: 15 }}>
+                      {error.message}
+                    </TextH5>
+                  </RoundedContainer>
+                  <CustomButton
+                    label="Go Back"
+                    onPress={() => {
+                      navigation.goBack()
+                    }}
+                  />
+                </>
+              ) : null}
 
-                <Counter
-                  title="Scrobbles"
-                  icon="ios-globe"
-                  value={
-                    trackInfo.hasOwnProperty('playcount')
-                      ? abbreviateNumber(trackInfo.playcount)
-                      : '?'
-                  }
-                />
+              {trackInfo !== undefined && (
+                <RoundedContainer style={{ flex: 1, flexDirection: 'row' }}>
+                  <Counter
+                    title="Played"
+                    icon="ios-musical-notes"
+                    value={
+                      trackInfo.hasOwnProperty('userplaycount')
+                        ? abbreviateNumber(trackInfo.userplaycount)
+                        : '?'
+                    }
+                  />
 
-                <Counter
-                  title="Listeners"
-                  icon="md-person"
-                  value={
-                    trackInfo.hasOwnProperty('listeners')
-                      ? abbreviateNumber(trackInfo.listeners)
-                      : '?'
-                  }
-                />
-              </RoundedContainer>
+                  <Counter
+                    title="Scrobbles"
+                    icon="ios-globe"
+                    value={
+                      trackInfo.hasOwnProperty('playcount')
+                        ? abbreviateNumber(trackInfo.playcount)
+                        : '?'
+                    }
+                  />
 
-              {albumInfo && (
+                  <Counter
+                    title="Listeners"
+                    icon="md-person"
+                    value={
+                      trackInfo.hasOwnProperty('listeners')
+                        ? abbreviateNumber(trackInfo.listeners)
+                        : '?'
+                    }
+                  />
+                </RoundedContainer>
+              )}
+
+              {albumInfo !== undefined && (
                 <RoundedContainer>
                   <TouchableOpacity onPress={albumDetailsHandler}>
                     <DetailsTitle children="From the album" />
@@ -191,7 +208,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                 </RoundedContainer>
               )}
 
-              {artistInfo && (
+              {artistInfo !== undefined && (
                 <View>
                   <View
                     style={{

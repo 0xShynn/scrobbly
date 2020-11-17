@@ -21,16 +21,15 @@ const itemList = ({ item }) => {
         style={{ flex: 1, color: 'white' }}
         children={item.trackName}
       />
-      <TextH6 children={item.duration} />
+      <TextH6 style={{ paddingLeft: 10 }} children={item.duration} />
     </View>
   )
 }
 
 const itemSeparator = () => <View style={styles.itemSeparator} />
 
-const AlbumDetailsScreen = (props) => {
-  const { artistName, albumName, albumArt } = props.route.params
-
+const AlbumDetailsScreen = ({ navigation, route }) => {
+  const { artistName, albumName, albumArt } = route.params
   const [isLoading, setIsLoading] = useState(false)
   const [albumTracklist, setAlbumTracklist] = useState([])
   const [data, setData] = useState({})
@@ -140,17 +139,17 @@ const AlbumDetailsScreen = (props) => {
           style={{ textAlign: 'center' }}
           children="Tracklist not found"
         />
-        <Button title="Go Back" onPress={() => props.navigation.goBack()} />
+        <Button title="Go Back" onPress={() => navigation.goBack()} />
       </View>
     )
   }
 
   // Set the header title
   useLayoutEffect(() => {
-    props.navigation.setOptions({
+    navigation.setOptions({
       title: `${artistName} - ${albumName}`,
     })
-  }, [props.navigation])
+  }, [navigation])
 
   return (
     <View style={styles.container}>
@@ -190,11 +189,11 @@ const styles = StyleSheet.create({
   trackItem: {
     flexDirection: 'row',
     paddingHorizontal: 30,
-    paddingVertical: 14,
+    paddingVertical: 18,
     backgroundColor: myColors.dark_gray,
   },
   itemSeparator: {
     height: 1,
-    backgroundColor: myColors.cool_gray_990,
+    backgroundColor: '#1C1C1C',
   },
 })
