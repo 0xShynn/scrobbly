@@ -48,9 +48,9 @@ const NewListItem = (props) => {
             style={{ marginTop: 2, color: 'white' }}
             children={props.subtitle}
           />
-          {props.playCount ? (
+          {props.playcount ? (
             <TextH6 style={{ marginTop: 2, color: myColors.cool_gray_400 }}>
-              {props.playCount} scrobbles
+              {props.playcount} scrobbles
             </TextH6>
           ) : null}
         </View>

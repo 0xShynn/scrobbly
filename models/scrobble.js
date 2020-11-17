@@ -9,7 +9,8 @@ class Scrobble {
     albumArt,
     isNowPlaying,
     playcount,
-    date
+    date,
+    rank
   ) {
     this.id = uuidv4()
     this.artistName = artistName
@@ -19,6 +20,7 @@ class Scrobble {
     this.isNowPlaying = isNowPlaying
     this.playcount = playcount
     this.date = date
+    this.rank = rank
   }
 }
 

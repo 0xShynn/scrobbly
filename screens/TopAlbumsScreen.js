@@ -51,7 +51,7 @@ const TopAlbumsScreen = ({ navigation }) => {
         image={item.albumArt}
         title={item.albumName}
         subtitle={item.artistName}
-        playcount={item.playCount}
+        playcount={item.playcount}
         onSelect={itemSelectHandler.bind(
           this,
           item.artistName,

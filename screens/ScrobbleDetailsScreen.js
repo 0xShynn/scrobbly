@@ -37,7 +37,13 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState()
   const username = useSelector((state) => state.auth.username)
-  const { artistName, albumName, albumArt, trackName } = route.params
+  const {
+    artistName,
+    albumName,
+    albumArt,
+    trackName,
+    topPlaycount,
+  } = route.params
 
   const itemSelectHandler = async (
     artistName,
@@ -95,7 +101,6 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
         console.log(error)
       }
 
-      console.log('ici', artistInfo)
       setIsLoading(false)
     }
     fetchData()
@@ -147,30 +152,20 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                     title="Played"
                     icon="ios-musical-notes"
                     value={
-                      trackInfo.hasOwnProperty('userplaycount')
-                        ? abbreviateNumber(trackInfo.userplaycount)
-                        : '?'
+                      topPlaycount ? topPlaycount : trackInfo.userplaycount
                     }
                   />
 
                   <Counter
                     title="Scrobbles"
                     icon="ios-globe"
-                    value={
-                      trackInfo.hasOwnProperty('playcount')
-                        ? abbreviateNumber(trackInfo.playcount)
-                        : '?'
-                    }
+                    value={abbreviateNumber(trackInfo.playcount)}
                   />
 
                   <Counter
                     title="Listeners"
                     icon="md-person"
-                    value={
-                      trackInfo.hasOwnProperty('listeners')
-                        ? abbreviateNumber(trackInfo.listeners)
-                        : '?'
-                    }
+                    value={abbreviateNumber(trackInfo.listeners)}
                   />
                 </RoundedContainer>
               )}

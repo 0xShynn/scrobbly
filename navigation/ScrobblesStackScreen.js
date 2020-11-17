@@ -3,12 +3,12 @@ import { createStackNavigator } from '@react-navigation/stack'
 import ScrobblesScreen from '../screens/ScrobblesScreen'
 import ScrobbleDetailsScreen from '../screens/ScrobbleDetailsScreen'
 import AlbumDetailsScreen from '../screens/AlbumDetailsScreen'
-import { defaultNavOptions } from './defaultNavOptions'
 import BiographyDetailsScreen from '../screens/BiographyDetailsScreen'
+import { defaultNavOptions } from './defaultNavOptions'
 
 const Stack = createStackNavigator()
 
-const DetailsStackScreen = () => {
+const ScrobblesStackScreen = () => {
   return (
     <Stack.Navigator screenOptions={defaultNavOptions}>
       <Stack.Screen name="Scrobbles" component={ScrobblesScreen} />
@@ -22,4 +22,4 @@ const DetailsStackScreen = () => {
   )
 }
 
-export default DetailsStackScreen
+export default ScrobblesStackScreen

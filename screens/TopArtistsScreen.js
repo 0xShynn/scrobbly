@@ -37,11 +37,11 @@ const TopArtistsScreen = ({ navigation }) => {
     [dispatch]
   )
 
-  const itemSelectHandler = (artistName, artistImage, playCount) => {
+  const itemSelectHandler = (artistName, artistImage, playcount) => {
     navigation.navigate('Artist Details', {
       artistName,
       artistImage,
-      playCount,
+      playcount,
     })
   }
 
@@ -50,12 +50,12 @@ const TopArtistsScreen = ({ navigation }) => {
       <ListItemCover
         title={item.artistName}
         image={item.artistImage300}
-        playcount={item.playCount}
+        playcount={item.playcount}
         onSelect={itemSelectHandler.bind(
           this,
           item.artistName,
           item.artistImage640,
-          item.playCount
+          item.playcount
         )}
         isLoading={isLoading}
         isRefreshing={isRefreshing}

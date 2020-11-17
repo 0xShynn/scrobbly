@@ -1,7 +1,6 @@
 import Album from '../models/album'
 import Artist from '../models/artist'
 import Scrobble from '../models/scrobble'
-import Track from '../models/track'
 import { image_blank_300 } from './expo'
 
 import { getSpotifyTrackInfo, getSpotifyArtistImage } from './spotify'
@@ -38,7 +37,8 @@ export const getScrobbles = async (username) => {
           track.image[3]['#text'],
           track.hasOwnProperty(['@attr']) ? true : false,
           track.playcount,
-          track.hasOwnProperty('date') ? track.date['#text'] : undefined
+          track.hasOwnProperty('date') ? track.date['#text'] : undefined,
+          undefined
         )
       )
     }
@@ -64,14 +64,14 @@ export const getTopTracks = async (username, period) => {
     for (const track of response.toptracks.track) {
       spotifyData = await getSpotifyTrackInfo(track.artist.name, track.name)
       data.push(
-        new Track(
+        new Scrobble(
           track.artist.name,
-          spotifyData.artistId,
           track.name,
-          spotifyData.image_640,
+          spotifyData.albumName,
           spotifyData.image_300,
-          track.duration,
+          false,
           track.playcount,
+          undefined,
           track['@attr'].rank
         )
       )
@@ -233,6 +233,7 @@ export const getSimilarTracks = async (artist, track) => {
             spotifyTrackData.image_300,
             false,
             track.playcount,
+            undefined,
             undefined
           )
         )

@@ -40,26 +40,26 @@ const TopTracksScreen = ({ navigation }) => {
   const itemSelectHandler = (
     artistName,
     trackName,
-    albumImage,
-    artistId,
-    playcount
+    albumArt,
+    albumName,
+    topPlaycount
   ) => {
-    navigation.navigate('Track Details', {
+    navigation.navigate('Scrobble Details', {
       artistName,
       trackName,
-      albumImage,
-      artistId,
-      playcount,
+      albumArt,
+      albumName,
+      topPlaycount,
     })
   }
 
   const listItem = ({ item }) => {
     return (
       <NewListItem
-        image={item.albumImage300}
+        image={item.albumArt}
         title={item.trackName}
         subtitle={item.artistName}
-        playCount={item.playCount}
+        playcount={item.playcount}
         rank={item.rank}
         isLoading={isLoading}
         isRefreshing={isRefreshing}
@@ -67,10 +67,9 @@ const TopTracksScreen = ({ navigation }) => {
           this,
           item.artistName,
           item.trackName,
-          item.albumImage300,
-          item.artistId,
-          item.playCount,
-          item.rank
+          item.albumArt,
+          item.albumName,
+          item.playcount
         )}
       />
     )

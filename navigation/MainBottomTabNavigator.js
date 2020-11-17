@@ -4,7 +4,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { SimpleLineIcons } from '@expo/vector-icons'
 import myColors from '../constants/myColors'
 
-import DetailsStackScreen from './DetailsStackScreen'
+import ScrobblesStackScreen from './ScrobblesStackScreen'
 import TopAlbumsStackScreen from './TopAlbumsStackScreen'
 import TopArtistsStackScreen from './TopArtistsStackScreen'
 import TopTracksStackScreen from './TopTracksStackScreen'
@@ -67,7 +67,7 @@ const MainBottomTabNavigator = () => {
         },
       }}
     >
-      <Tab.Screen name="Scrobbles" component={DetailsStackScreen} />
+      <Tab.Screen name="Scrobbles" component={ScrobblesStackScreen} />
       <Tab.Screen name="Albums" component={TopAlbumsStackScreen} />
       <Tab.Screen name="Tracks" component={TopTracksStackScreen} />
       <Tab.Screen name="Artists" component={TopArtistsStackScreen} />

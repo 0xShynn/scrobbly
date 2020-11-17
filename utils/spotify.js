@@ -57,7 +57,9 @@ export const getSpotifyTrackInfo = async (artist, track) => {
       } = await spotifySearch(track, 'track')
 
       if (items.length === 0) {
-        console.log('Nothing was found for : ' + track + ' from ' + artist)
+        console.log(
+          '[Similar Track] Nothing was found for : ' + track + ' from ' + artist
+        )
         return null
       }
 
