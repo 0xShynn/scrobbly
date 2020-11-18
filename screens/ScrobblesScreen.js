@@ -14,7 +14,10 @@ import { SimpleLineIcons } from '@expo/vector-icons'
 
 const listHeader = () => (
   <View>
-    <StatusBar barStyle="light-content" backgroundColor={myColors.primary} />
+    <StatusBar
+      barStyle="light-content"
+      backgroundColor={myColors.cool_gray_900}
+    />
   </View>
 )
 
