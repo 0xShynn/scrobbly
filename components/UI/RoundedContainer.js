@@ -14,7 +14,7 @@ export default RoundedContainer
 
 const styles = StyleSheet.create({
   roundedContainer: {
-    backgroundColor: '#1E1E1E',
+    backgroundColor: myColors.medium_gray,
     borderRadius: 20,
     padding: 20,
     marginBottom: 20,

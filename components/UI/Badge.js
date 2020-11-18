@@ -13,15 +13,9 @@ const Badge = (props) => {
 export default Badge
 
 const styles = StyleSheet.create({
-  badge: {
-    backgroundColor: myColors.cool_gray_990,
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 10,
-    overflow: 'hidden',
-  },
+  badge: {},
   badgeText: {
-    color: myColors.cool_gray_100,
+    color: myColors.cool_gray_500,
     fontSize: 12,
   },
 })

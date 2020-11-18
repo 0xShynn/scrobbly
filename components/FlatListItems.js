@@ -7,7 +7,7 @@ import CustomRefreshControl from './UI/CustomRefreshControl'
 const listItemSeparator = () => <View style={{ height: 10 }} />
 
 const listFooter = () => {
-  return <View style={{ height: 20 }} />
+  return <View style={{ height: 30 }} />
 }
 
 const FlatListItems = (props) => {
@@ -22,9 +22,9 @@ const FlatListItems = (props) => {
       ListFooterComponent={listFooter}
       ListHeaderComponent={props.ListHeaderComponent}
       style={{
-        width: '100%',
-        paddingTop: 10,
         backgroundColor: myColors.dark_gray,
+        paddingVertical: 20,
+        paddingHorizontal: 15,
       }}
       refreshControl={
         <RefreshControl
