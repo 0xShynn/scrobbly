@@ -113,6 +113,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       title: `${artistName} - ${trackName}`,
+      headerBackTitle: 'Back',
     })
   }, [navigation])
 

@@ -10,6 +10,7 @@ export const defaultNavOptions = {
   },
   headerTitleStyle: {
     fontFamily: 'Inter_700Bold',
+    fontSize: 18,
   },
   headerTintColor: 'white',
 }
