@@ -2,7 +2,6 @@ import React, { useCallback } from 'react'
 import { FlatList, View, RefreshControl } from 'react-native'
 import myColors from '../constants/myColors'
 import { TextH6 } from './UI/Typography'
-import CustomRefreshControl from './UI/CustomRefreshControl'
 
 const listItemSeparator = () => <View style={{ height: 12 }} />
 
@@ -39,7 +38,7 @@ const FlatListItemsCover = (props) => {
       horizontal={false}
       numColumns={2}
       style={{
-        paddingHorizontal: 6,
+        paddingHorizontal: 10,
         paddingVertical: 20,
         backgroundColor: myColors.dark_gray,
       }}

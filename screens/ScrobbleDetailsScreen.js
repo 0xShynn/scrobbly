@@ -117,178 +117,165 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
   }, [navigation])
 
   return (
-    <View style={{ flex: 1, backgroundColor: myColors.dark_gray }}>
-      <ScrollView>
-        <View style={{ flex: 1 }}>
-          <DetailsHeader
-            title={trackName}
-            subtitle={artistName}
-            image={albumArt}
-            style={{ marginBottom: 10 }}
-          />
+    <ScrollView style={{ flex: 1, backgroundColor: myColors.dark_gray }}>
+      <DetailsHeader
+        title={trackName}
+        subtitle={artistName}
+        image={albumArt}
+        style={{ marginBottom: 10 }}
+      />
 
-          {isLoading ? (
-            <View style={{ paddingVertical: 50 }}>
-              <LoadingContainer />
-            </View>
-          ) : (
-            <View style={{ padding: 20 }}>
-              {error ? (
-                <>
-                  <RoundedContainer style={{ alignItems: 'center' }}>
-                    <TextH5 style={{ marginVertical: 15 }}>
-                      {error.message}
-                    </TextH5>
-                  </RoundedContainer>
-                  <CustomButton
-                    label="Go Back"
-                    onPress={() => {
-                      navigation.goBack()
+      {isLoading ? (
+        <View style={{ paddingVertical: 50 }}>
+          <LoadingContainer />
+        </View>
+      ) : (
+        <View style={{ padding: 15 }}>
+          {error ? (
+            <>
+              <RoundedContainer style={{ alignItems: 'center' }}>
+                <TextH5 style={{ marginVertical: 15 }}>{error.message}</TextH5>
+              </RoundedContainer>
+              <CustomButton
+                label="Go Back"
+                onPress={() => {
+                  navigation.goBack()
+                }}
+              />
+            </>
+          ) : null}
+
+          {trackInfo !== undefined && (
+            <RoundedContainer style={{ flex: 1, flexDirection: 'row' }}>
+              <Counter
+                title="Played"
+                icon="ios-musical-notes"
+                value={topPlaycount ? topPlaycount : trackInfo.userplaycount}
+              />
+
+              <Counter
+                title="Scrobbles"
+                icon="ios-globe"
+                value={abbreviateNumber(trackInfo.playcount)}
+              />
+
+              <Counter
+                title="Listeners"
+                icon="md-person"
+                value={abbreviateNumber(trackInfo.listeners)}
+              />
+            </RoundedContainer>
+          )}
+
+          {albumInfo !== undefined && (
+            <RoundedContainer>
+              <TouchableOpacity onPress={albumDetailsHandler}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <Image
+                    source={{ uri: albumArt }}
+                    style={{
+                      width: 80,
+                      height: 80,
+                      borderRadius: 4,
+                      overflow: 'hidden',
                     }}
                   />
-                </>
-              ) : null}
-
-              {trackInfo !== undefined && (
-                <RoundedContainer style={{ flex: 1, flexDirection: 'row' }}>
-                  <Counter
-                    title="Played"
-                    icon="ios-musical-notes"
-                    value={
-                      topPlaycount ? topPlaycount : trackInfo.userplaycount
-                    }
-                  />
-
-                  <Counter
-                    title="Scrobbles"
-                    icon="ios-globe"
-                    value={abbreviateNumber(trackInfo.playcount)}
-                  />
-
-                  <Counter
-                    title="Listeners"
-                    icon="md-person"
-                    value={abbreviateNumber(trackInfo.listeners)}
-                  />
-                </RoundedContainer>
-              )}
-
-              {albumInfo !== undefined && (
-                <RoundedContainer>
-                  <TouchableOpacity onPress={albumDetailsHandler}>
-                    <View
-                      style={{ flexDirection: 'row', alignItems: 'center' }}
-                    >
-                      <Image
-                        source={{ uri: albumArt }}
-                        style={{
-                          width: 80,
-                          height: 80,
-                          borderRadius: 4,
-                          overflow: 'hidden',
-                        }}
-                      />
-                      <View
-                        style={{
-                          marginLeft: 14,
-                          flex: 1,
-                          justifyContent: 'center',
-                        }}
-                      >
-                        {/* <DetailsTitle children="From the album" /> */}
-                        <TitleH5
-                          numberOfLines={2}
-                          style={styles.albumTitle}
-                          children={albumInfo.name}
-                        />
-                        <TextH6
-                          children={albumInfo.listeners + ' Listeners'}
-                          style={{ color: myColors.cool_gray_500 }}
-                        />
-                      </View>
-                      <View style={{ paddingLeft: 10 }}>
-                        <Ionicons
-                          name="ios-arrow-forward"
-                          size={20}
-                          color={myColors.cool_gray_500}
-                        />
-                      </View>
-                    </View>
-                  </TouchableOpacity>
-                </RoundedContainer>
-              )}
-
-              {artistInfo !== undefined && (
-                <TouchableOpacity onPress={biographyDetailsHandler}>
-                  <RoundedContainer
+                  <View
                     style={{
-                      flexDirection: 'row',
+                      marginLeft: 14,
                       flex: 1,
-                      alignItems: 'center',
+                      justifyContent: 'center',
                     }}
                   >
-                    <Image
-                      source={{ uri: artistInfo.image }}
-                      style={{
-                        width: 80,
-                        height: 80,
-                        borderRadius: 70,
-                        marginRight: 15,
-                      }}
+                    {/* <DetailsTitle children="From the album" /> */}
+                    <TitleH5
+                      numberOfLines={2}
+                      style={styles.albumTitle}
+                      children={albumInfo.name}
                     />
-                    <View style={{ flex: 1 }}>
-                      <TitleH4
-                        style={{ marginBottom: 4 }}
-                        children={artistName}
-                      />
-
-                      <TextH6
-                        style={{ color: myColors.cool_gray_500 }}
-                        numberOfLines={2}
-                      >
-                        {abbreviateNumber(artistInfo.playcount)} Scrobbles
-                      </TextH6>
-                      <TextH6 style={{ color: myColors.cool_gray_500 }}>
-                        {abbreviateNumber(artistInfo.listeners)} Listeners
-                      </TextH6>
-                    </View>
-                    <View style={{ paddingLeft: 10 }}>
-                      <Ionicons
-                        name="ios-arrow-forward"
-                        size={20}
-                        color={myColors.cool_gray_500}
-                      />
-                    </View>
-                  </RoundedContainer>
-                </TouchableOpacity>
-              )}
-
-              {similarTracks.length !== 0 && (
-                <View>
-                  <DetailsTitle children="Similar Tracks" />
-                  {similarTracks.map((item) => (
-                    <SimilarTrack
-                      title={item.trackName}
-                      subtitle={item.artistName}
-                      image={item.albumArt}
-                      playcount={item.playcount}
-                      key={item.id}
-                      onSelect={itemSelectHandler.bind(
-                        this,
-                        item.artistName,
-                        item.trackName,
-                        item.albumArt,
-                        item.albumName
-                      )}
+                    <TextH6
+                      children={albumInfo.listeners + ' Listeners'}
+                      style={{ color: myColors.cool_gray_500 }}
                     />
-                  ))}
+                  </View>
+                  <View style={{ paddingLeft: 10 }}>
+                    <Ionicons
+                      name="ios-arrow-forward"
+                      size={20}
+                      color={myColors.cool_gray_500}
+                    />
+                  </View>
                 </View>
-              )}
+              </TouchableOpacity>
+            </RoundedContainer>
+          )}
+
+          {artistInfo !== undefined && (
+            <TouchableOpacity onPress={biographyDetailsHandler}>
+              <RoundedContainer
+                style={{
+                  flexDirection: 'row',
+                  flex: 1,
+                  alignItems: 'center',
+                }}
+              >
+                <Image
+                  source={{ uri: artistInfo.image }}
+                  style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 70,
+                    marginRight: 15,
+                  }}
+                />
+                <View style={{ flex: 1 }}>
+                  <TitleH4 style={{ marginBottom: 4 }} children={artistName} />
+
+                  <TextH6
+                    style={{ color: myColors.cool_gray_500 }}
+                    numberOfLines={2}
+                  >
+                    {abbreviateNumber(artistInfo.playcount)} Scrobbles
+                  </TextH6>
+                  <TextH6 style={{ color: myColors.cool_gray_500 }}>
+                    {abbreviateNumber(artistInfo.listeners)} Listeners
+                  </TextH6>
+                </View>
+                <View style={{ paddingLeft: 10 }}>
+                  <Ionicons
+                    name="ios-arrow-forward"
+                    size={20}
+                    color={myColors.cool_gray_500}
+                  />
+                </View>
+              </RoundedContainer>
+            </TouchableOpacity>
+          )}
+
+          {similarTracks.length !== 0 && (
+            <View>
+              <DetailsTitle children="Similar Tracks" />
+              {similarTracks.map((item) => (
+                <SimilarTrack
+                  title={item.trackName}
+                  subtitle={item.artistName}
+                  image={item.albumArt}
+                  playcount={item.playcount}
+                  key={item.id}
+                  onSelect={itemSelectHandler.bind(
+                    this,
+                    item.artistName,
+                    item.trackName,
+                    item.albumArt,
+                    item.albumName
+                  )}
+                />
+              ))}
             </View>
           )}
         </View>
-      </ScrollView>
-    </View>
+      )}
+    </ScrollView>
   )
 }
 

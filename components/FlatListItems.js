@@ -2,12 +2,11 @@ import React from 'react'
 import { useCallback } from 'react'
 import { FlatList, View, RefreshControl } from 'react-native'
 import myColors from '../constants/myColors'
-import CustomRefreshControl from './UI/CustomRefreshControl'
 
 const listItemSeparator = () => <View style={{ height: 10 }} />
 
 const listFooter = () => {
-  return <View style={{ height: 30 }} />
+  return <View style={{ height: 40 }} />
 }
 
 const FlatListItems = (props) => {

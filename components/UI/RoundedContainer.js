@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
   roundedContainer: {
     backgroundColor: myColors.medium_gray,
     borderRadius: 20,
-    padding: 20,
-    marginBottom: 20,
+    padding: 15,
+    marginBottom: 15,
   },
 })

@@ -4,7 +4,7 @@ import { Ionicons } from '@expo/vector-icons'
 import dayjs from 'dayjs'
 import { updatedLocale } from '../utils/dayjs'
 import Badge from './UI/Badge'
-import { TextH6, TitleH3, TitleH4, TitleH5 } from './UI/Typography'
+import { TextH6, TitleH3, TitleH6 } from './UI/Typography'
 import myColors from '../constants/myColors'
 
 const NewListItem = (props) => {
@@ -31,7 +31,9 @@ const NewListItem = (props) => {
           style={{
             flexDirection: 'row',
             alignItems: 'center',
-            backgroundColor: myColors.medium_gray,
+            backgroundColor: props.nowPlaying
+              ? myColors.light_gray
+              : myColors.medium_gray,
             padding: 15,
             paddingRight: 20,
             borderRadius: 20,
@@ -49,16 +51,18 @@ const NewListItem = (props) => {
             }}
           />
           <View style={{ flex: 1, paddingRight: 20, zIndex: 2 }}>
-            <TitleH5
+            <TitleH6
               numberOfLines={1}
               style={{ color: 'white' }}
               children={props.title}
             />
             <TextH6
               numberOfLines={1}
-              style={{ marginTop: 2, color: 'white' }}
+              style={{ marginTop: 2, marginBottom: 4, color: 'white' }}
               children={props.subtitle}
             />
+            {props.date ? <Badge>{timestamp}</Badge> : null}
+            {props.nowPlaying ? <Badge>Now Playing</Badge> : null}
             {props.playcount ? (
               <TextH6 style={{ marginTop: 2, color: myColors.cool_gray_400 }}>
                 {props.playcount} scrobbles
@@ -69,14 +73,12 @@ const NewListItem = (props) => {
             <View>
               <Ionicons name="ios-musical-notes" size={20} color="white" />
             </View>
-          ) : props.date ? (
-            <Badge>{timestamp}</Badge>
           ) : null}
           <View style={{ paddingLeft: 15 }}>
             <Ionicons
               name="ios-arrow-forward"
               size={20}
-              color={myColors.cool_gray_700}
+              color={props.nowPlaying ? '#777' : myColors.cool_gray_700}
             />
           </View>
         </View>
