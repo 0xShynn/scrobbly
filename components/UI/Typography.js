@@ -176,6 +176,7 @@ export const DetailsTitle = (props) => {
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: 12,
+        ...props.style,
       }}
     >
       <Ionicons

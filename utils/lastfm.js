@@ -3,7 +3,7 @@ import Artist from '../models/artist'
 import Scrobble from '../models/scrobble'
 import { image_blank_300 } from './expo'
 
-import { getSpotifyTrackInfo, getSpotifyArtistImage } from './spotify'
+import { getSpotifyTrackInfo, getSpotifyArtistInfo } from './spotify'
 
 export const baseUrl = 'https://ws.audioscrobbler.com/2.0/'
 export const api_key = process.env.LASTFM_API_KEY
@@ -125,14 +125,15 @@ export const getTopArtists = async (username, period) => {
     let imageFromSpotify
 
     for (const artist of response.topartists.artist) {
-      imageFromSpotify = await getSpotifyArtistImage(artist.name)
+      imageFromSpotify = await getSpotifyArtistInfo(artist.name)
 
       data.push(
         new Artist(
           artist.name,
           imageFromSpotify.image_640,
           imageFromSpotify.image_300,
-          artist.playcount
+          artist.playcount,
+          undefined
         )
       )
     }
@@ -152,7 +153,7 @@ export const getArtistInfo = async (username, artistName) => {
       throw new Error(response.message)
     }
 
-    const artistImage = await getSpotifyArtistImage(artistName)
+    const artistImage = await getSpotifyArtistInfo(artistName)
 
     const data = {
       bio: response.artist.bio.content,
@@ -242,5 +243,38 @@ export const getSimilarTracks = async (artist, track) => {
     return data
   } catch (error) {
     throw error
+  }
+}
+
+export const getSimilarArtists = async (artistName) => {
+  const method = `?method=artist.getsimilar&artist=${artistName}&api_key=${api_key}&limit=8&format=json`
+
+  try {
+    const response = await fetch(baseUrl + method).then((res) => res.json())
+    const data = []
+
+    if (response.similarartists.artist.length === 0) {
+      console.log('No similar artists were found.')
+      return data
+    }
+
+    let spotifyArtistData
+    for (const artist of response.similarartists.artist) {
+      spotifyArtistData = await getSpotifyArtistInfo(artist.name)
+      if (spotifyArtistData !== null) {
+        data.push(
+          new Artist(
+            artist.name,
+            spotifyArtistData.image_640,
+            spotifyArtistData.image_300,
+            undefined,
+            artist.match
+          )
+        )
+      }
+    }
+    return data
+  } catch (error) {
+    console.log(error)
   }
 }
