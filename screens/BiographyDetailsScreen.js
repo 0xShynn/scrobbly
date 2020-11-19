@@ -40,7 +40,6 @@ const BiographyDetailsScreen = ({ route }) => {
             height: 150,
             borderRadius: 10,
             overflow: 'hidden',
-            position: 'relative',
           }}
         >
           <LinearGradient
@@ -59,7 +58,10 @@ const BiographyDetailsScreen = ({ route }) => {
               flex: 1,
             }}
           />
-          <TitleH5 style={{ position: 'absolute', left: 10, bottom: 10 }}>
+          <TitleH5
+            style={{ padding: 10, position: 'absolute', bottom: 0 }}
+            numberOfLines={1}
+          >
             {item.artistName}
           </TitleH5>
         </ImageBackground>
