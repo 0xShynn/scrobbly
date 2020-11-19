@@ -124,7 +124,7 @@ const BiographyDetailsScreen = ({ route }) => {
             </View>
           ) : null}
 
-          {similarArtists ? (
+          {similarArtists && similarArtists.length !== 0 ? (
             <View style={{ flex: 1 }}>
               <DetailsTitle
                 children="Similar Artists"

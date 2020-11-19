@@ -104,10 +104,21 @@ export const getSpotifyArtistInfo = async (artist) => {
       return { image_640, image_300 }
     }
 
-    // const selectedArtist = items.find((item) => item.name === artist)
+    const selectedArtist = items.find(
+      (item) => item.name.toLowerCase() === artist.toLowerCase()
+    )
 
-    image_640 = items[0].images[0].url
-    image_300 = items[0].images[1].url
+    if (selectedArtist === undefined) {
+      return null
+    }
+
+    if (
+      selectedArtist.hasOwnProperty('images') &&
+      selectedArtist.images.length !== 0
+    ) {
+      image_640 = selectedArtist.images[0].url
+      image_300 = selectedArtist.images[1].url
+    }
 
     return { image_640, image_300 }
   } catch (error) {
