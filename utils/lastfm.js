@@ -185,7 +185,10 @@ export const getAlbumInfo = async (username, artistName, albumName) => {
 }
 
 export const getTrackInfo = async (username, artistName, trackName) => {
-  const method = `?method=track.getInfo&api_key=${api_key}&artist=${artistName}&track=${trackName}&username=${username}&format=json&autocorrect=1`
+  const regex = /[&]/gi
+  const updatedTrack = trackName.replace(regex, '%26')
+
+  const method = `?method=track.getInfo&api_key=${api_key}&artist=${artistName}&track=${updatedTrack}&username=${username}&format=json&autocorrect=1`
 
   try {
     const response = await fetch(baseUrl + method).then((res) => res.json())
@@ -224,7 +227,6 @@ export const getSimilarTracks = async (artist, track) => {
         track.artist.name,
         track.name
       )
-
       if (spotifyTrackData !== null) {
         data.push(
           new Scrobble(

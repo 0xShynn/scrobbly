@@ -26,7 +26,7 @@ const SimilarTrack = (props) => {
           style={{ width: 60, height: 60, borderRadius: 6, marginRight: 15 }}
         />
         <View style={{ flex: 1 }}>
-          <TitleH6 style={{ marginBottom: 2 }} numberOfLines={1}>
+          <TitleH6 style={{ marginBottom: 2 }} numberOfLines={2}>
             {props.title}
           </TitleH6>
           <TextH6 style={{ color: myColors.cool_gray_400 }}>

@@ -39,9 +39,12 @@ export const getSpotifyTrackInfo = async (artist, track) => {
     albumName: '',
   }
 
+  const regex = /[&]/gi
+  const updatedTrack = track.replace(regex, '%26')
+
   try {
     const response = await fetch(
-      `https://api.spotify.com/v1/search?q=track:${track}+artist:${artist}&type=track`,
+      `https://api.spotify.com/v1/search?q=track:${updatedTrack}+artist:${artist}&type=track`,
       {
         method: 'GET',
         headers: {
