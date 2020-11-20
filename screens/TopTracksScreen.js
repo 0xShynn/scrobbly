@@ -63,7 +63,7 @@ const TopTracksScreen = ({ navigation }) => {
         rank={item.rank}
         isLoading={isLoading}
         isRefreshing={isRefreshing}
-        onSelect={itemSelectHandler.bind(
+        onPress={itemSelectHandler.bind(
           this,
           item.artistName,
           item.trackName,

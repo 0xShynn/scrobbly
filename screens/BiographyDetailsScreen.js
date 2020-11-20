@@ -117,9 +117,11 @@ const BiographyDetailsScreen = ({ route }) => {
                 marginBottom: 10,
               }}
             >
-              <DetailsTitle children="Test" />
+              <DetailsTitle children="Biography" />
               <RoundedContainer style={{ flex: 1 }}>
-                <TextH6 style={{ lineHeight: 18 }}>{artistInfo.bio}</TextH6>
+                <TextH6 style={{ lineHeight: 18 }} numberOfLines={6}>
+                  {artistInfo.bio}
+                </TextH6>
               </RoundedContainer>
             </View>
           ) : null}

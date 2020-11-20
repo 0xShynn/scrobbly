@@ -1,20 +1,16 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
-import {
-  View,
-  StyleSheet,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-} from 'react-native'
+import { View, StyleSheet, Image, ScrollView } from 'react-native'
 import { useSelector } from 'react-redux'
-import { Ionicons } from '@expo/vector-icons'
 import myColors from '../constants/myColors'
 
 import SimilarTrack from '../components/SimilarTrack'
 import DetailsHeader from '../components/DetailsHeader'
+import TouchableItem from '../components/TouchableItem'
+
 import RoundedContainer from '../components/UI/RoundedContainer'
 import Counter from '../components/UI/Counter'
 import LoadingContainer from '../components/UI/LoadingContainer'
+import CustomButton from '../components/UI/CustomButton'
 import {
   TextH5,
   TextH6,
@@ -22,7 +18,6 @@ import {
   TitleH4,
   TitleH5,
 } from '../components/UI/Typography'
-import CustomButton from '../components/UI/CustomButton'
 
 import {
   getAlbumInfo,
@@ -31,6 +26,7 @@ import {
   getTrackInfo,
 } from '../utils/lastfm'
 import { abbreviateNumber } from '../utils/numbers'
+import spacing from '../constants/spacing'
 
 const ScrobbleDetailsScreen = ({ navigation, route }) => {
   const [trackInfo, setTrackInfo] = useState()
@@ -147,7 +143,13 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
           ) : null}
 
           {trackInfo !== undefined && (
-            <RoundedContainer style={{ flex: 1, flexDirection: 'row' }}>
+            <RoundedContainer
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                marginBottom: spacing.md,
+              }}
+            >
               <Counter
                 title="Played"
                 icon="ios-musical-notes"
@@ -169,88 +171,67 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
           )}
 
           {albumInfo !== undefined && (
-            <RoundedContainer>
-              <TouchableOpacity onPress={albumDetailsHandler}>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <Image
-                    source={{ uri: albumArt }}
-                    style={{
-                      width: 80,
-                      height: 80,
-                      borderRadius: 4,
-                      overflow: 'hidden',
-                    }}
-                  />
-                  <View
-                    style={{
-                      marginLeft: 14,
-                      flex: 1,
-                      justifyContent: 'center',
-                    }}
-                  >
-                    {/* <DetailsTitle children="From the album" /> */}
-                    <TitleH5
-                      numberOfLines={2}
-                      style={styles.albumTitle}
-                      children={albumInfo.name}
-                    />
-                    <TextH6
-                      children={albumInfo.listeners + ' Listeners'}
-                      style={{ color: myColors.cool_gray_500 }}
-                    />
-                  </View>
-                  <View style={{ paddingLeft: 10 }}>
-                    <Ionicons
-                      name="ios-arrow-forward"
-                      size={20}
-                      color={myColors.cool_gray_500}
-                    />
-                  </View>
-                </View>
-              </TouchableOpacity>
-            </RoundedContainer>
+            <TouchableItem
+              onPress={albumDetailsHandler}
+              style={{ marginBottom: spacing.md }}
+            >
+              <Image
+                source={{ uri: albumArt }}
+                style={{
+                  width: 80,
+                  height: 80,
+                  borderRadius: 4,
+                  overflow: 'hidden',
+                }}
+              />
+              <View
+                style={{
+                  marginLeft: 14,
+                  flex: 1,
+                  justifyContent: 'center',
+                }}
+              >
+                <TitleH5
+                  numberOfLines={2}
+                  style={styles.albumTitle}
+                  children={albumInfo.name}
+                />
+                <TextH6
+                  children={albumInfo.listeners + ' Listeners'}
+                  style={{ color: myColors.cool_gray_500 }}
+                />
+              </View>
+            </TouchableItem>
           )}
 
           {artistInfo !== undefined && (
-            <TouchableOpacity onPress={biographyDetailsHandler}>
-              <RoundedContainer
+            <TouchableItem
+              onPress={biographyDetailsHandler}
+              style={{ marginBottom: spacing.lg }}
+            >
+              <Image
+                source={{ uri: artistInfo.image }}
                 style={{
-                  flexDirection: 'row',
-                  flex: 1,
-                  alignItems: 'center',
+                  width: 80,
+                  height: 80,
+                  borderRadius: 70,
+                  marginRight: 15,
                 }}
-              >
-                <Image
-                  source={{ uri: artistInfo.image }}
-                  style={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: 70,
-                    marginRight: 15,
-                  }}
-                />
-                <View style={{ flex: 1 }}>
-                  <TitleH4 style={{ marginBottom: 4 }} children={artistName} />
+              />
+              <View style={{ flex: 1 }}>
+                <TitleH4 style={{ marginBottom: 4 }} children={artistName} />
 
-                  <TextH6
-                    style={{ color: myColors.cool_gray_500 }}
-                    numberOfLines={2}
-                  >
-                    {abbreviateNumber(artistInfo.playcount)} Scrobbles
-                  </TextH6>
-                  <TextH6 style={{ color: myColors.cool_gray_500 }}>
-                    {abbreviateNumber(artistInfo.listeners)} Listeners
-                  </TextH6>
-                </View>
-                <View style={{ paddingLeft: 10 }}>
-                  <Ionicons
-                    name="ios-arrow-forward"
-                    size={20}
-                    color={myColors.cool_gray_500}
-                  />
-                </View>
-              </RoundedContainer>
-            </TouchableOpacity>
+                <TextH6
+                  style={{ color: myColors.cool_gray_500 }}
+                  numberOfLines={2}
+                >
+                  {abbreviateNumber(artistInfo.playcount)} Scrobbles
+                </TextH6>
+                <TextH6 style={{ color: myColors.cool_gray_500 }}>
+                  {abbreviateNumber(artistInfo.listeners)} Listeners
+                </TextH6>
+              </View>
+            </TouchableItem>
           )}
 
           {similarTracks.length !== 0 && (
@@ -263,7 +244,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                   image={item.albumArt}
                   playcount={item.playcount}
                   key={item.id}
-                  onSelect={itemSelectHandler.bind(
+                  onPress={itemSelectHandler.bind(
                     this,
                     item.artistName,
                     item.trackName,

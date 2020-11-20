@@ -56,7 +56,7 @@ const ScrobblesScreen = ({ navigation }) => {
         subtitle={item.artistName}
         nowPlaying={item.isNowPlaying}
         date={item.date}
-        onSelect={itemSelectHandler.bind(
+        onPress={itemSelectHandler.bind(
           this,
           item.artistName,
           item.trackName,
