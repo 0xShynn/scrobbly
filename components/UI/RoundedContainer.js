@@ -1,6 +1,7 @@
 import React from 'react'
 import { StyleSheet, View } from 'react-native'
 import myColors from '../../constants/myColors'
+import spacing from '../../constants/spacing'
 
 const RoundedContainer = (props) => {
   return (
@@ -15,8 +16,8 @@ export default RoundedContainer
 const styles = StyleSheet.create({
   roundedContainer: {
     backgroundColor: myColors.medium_gray,
-    borderRadius: 20,
-    padding: 15,
-    marginBottom: 15,
+    borderRadius: spacing.md,
+    padding: spacing.sm,
+    marginBottom: spacing.md,
   },
 })

@@ -6,6 +6,7 @@ import { updatedLocale } from '../utils/dayjs'
 import Badge from './UI/Badge'
 import { TextH6, TitleH3, TitleH6 } from './UI/Typography'
 import myColors from '../constants/myColors'
+import spacing from '../constants/spacing'
 
 const NewListItem = (props) => {
   const timestamp = dayjs(props.date).utc(true).fromNow()
@@ -20,7 +21,7 @@ const NewListItem = (props) => {
                 textAlign: 'center',
                 color: 'white',
                 minWidth: 25,
-                marginRight: 15,
+                marginRight: spacing.md,
               }}
             >
               {props.rank}
@@ -34,9 +35,9 @@ const NewListItem = (props) => {
             backgroundColor: props.nowPlaying
               ? myColors.light_gray
               : myColors.medium_gray,
-            padding: 15,
-            paddingRight: 20,
-            borderRadius: 20,
+            padding: spacing.sm,
+            paddingRight: spacing.sm,
+            borderRadius: spacing.md,
             flex: 1,
           }}
         >
@@ -45,12 +46,12 @@ const NewListItem = (props) => {
             style={{
               width: 60,
               height: 60,
-              borderRadius: 6,
-              marginRight: 15,
+              borderRadius: 4,
+              marginRight: spacing.sm,
               overflow: 'hidden',
             }}
           />
-          <View style={{ flex: 1, paddingRight: 20, zIndex: 2 }}>
+          <View style={{ flex: 1, paddingRight: spacing.md, zIndex: 2 }}>
             <TitleH6
               numberOfLines={1}
               style={{ color: 'white' }}
@@ -70,11 +71,11 @@ const NewListItem = (props) => {
             ) : null}
           </View>
           {props.nowPlaying ? (
-            <View>
+            <View style={{ paddingRight: spacing.md }}>
               <Ionicons name="ios-musical-notes" size={20} color="white" />
             </View>
           ) : null}
-          <View style={{ paddingLeft: 15 }}>
+          <View>
             <Ionicons
               name="ios-arrow-forward"
               size={20}

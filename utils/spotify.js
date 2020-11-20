@@ -71,11 +71,17 @@ export const getSpotifyTrackInfo = async (artist, track) => {
         (track) => track.artists[0].name === artist
       )
 
-      data = {
-        image_640: selectedTrack.album.images[0].url,
-        image_300: selectedTrack.album.images[1].url,
-        artistId: selectedTrack.album.artists[0].id,
-        albumName: selectedTrack.album.name,
+      if (selectedTrack !== undefined) {
+        data = {
+          image_640: selectedTrack.album.images[0].url,
+          image_300: selectedTrack.album.images[1].url,
+          artistId: selectedTrack.album.artists[0].id,
+          albumName: selectedTrack.album.name,
+        }
+      }
+
+      if (selectedTrack === undefined) {
+        return null
       }
 
       return data

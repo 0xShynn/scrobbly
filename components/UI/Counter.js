@@ -6,11 +6,18 @@ import myColors from '../../constants/myColors'
 
 const Counter = (props) => {
   return (
-    <View style={{ flexGrow: 1 }}>
+    <View
+      style={{
+        flexGrow: 1,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+      }}
+    >
       <TextH6
         style={{
           color: myColors.cool_gray_400,
           marginBottom: 8,
+          textAlign: 'center',
         }}
         children={props.title}
       />
@@ -18,6 +25,7 @@ const Counter = (props) => {
         style={{
           flexDirection: 'row',
           alignItems: 'center',
+          justifyContent: 'center',
         }}
       >
         <Ionicons name={props.icon} size={24} color="white" />
