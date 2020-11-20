@@ -27,7 +27,7 @@ const TopArtistsScreen = ({ navigation }) => {
       setIsLoading(true)
       setError(null)
       try {
-        await dispatch(scrobblesActions.fetchTopArtists(period))
+        await dispatch(scrobblesActions.fetchUserTopArtists(period))
       } catch (error) {
         setError(error.message)
       }

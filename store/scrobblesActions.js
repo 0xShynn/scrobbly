@@ -1,56 +1,56 @@
 import {
-  getTopTracks,
-  getTopArtists,
-  getTopAlbums,
-  getScrobbles,
+  getUserTopTracks,
+  getUserTopArtists,
+  getUserTopAlbums,
+  getUserScrobbles,
 } from '../utils/lastfm'
 
-export const SET_SCROBBLES = 'SET_SCROBBLES'
-export const SET_TOP_ALBUMS = 'SET_TOP_ALBUMS'
-export const SET_TOP_TRACKS = 'SET_TOP_TRACKS'
-export const SET_TOP_ARTISTS = 'SET_TOP_ARTISTS'
+export const SET_USER_SCROBBLES = 'SET_USER_SCROBBLES'
+export const SET_USER_ALBUMS = 'SET_USER_ALBUMS'
+export const SET_USER_TOP_TRACKS = 'SET_USER_TOP_TRACKS'
+export const SET_USER_TOP_ARTISTS = 'SET_USER_TOP_ARTISTS'
 export const SET_USER_INFO = 'SET_USER_INFO'
 
-export const fetchScrobbles = () => {
+export const fetchUserScrobbles = () => {
   return async (dispatch, getState) => {
     const username = getState().auth.username
-    const loadedScrobbles = await getScrobbles(username)
+    const loadedUserScrobbles = await getUserScrobbles(username)
     dispatch({
-      type: SET_SCROBBLES,
-      payload: loadedScrobbles,
+      type: SET_USER_SCROBBLES,
+      payload: loadedUserScrobbles,
     })
   }
 }
 
-export const fetchTopAlbums = (period) => {
+export const fetchUserTopAlbums = (period) => {
   return async (dispatch, getState) => {
     const username = getState().auth.username
-    const loadedAlbums = await getTopAlbums(username, period)
+    const loadedUserTopAlbums = await getUserTopAlbums(username, period)
     dispatch({
-      type: SET_TOP_ALBUMS,
-      payload: loadedAlbums,
+      type: SET_USER_ALBUMS,
+      payload: loadedUserTopAlbums,
     })
   }
 }
 
-export const fetchTopTracks = (period) => {
+export const fetchUserTopTracks = (period) => {
   return async (dispatch, getState) => {
     const username = getState().auth.username
-    const loadedTracks = await getTopTracks(username, period)
+    const loadedUserTopTracks = await getUserTopTracks(username, period)
     dispatch({
-      type: SET_TOP_TRACKS,
-      payload: loadedTracks,
+      type: SET_USER_TOP_TRACKS,
+      payload: loadedUserTopTracks,
     })
   }
 }
 
-export const fetchTopArtists = (period) => {
+export const fetchUserTopArtists = (period) => {
   return async (dispatch, getState) => {
     const username = getState().auth.username
-    const loadedArtists = await getTopArtists(username, period)
+    const loadedUserTopTracks = await getUserTopArtists(username, period)
     dispatch({
-      type: SET_TOP_ARTISTS,
-      payload: loadedArtists,
+      type: SET_USER_TOP_ARTISTS,
+      payload: loadedUserTopTracks,
     })
   }
 }

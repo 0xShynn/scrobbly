@@ -27,7 +27,7 @@ const TopTracksScreen = ({ navigation }) => {
       setIsLoading(true)
       setError(null)
       try {
-        await dispatch(scrobblesActions.fetchTopTracks(period))
+        await dispatch(scrobblesActions.fetchUserTopTracks(period))
       } catch (error) {
         setError(error.message)
       }

@@ -17,7 +17,7 @@ export const periods = [
   { duration: 'overall', name: 'All time' },
 ]
 
-export const getScrobbles = async (username) => {
+export const getUserScrobbles = async (username) => {
   const method = `?method=user.getrecenttracks&user=${username}&api_key=${api_key}&format=json`
 
   try {
@@ -48,7 +48,7 @@ export const getScrobbles = async (username) => {
   }
 }
 
-export const getTopTracks = async (username, period) => {
+export const getUserTopTracks = async (username, period) => {
   const method = `?method=user.gettoptracks&user=${username}&api_key=${api_key}&period=${period.duration}&limit=20&format=json`
 
   try {
@@ -82,7 +82,7 @@ export const getTopTracks = async (username, period) => {
   }
 }
 
-export const getTopAlbums = async (username, period) => {
+export const getUserTopAlbums = async (username, period) => {
   const method = `?method=user.gettopalbums&user=${username}&api_key=${api_key}&period=${period.duration}&limit=20&format=json`
 
   try {
@@ -111,7 +111,7 @@ export const getTopAlbums = async (username, period) => {
   }
 }
 
-export const getTopArtists = async (username, period) => {
+export const getUserTopArtists = async (username, period) => {
   const method = `?method=user.gettopartists&user=${username}&api_key=${api_key}&period=${period.duration}&limit=30&format=json`
 
   try {
@@ -275,6 +275,46 @@ export const getSimilarArtists = async (artistName) => {
         )
       }
     }
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getArtistTopTracks = async (artistName) => {
+  const method = `?method=artist.gettoptracks&artist=${artistName}&api_key=${api_key}&limit=5&format=json`
+
+  try {
+    const response = await fetch(baseUrl + method).then((res) => res.json())
+
+    const data = []
+
+    if (response.toptracks.track.length === 0) {
+      console.log('No tracks were found.')
+      return data
+    }
+
+    let spotifyTracksData
+    for (const track of response.toptracks.track) {
+      spotifyTracksData = await getSpotifyTrackInfo(
+        track.artist.name,
+        track.name
+      )
+
+      data.push(
+        new Scrobble(
+          track.artist.name,
+          track.name,
+          spotifyTracksData.albumName,
+          spotifyTracksData.image_300,
+          false,
+          track.playcount,
+          undefined,
+          undefined
+        )
+      )
+    }
+
     return data
   } catch (error) {
     console.log(error)

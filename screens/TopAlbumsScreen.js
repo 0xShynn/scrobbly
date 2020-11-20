@@ -27,7 +27,7 @@ const TopAlbumsScreen = ({ navigation }) => {
       setIsLoading(true)
       setError(null)
       try {
-        await dispatch(scrobblesActions.fetchTopAlbums(period, '30'))
+        await dispatch(scrobblesActions.fetchUserTopAlbums(period, '30'))
       } catch (error) {
         setError(error.message)
       }

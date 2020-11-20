@@ -15,15 +15,30 @@ import {
   TitleH5,
 } from '../components/UI/Typography'
 import myColors from '../constants/myColors'
-import { getSimilarArtists } from '../utils/lastfm'
+import { getArtistTopTracks, getSimilarArtists } from '../utils/lastfm'
 import { abbreviateNumber } from '../utils/numbers'
 import { LinearGradient } from 'expo-linear-gradient'
+import SimilarTrack from '../components/SimilarTrack'
 
 const listItemSeparator = () => <View style={{ width: 20 }} />
 
-const BiographyDetailsScreen = ({ route }) => {
+const BiographyDetailsScreen = ({ navigation, route }) => {
   const { artistInfo, artistName } = route.params
   const [similarArtists, setSimilarArtists] = useState()
+  const [artistTopTracks, setArtistTopTracks] = useState()
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const similarArtistsData = await getSimilarArtists(artistName)
+        setSimilarArtists(similarArtistsData)
+
+        const artistTopTracksData = await getArtistTopTracks(artistName)
+        setArtistTopTracks(artistTopTracksData)
+      } catch (error) {}
+    }
+    fetchData()
+  }, [])
 
   const listItem = ({ item, index }) => {
     return (
@@ -69,15 +84,19 @@ const BiographyDetailsScreen = ({ route }) => {
     )
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const similarArtistsData = await getSimilarArtists(artistName)
-        setSimilarArtists(similarArtistsData)
-      } catch (error) {}
-    }
-    fetchData()
-  }, [])
+  const itemTopTracksHandler = async (
+    artistName,
+    trackName,
+    albumArt,
+    albumName
+  ) => {
+    navigation.push('Scrobble Details', {
+      artistName,
+      trackName,
+      albumArt,
+      albumName,
+    })
+  }
 
   return (
     <ScrollView style={{ backgroundColor: myColors.dark_gray }}>
@@ -123,6 +142,34 @@ const BiographyDetailsScreen = ({ route }) => {
                   {artistInfo.bio}
                 </TextH6>
               </RoundedContainer>
+            </View>
+          ) : null}
+
+          {artistTopTracks && artistTopTracks.length !== 0 ? (
+            <View
+              style={{
+                flex: 1,
+                width: '100%',
+                padding: 20,
+              }}
+            >
+              <DetailsTitle children="Top Tracks" />
+              {artistTopTracks.map((item) => (
+                <SimilarTrack
+                  title={item.trackName}
+                  subtitle={item.artistName}
+                  image={item.albumArt}
+                  playcount={item.playcount}
+                  key={item.id}
+                  onPress={itemTopTracksHandler.bind(
+                    this,
+                    item.artistName,
+                    item.trackName,
+                    item.albumArt,
+                    item.albumName
+                  )}
+                />
+              ))}
             </View>
           ) : null}
 

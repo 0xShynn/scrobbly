@@ -23,9 +23,11 @@ const SimilarTrack = (props) => {
         <TitleH6 style={{ marginBottom: 2 }} numberOfLines={2}>
           {props.title}
         </TitleH6>
-        <TextH6 style={{ color: myColors.cool_gray_400 }}>
-          {props.subtitle}
-        </TextH6>
+        {props.subtitle ? (
+          <TextH6 style={{ color: myColors.cool_gray_400 }}>
+            {props.subtitle}
+          </TextH6>
+        ) : null}
       </View>
       {props.playcount ? (
         <View style={{ marginLeft: 10 }}>
