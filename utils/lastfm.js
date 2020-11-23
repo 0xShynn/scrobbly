@@ -51,75 +51,6 @@ export const getUserScrobbles = async (username) => {
   }
 }
 
-export const getUserTopTracks = async (username, period) => {
-  const method = `?method=user.gettoptracks&user=${username}&api_key=${api_key}&period=${period.duration}&limit=20&format=json`
-
-  try {
-    const response = await fetch(baseUrl + method).then((res) => res.json())
-
-    if (response.hasOwnProperty('error')) {
-      throw new Error(response.message)
-    }
-
-    const data = []
-    let spotifyData
-
-    for (const track of response.toptracks.track) {
-      spotifyData = await getSpotifyTrackInfo(track.artist.name, track.name)
-      data.push(
-        new Scrobble(
-          track.artist.name,
-          track.name,
-          spotifyData.albumName,
-          spotifyData.image_300,
-          false,
-          track.playcount,
-          undefined,
-          track['@attr'].rank
-        )
-      )
-    }
-    return data
-  } catch (error) {
-    throw error
-  }
-}
-
-export const getUserTopAlbums = async (username, period) => {
-  const method = `?method=user.gettopalbums&user=${username}&api_key=${api_key}&period=${period.duration}&limit=20&format=json`
-
-  try {
-    const response = await fetch(baseUrl + method).then((res) => res.json())
-
-    if (response.hasOwnProperty('error')) {
-      throw new Error(response.message)
-    }
-
-    const data = []
-    let spotifyAlbumData
-    for (const album of response.topalbums.album) {
-      spotifyAlbumData = await getSpotifyAlbumInfo(
-        album.artist.name,
-        album.name
-      )
-
-      data.push(
-        new Album(
-          album.artist.name,
-          album.name,
-          spotifyAlbumData !== null
-            ? spotifyAlbumData.albumArt300
-            : album.image[3]['#text'],
-          album.playcount
-        )
-      )
-    }
-    return data
-  } catch (error) {
-    throw error
-  }
-}
-
 export const getUserTopArtists = async (username, period) => {
   const method = `?method=user.gettopartists&user=${username}&api_key=${api_key}&period=${period.duration}&limit=30&format=json`
 
@@ -143,6 +74,101 @@ export const getUserTopArtists = async (username, period) => {
           imageFromSpotify.image_300,
           artist.playcount,
           undefined
+        )
+      )
+    }
+    return data
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getTopAlbums = async (
+  methodSelected,
+  artistName,
+  username,
+  period
+) => {
+  let methodUrl
+  if (methodSelected === 'user') {
+    methodUrl = `?method=${methodSelected}.gettopalbums&user=${username}&period=${period.duration}&limit=20`
+  }
+  if (methodSelected === 'artist') {
+    methodUrl = `?method=${methodSelected}.gettopalbums&artist=${artistName}&limit=5`
+  }
+  methodUrl += `&api_key=${api_key}&format=json`
+
+  try {
+    const response = await fetch(baseUrl + methodUrl).then((res) => res.json())
+
+    const data = []
+
+    if (response.topalbums.album.length === 0) {
+      console.log('No albums were found.')
+      return data
+    }
+
+    let spotifyAlbumData
+    for (const album of response.topalbums.album) {
+      spotifyAlbumData = await getSpotifyAlbumInfo(
+        album.artist.name,
+        album.name
+      )
+
+      data.push(
+        new Album(
+          album.artist.name,
+          album.name,
+          spotifyAlbumData !== null
+            ? spotifyAlbumData.albumArt300
+            : album.image[3]['#text'],
+          album.playcount
+        )
+      )
+    }
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getTopTracks = async (
+  methodSelected,
+  artistName,
+  username,
+  period
+) => {
+  let methodUrl
+  if (methodSelected === 'user') {
+    methodUrl = `?method=user.gettoptracks&user=${username}&period=${period.duration}&limit=20`
+  }
+  if (methodSelected === 'artist') {
+    methodUrl = `?method=artist.gettoptracks&artist=${artistName}&limit=5`
+  }
+  methodUrl += `&api_key=${api_key}&format=json`
+
+  try {
+    const response = await fetch(baseUrl + methodUrl).then((res) => res.json())
+
+    if (response.hasOwnProperty('error')) {
+      throw new Error(response.message)
+    }
+
+    const data = []
+    let spotifyData
+
+    for (const track of response.toptracks.track) {
+      spotifyData = await getSpotifyTrackInfo(track.artist.name, track.name)
+      data.push(
+        new Scrobble(
+          track.artist.name,
+          track.name,
+          spotifyData.albumName,
+          spotifyData.image_300,
+          false,
+          track.playcount,
+          undefined,
+          track['@attr'].rank
         )
       )
     }
@@ -218,6 +244,39 @@ export const getTrackInfo = async (username, artistName, trackName) => {
   }
 }
 
+export const getSimilarArtists = async (artistName) => {
+  const method = `?method=artist.getsimilar&artist=${artistName}&api_key=${api_key}&limit=8&format=json`
+
+  try {
+    const response = await fetch(baseUrl + method).then((res) => res.json())
+    const data = []
+
+    if (response.similarartists.artist.length === 0) {
+      console.log('No similar artists were found.')
+      return data
+    }
+
+    let spotifyArtistData
+    for (const artist of response.similarartists.artist) {
+      spotifyArtistData = await getSpotifyArtistInfo(artist.name)
+      if (spotifyArtistData !== null) {
+        data.push(
+          new Artist(
+            artist.name,
+            spotifyArtistData.image_640,
+            spotifyArtistData.image_300,
+            undefined,
+            artist.match
+          )
+        )
+      }
+    }
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 export const getSimilarTracks = async (artist, track) => {
   const method = `?method=track.getsimilar&artist=${artist}&track=${track}&api_key=${api_key}&limit=5&format=json`
 
@@ -254,113 +313,5 @@ export const getSimilarTracks = async (artist, track) => {
     return data
   } catch (error) {
     throw error
-  }
-}
-
-export const getSimilarArtists = async (artistName) => {
-  const method = `?method=artist.getsimilar&artist=${artistName}&api_key=${api_key}&limit=8&format=json`
-
-  try {
-    const response = await fetch(baseUrl + method).then((res) => res.json())
-    const data = []
-
-    if (response.similarartists.artist.length === 0) {
-      console.log('No similar artists were found.')
-      return data
-    }
-
-    let spotifyArtistData
-    for (const artist of response.similarartists.artist) {
-      spotifyArtistData = await getSpotifyArtistInfo(artist.name)
-      if (spotifyArtistData !== null) {
-        data.push(
-          new Artist(
-            artist.name,
-            spotifyArtistData.image_640,
-            spotifyArtistData.image_300,
-            undefined,
-            artist.match
-          )
-        )
-      }
-    }
-    return data
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-export const getArtistTopTracks = async (artistName) => {
-  const method = `?method=artist.gettoptracks&artist=${artistName}&api_key=${api_key}&limit=5&format=json`
-
-  try {
-    const response = await fetch(baseUrl + method).then((res) => res.json())
-
-    const data = []
-
-    if (response.toptracks.track.length === 0) {
-      console.log('No tracks were found.')
-      return data
-    }
-
-    let spotifyTracksData
-    for (const track of response.toptracks.track) {
-      spotifyTracksData = await getSpotifyTrackInfo(
-        track.artist.name,
-        track.name
-      )
-
-      data.push(
-        new Scrobble(
-          track.artist.name,
-          track.name,
-          spotifyTracksData.albumName,
-          spotifyTracksData.image_300,
-          false,
-          track.playcount,
-          undefined,
-          undefined
-        )
-      )
-    }
-
-    return data
-  } catch (error) {
-    console.log(error)
-  }
-}
-
-export const getArtistTopAlbums = async (artistName) => {
-  const method = `?method=artist.gettopalbums&artist=${artistName}&api_key=${api_key}&limit=5&format=json`
-
-  try {
-    const response = await fetch(baseUrl + method).then((res) => res.json())
-
-    const data = []
-
-    if (response.topalbums.album.length === 0) {
-      console.log('No albums were found.')
-      return data
-    }
-
-    let spotifyAlbumData
-    for (const album of response.topalbums.album) {
-      spotifyAlbumData = await getSpotifyAlbumInfo(
-        album.artist.name,
-        album.name
-      )
-
-      data.push(
-        new Album(
-          album.artist.name,
-          album.name,
-          spotifyAlbumData.albumArt300,
-          album.playcount
-        )
-      )
-    }
-    return data
-  } catch (error) {
-    console.log(error)
   }
 }

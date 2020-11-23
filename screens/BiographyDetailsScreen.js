@@ -15,11 +15,7 @@ import {
   TitleH5,
 } from '../components/UI/Typography'
 import myColors from '../constants/myColors'
-import {
-  getArtistTopAlbums,
-  getArtistTopTracks,
-  getSimilarArtists,
-} from '../utils/lastfm'
+import { getSimilarArtists, getTopAlbums, getTopTracks } from '../utils/lastfm'
 import { abbreviateNumber } from '../utils/numbers'
 import { LinearGradient } from 'expo-linear-gradient'
 import SimilarTrack from '../components/SimilarTrack'
@@ -38,10 +34,10 @@ const BiographyDetailsScreen = ({ navigation, route }) => {
         const similarArtistsData = await getSimilarArtists(artistName)
         setSimilarArtists(similarArtistsData)
 
-        const artistTopTracksData = await getArtistTopTracks(artistName)
+        const artistTopTracksData = await getTopTracks('artist', artistName)
         setArtistTopTracks(artistTopTracksData)
 
-        const artistTopAlbumsData = await getArtistTopAlbums(artistName)
+        const artistTopAlbumsData = await getTopAlbums('artist', artistName)
         setArtistTopAlbums(artistTopAlbumsData)
       } catch (error) {}
     }

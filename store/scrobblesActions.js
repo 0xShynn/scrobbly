@@ -1,8 +1,8 @@
 import {
-  getUserTopTracks,
   getUserTopArtists,
-  getUserTopAlbums,
   getUserScrobbles,
+  getTopAlbums,
+  getTopTracks,
 } from '../utils/lastfm'
 
 export const SET_USER_SCROBBLES = 'SET_USER_SCROBBLES'
@@ -25,7 +25,12 @@ export const fetchUserScrobbles = () => {
 export const fetchUserTopAlbums = (period) => {
   return async (dispatch, getState) => {
     const username = getState().auth.username
-    const loadedUserTopAlbums = await getUserTopAlbums(username, period)
+    const loadedUserTopAlbums = await getTopAlbums(
+      'user',
+      undefined,
+      username,
+      period
+    )
     dispatch({
       type: SET_USER_ALBUMS,
       payload: loadedUserTopAlbums,
@@ -36,7 +41,12 @@ export const fetchUserTopAlbums = (period) => {
 export const fetchUserTopTracks = (period) => {
   return async (dispatch, getState) => {
     const username = getState().auth.username
-    const loadedUserTopTracks = await getUserTopTracks(username, period)
+    const loadedUserTopTracks = await getTopTracks(
+      'user',
+      undefined,
+      username,
+      period
+    )
     dispatch({
       type: SET_USER_TOP_TRACKS,
       payload: loadedUserTopTracks,
