@@ -199,7 +199,6 @@ export const getSpotifyAlbumInfo = async (artist, album) => {
 export const getSpotifyAlbumId = async (artist, album) => {
   const spotifyToken = await getSpotifyToken()
   const updatedAlbum = encodeURIComponent(album)
-  // console.log('le nom de lalbum', updatedAlbum)
 
   try {
     const response = await fetch(
@@ -211,8 +210,6 @@ export const getSpotifyAlbumId = async (artist, album) => {
         },
       }
     ).then((res) => res.json())
-
-    // console.log('la réponse', response)
 
     if (response.hasOwnProperty('error')) {
       throw new Error(response.error)

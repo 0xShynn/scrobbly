@@ -199,7 +199,6 @@ const BiographyDetailsScreen = ({ navigation, route }) => {
             >
               <DetailsTitle children="Top Albums" />
               {artistTopAlbums.map((item) => {
-                console.log(item)
                 return (
                   <SimilarTrack
                     title={item.albumName}
