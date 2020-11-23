@@ -15,7 +15,11 @@ import {
   TitleH5,
 } from '../components/UI/Typography'
 import myColors from '../constants/myColors'
-import { getArtistTopTracks, getSimilarArtists } from '../utils/lastfm'
+import {
+  getArtistTopAlbums,
+  getArtistTopTracks,
+  getSimilarArtists,
+} from '../utils/lastfm'
 import { abbreviateNumber } from '../utils/numbers'
 import { LinearGradient } from 'expo-linear-gradient'
 import SimilarTrack from '../components/SimilarTrack'
@@ -26,6 +30,7 @@ const BiographyDetailsScreen = ({ navigation, route }) => {
   const { artistInfo, artistName } = route.params
   const [similarArtists, setSimilarArtists] = useState()
   const [artistTopTracks, setArtistTopTracks] = useState()
+  const [artistTopAlbums, setArtistTopAlbums] = useState()
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +40,9 @@ const BiographyDetailsScreen = ({ navigation, route }) => {
 
         const artistTopTracksData = await getArtistTopTracks(artistName)
         setArtistTopTracks(artistTopTracksData)
+
+        const artistTopAlbumsData = await getArtistTopAlbums(artistName)
+        setArtistTopAlbums(artistTopAlbumsData)
       } catch (error) {}
     }
     fetchData()
@@ -95,6 +103,14 @@ const BiographyDetailsScreen = ({ navigation, route }) => {
       trackName,
       albumArt,
       albumName,
+    })
+  }
+
+  const itemTopAlbumsHandler = async (artistName, albumName, albumArt) => {
+    navigation.push('Album Details', {
+      artistName,
+      albumName,
+      albumArt,
     })
   }
 
@@ -170,6 +186,36 @@ const BiographyDetailsScreen = ({ navigation, route }) => {
                   )}
                 />
               ))}
+            </View>
+          ) : null}
+
+          {artistTopAlbums && artistTopAlbums.length !== 0 ? (
+            <View
+              style={{
+                flex: 1,
+                width: '100%',
+                padding: 20,
+              }}
+            >
+              <DetailsTitle children="Top Albums" />
+              {artistTopAlbums.map((item) => {
+                console.log(item)
+                return (
+                  <SimilarTrack
+                    title={item.albumName}
+                    subtitle={item.artistName}
+                    image={item.albumArt}
+                    playcount={item.playcount}
+                    key={item.id}
+                    onPress={itemTopAlbumsHandler.bind(
+                      this,
+                      item.artistName,
+                      item.albumName,
+                      item.albumArt
+                    )}
+                  />
+                )
+              })}
             </View>
           ) : null}
 

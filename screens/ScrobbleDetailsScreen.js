@@ -146,6 +146,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
             <RoundedContainer
               style={{
                 flex: 1,
+                justifyContent: 'center',
                 flexDirection: 'row',
                 marginBottom: spacing.md,
               }}
@@ -207,7 +208,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
           {artistInfo !== undefined && (
             <TouchableItem
               onPress={biographyDetailsHandler}
-              style={{ marginBottom: spacing.lg }}
+              style={{ marginBottom: 30 }}
             >
               <Image
                 source={{ uri: artistInfo.image }}

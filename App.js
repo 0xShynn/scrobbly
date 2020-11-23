@@ -31,10 +31,10 @@ export default function App() {
 
   useEffect(() => {
     AsyncStorage.removeItem('spotifyToken')
-    console.log('Spotify token is deleted on app start.')
+    // console.log('Spotify token is deleted on app start.')
     setTimeout(() => {
       AsyncStorage.removeItem('spotifyToken')
-      console.log('Spotify token deleted (token is expired, 1 hour is passed.)')
+      // console.log('Spotify token deleted (token is expired, 1 hour is passed.)')
     }, 60000 * 60)
   }, [])
 

@@ -3,20 +3,21 @@ import { View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import { TextH6, TitleH3 } from './Typography'
 import myColors from '../../constants/myColors'
+import spacing from '../../constants/spacing'
 
 const Counter = (props) => {
   return (
     <View
       style={{
-        flexGrow: 1,
-        paddingHorizontal: 10,
+        paddingHorizontal: spacing.md,
         paddingVertical: 5,
+        ...props.style,
       }}
     >
       <TextH6
         style={{
           color: myColors.cool_gray_400,
-          marginBottom: 8,
+          marginBottom: spacing.xs,
           textAlign: 'center',
         }}
         children={props.title}
@@ -29,7 +30,7 @@ const Counter = (props) => {
         }}
       >
         <Ionicons name={props.icon} size={24} color="white" />
-        <TitleH3 style={{ marginLeft: 8, color: 'white' }}>
+        <TitleH3 style={{ marginLeft: spacing.xs, color: 'white' }}>
           {props.value}
         </TitleH3>
       </View>

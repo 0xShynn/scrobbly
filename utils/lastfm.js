@@ -1,9 +1,12 @@
 import Album from '../models/album'
 import Artist from '../models/artist'
 import Scrobble from '../models/scrobble'
-import { image_blank_300 } from './expo'
 
-import { getSpotifyTrackInfo, getSpotifyArtistInfo } from './spotify'
+import {
+  getSpotifyTrackInfo,
+  getSpotifyArtistInfo,
+  getSpotifyAlbumInfo,
+} from './spotify'
 
 export const baseUrl = 'https://ws.audioscrobbler.com/2.0/'
 export const api_key = process.env.LASTFM_API_KEY
@@ -93,13 +96,19 @@ export const getUserTopAlbums = async (username, period) => {
     }
 
     const data = []
+    let spotifyAlbumData
     for (const album of response.topalbums.album) {
+      spotifyAlbumData = await getSpotifyAlbumInfo(
+        album.artist.name,
+        album.name
+      )
+
       data.push(
         new Album(
           album.artist.name,
           album.name,
-          album.image[3]['#text'] === ''
-            ? image_blank_300
+          spotifyAlbumData !== null
+            ? spotifyAlbumData.albumArt300
             : album.image[3]['#text'],
           album.playcount
         )
@@ -315,6 +324,41 @@ export const getArtistTopTracks = async (artistName) => {
       )
     }
 
+    return data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
+export const getArtistTopAlbums = async (artistName) => {
+  const method = `?method=artist.gettopalbums&artist=${artistName}&api_key=${api_key}&limit=5&format=json`
+
+  try {
+    const response = await fetch(baseUrl + method).then((res) => res.json())
+
+    const data = []
+
+    if (response.topalbums.album.length === 0) {
+      console.log('No albums were found.')
+      return data
+    }
+
+    let spotifyAlbumData
+    for (const album of response.topalbums.album) {
+      spotifyAlbumData = await getSpotifyAlbumInfo(
+        album.artist.name,
+        album.name
+      )
+
+      data.push(
+        new Album(
+          album.artist.name,
+          album.name,
+          spotifyAlbumData.albumArt300,
+          album.playcount
+        )
+      )
+    }
     return data
   } catch (error) {
     console.log(error)

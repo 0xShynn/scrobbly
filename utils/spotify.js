@@ -152,8 +152,6 @@ export const getSpotifyAlbumInfo = async (artist, album) => {
     return null
   }
 
-  // console.log(response)
-
   const data = {
     albumArt640: response.images[0].url,
     albumArt300: response.images[1].url,
@@ -200,18 +198,12 @@ export const getSpotifyAlbumInfo = async (artist, album) => {
 
 export const getSpotifyAlbumId = async (artist, album) => {
   const spotifyToken = await getSpotifyToken()
-
-  // const regex = /[&]/gi
-  // const updatedAlbum = album.replace(regex, '%26')
-  // const updatedArtist = artist.replace(regex, '%26')
-  // console.log(updatedArtist)
-
-  const encodedAlbum = encodeURI(album)
-  const encodedArtist = encodeURI(artist)
+  const updatedAlbum = encodeURIComponent(album)
+  // console.log('le nom de lalbum', updatedAlbum)
 
   try {
     const response = await fetch(
-      `https://api.spotify.com/v1/search?q=album:${encodedAlbum}+artist:${encodedArtist}&type=album&limit=3`,
+      `https://api.spotify.com/v1/search?q=album:${updatedAlbum}+artist:${artist}&type=album&limit=3`,
       {
         method: 'GET',
         headers: {
@@ -219,6 +211,8 @@ export const getSpotifyAlbumId = async (artist, album) => {
         },
       }
     ).then((res) => res.json())
+
+    // console.log('la réponse', response)
 
     if (response.hasOwnProperty('error')) {
       throw new Error(response.error)
@@ -240,6 +234,15 @@ export const getSpotifyAlbumId = async (artist, album) => {
     }
 
     albumId = response.albums.items[0].id
+
+    const selectedAlbum = response.albums.items.find(
+      (item) => item.name === album
+    )
+
+    if (selectedAlbum !== undefined) {
+      albumId = selectedAlbum.id
+    }
+
     return albumId
   } catch (error) {
     throw error
