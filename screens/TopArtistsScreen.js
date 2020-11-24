@@ -37,11 +37,10 @@ const TopArtistsScreen = ({ navigation }) => {
     [dispatch]
   )
 
-  const itemSelectHandler = (artistName, artistImage, playcount) => {
+  const itemSelectArtistHandler = async (artistName, artistImage) => {
     navigation.navigate('Artist Details', {
       artistName,
       artistImage,
-      playcount,
     })
   }
 
@@ -51,11 +50,10 @@ const TopArtistsScreen = ({ navigation }) => {
         title={item.artistName}
         image={item.artistImage300}
         playcount={item.playcount}
-        onSelect={itemSelectHandler.bind(
+        onSelect={itemSelectArtistHandler.bind(
           this,
           item.artistName,
-          item.artistImage640,
-          item.playcount
+          item.artistImage300
         )}
         isLoading={isLoading}
         isRefreshing={isRefreshing}

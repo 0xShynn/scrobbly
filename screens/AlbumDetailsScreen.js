@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { Button, Dimensions, FlatList, StyleSheet, View } from 'react-native'
+import { Dimensions, FlatList, StyleSheet, View } from 'react-native'
 
 import DetailsHeader from '../components/DetailsHeader'
 import LoadingContainer from '../components/UI/LoadingContainer'
@@ -8,6 +8,8 @@ import { TextH6, TitleH6 } from '../components/UI/Typography'
 import { Ionicons } from '@expo/vector-icons'
 import myColors from '../constants/myColors'
 import { getSpotifyAlbumInfo } from '../utils/spotify'
+import spacing from '../constants/spacing'
+import CustomButton from '../components/UI/CustomButton'
 
 const itemList = ({ item }) => {
   return (
@@ -139,7 +141,11 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
           style={{ textAlign: 'center' }}
           children="Tracklist not found"
         />
-        <Button title="Go Back" onPress={() => navigation.goBack()} />
+        <CustomButton
+          label="Go Back"
+          onPress={() => navigation.goBack()}
+          style={{ marginVertical: spacing.md }}
+        />
       </View>
     )
   }

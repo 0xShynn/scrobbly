@@ -29,11 +29,11 @@ import { abbreviateNumber } from '../utils/numbers'
 import spacing from '../constants/spacing'
 
 const ScrobbleDetailsScreen = ({ navigation, route }) => {
+  const [isLoading, setIsLoading] = useState(false)
   const [trackInfo, setTrackInfo] = useState()
+  const [albumInfo, setAlbumInfo] = useState()
   const [artistInfo, setArtistInfo] = useState()
   const [similarTracks, setSimilarTracks] = useState([])
-  const [albumInfo, setAlbumInfo] = useState()
-  const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState()
   const username = useSelector((state) => state.auth.username)
   const {
@@ -66,8 +66,16 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
     })
   }
 
-  const biographyDetailsHandler = () => {
-    navigation.navigate('Biography Details', { artistInfo, artistName })
+  const artistDetailsHandler = () => {
+    const artistImage = artistInfo.image
+    const playcount = artistInfo.playcount
+    const listeners = artistInfo.listeners
+    navigation.navigate('Artist Details', {
+      artistName,
+      artistImage,
+      playcount,
+      listeners,
+    })
   }
 
   useEffect(() => {
@@ -135,9 +143,8 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
               </RoundedContainer>
               <CustomButton
                 label="Go Back"
-                onPress={() => {
-                  navigation.goBack()
-                }}
+                onPress={() => navigation.goBack()}
+                style={{ marginVertical: spacing.md }}
               />
             </>
           ) : null}
@@ -207,7 +214,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
 
           {artistInfo !== undefined && (
             <TouchableItem
-              onPress={biographyDetailsHandler}
+              onPress={artistDetailsHandler}
               style={{ marginBottom: 30 }}
             >
               <Image
@@ -221,7 +228,6 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
               />
               <View style={{ flex: 1 }}>
                 <TitleH4 style={{ marginBottom: 4 }} children={artistName} />
-
                 <TextH6
                   style={{ color: myColors.cool_gray_500 }}
                   numberOfLines={2}

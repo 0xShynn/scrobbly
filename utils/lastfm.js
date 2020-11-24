@@ -1,6 +1,7 @@
 import Album from '../models/album'
 import Artist from '../models/artist'
 import Scrobble from '../models/scrobble'
+import { image_blank_300 } from './expo'
 
 import {
   getSpotifyTrackInfo,
@@ -121,11 +122,14 @@ export const getTopAlbums = async (
           album.name,
           spotifyAlbumData !== null
             ? spotifyAlbumData.albumArt300
-            : album.image[3]['#text'],
+            : album.image[2]['#text'] !== ''
+            ? album.image[2]['#text']
+            : image_blank_300,
           album.playcount
         )
       )
     }
+    data.sort((a, b) => b.playcount - a.playcount)
     return data
   } catch (error) {
     console.log(error)
@@ -159,12 +163,17 @@ export const getTopTracks = async (
 
     for (const track of response.toptracks.track) {
       spotifyData = await getSpotifyTrackInfo(track.artist.name, track.name)
+
       data.push(
         new Scrobble(
           track.artist.name,
           track.name,
-          spotifyData.albumName,
-          spotifyData.image_300,
+          spotifyData !== null
+            ? spotifyData.albumName
+            : track.image[2]['#text'],
+          spotifyData !== null
+            ? spotifyData.image_300
+            : track.image[2]['#text'],
           false,
           track.playcount,
           undefined,
@@ -172,6 +181,7 @@ export const getTopTracks = async (
         )
       )
     }
+    data.sort((a, b) => b.playcount - a.playcount)
     return data
   } catch (error) {
     throw error
