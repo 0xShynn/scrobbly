@@ -4,12 +4,37 @@ import { image_blank_300, image_blank_640 } from './expo'
 import prettyMilliseconds from 'pretty-ms'
 import dayjs from 'dayjs'
 
+export const setSpotifyToken = async () => {
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      Authorization: `Basic ${process.env.SPOTIFY_BASE64_KEY}`,
+      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+    },
+    body: 'grant_type=client_credentials',
+  }).then((res) => res.json())
+
+  let expiryDate = +dayjs().format('X') + 3600
+
+  AsyncStorage.setItem(
+    'spotifyToken',
+    JSON.stringify({ token: response.access_token, date: expiryDate })
+  )
+}
+
 export const getSpotifyToken = async () => {
   let spotifyToken = await AsyncStorage.getItem('spotifyToken').then((res) =>
     JSON.parse(res)
   )
 
-  if (spotifyToken === null) {
+  const currentDate = +dayjs().format('X')
+  const timeLeft = spotifyToken.date - currentDate
+
+  if (timeLeft <= 0) {
+    console.log(
+      'The Spotify token (1 hour) is expired, a new one will be created.'
+    )
+
     const response = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: {
@@ -19,7 +44,10 @@ export const getSpotifyToken = async () => {
       body: 'grant_type=client_credentials',
     }).then((res) => res.json())
 
-    AsyncStorage.setItem('spotifyToken', JSON.stringify(response.access_token))
+    AsyncStorage.setItem(
+      'spotifyToken',
+      JSON.stringify({ token: response.access_token, date: now })
+    )
 
     const newSpotifyToken = response.access_token
 
@@ -48,7 +76,7 @@ export const getSpotifyTrackInfo = async (artist, track) => {
       {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${spotifyToken}`,
+          Authorization: `Bearer ${spotifyToken.token}`,
         },
       }
     ).then((res) => res.json())
@@ -136,14 +164,13 @@ export const getSpotifyArtistInfo = async (artist) => {
 }
 
 export const getSpotifyAlbumInfo = async (artist, album) => {
-  const spotifyToken = await getSpotifyToken()
-
   const albumId = await getSpotifyAlbumId(artist, album)
+  const spotifyToken = await getSpotifyToken()
 
   const response = await fetch(`https://api.spotify.com/v1/albums/${albumId}`, {
     method: 'GET',
     headers: {
-      Authorization: `Bearer ${spotifyToken}`,
+      Authorization: `Bearer ${spotifyToken.token}`,
     },
   }).then((res) => res.json())
 
@@ -206,7 +233,7 @@ export const getSpotifyAlbumId = async (artist, album) => {
       {
         method: 'GET',
         headers: {
-          Authorization: `Bearer ${spotifyToken}`,
+          Authorization: `Bearer ${spotifyToken.token}`,
         },
       }
     ).then((res) => res.json())
@@ -254,7 +281,7 @@ const spotifySearch = async (item, type) => {
     {
       method: 'GET',
       headers: {
-        Authorization: `Bearer ${spotifyToken}`,
+        Authorization: `Bearer ${spotifyToken.token}`,
       },
     }
   ).then((res) => res.json())
