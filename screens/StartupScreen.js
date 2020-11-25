@@ -1,8 +1,7 @@
 import AsyncStorage from '@react-native-community/async-storage'
 import React, { useEffect } from 'react'
-import { StyleSheet, Text } from 'react-native'
 import { useDispatch } from 'react-redux'
-import CenteredContainer from '../components/UI/CenteredContainer'
+import LoadingContainer from '../components/UI/LoadingContainer'
 import * as authActions from '../store/authActions'
 
 const StartupScreen = () => {
@@ -21,13 +20,7 @@ const StartupScreen = () => {
     tryLogin()
   }, [dispatch])
 
-  return (
-    <CenteredContainer style={{ backgroundColor: 'red' }}>
-      <Text>EN TRAIN DE AUTOLOGINNNN!</Text>
-    </CenteredContainer>
-  )
+  return <LoadingContainer />
 }
 
 export default StartupScreen
-
-const styles = StyleSheet.create({})
