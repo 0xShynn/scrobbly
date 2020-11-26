@@ -14,7 +14,7 @@ import ReduxThunk from 'redux-thunk'
 
 import authReducer from './store/authReducer'
 import scrobblesReducer from './store/scrobblesReducer'
-import { setSpotifyToken } from './utils/spotify'
+import { getSpotifyToken } from './utils/spotify'
 
 const roorReducer = combineReducers({
   auth: authReducer,
@@ -30,7 +30,10 @@ export default function App() {
   })
 
   useEffect(() => {
-    setSpotifyToken()
+    const fetchData = async () => {
+      await getSpotifyToken()
+    }
+    fetchData()
   }, [])
 
   if (!fontsLoaded) {

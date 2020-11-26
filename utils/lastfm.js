@@ -262,7 +262,7 @@ export const getSimilarArtists = async (artistName) => {
     const data = []
 
     if (response.similarartists.artist.length === 0) {
-      console.log('No similar artists were found.')
+      console.log(artistName + ' > No similar artists were found.')
       return data
     }
 
@@ -295,7 +295,7 @@ export const getSimilarTracks = async (artist, track) => {
     const data = []
 
     if (response.similartracks.track.length === 0) {
-      console.log('No similar tracks were found.')
+      console.log(artist + ' - ' + track + ' > No similar tracks were found.')
       return data
     }
 

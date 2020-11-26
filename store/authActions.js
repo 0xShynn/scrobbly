@@ -53,8 +53,8 @@ export const logIn = (username, password) => {
 }
 
 export const logOut = () => {
-  AsyncStorage.removeItem('spotifyToken')
   AsyncStorage.removeItem('userData')
+  AsyncStorage.removeItem('spotifyToken')
   return { type: LOGOUT }
 }
 

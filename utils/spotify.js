@@ -28,10 +28,14 @@ export const setSpotifyToken = async () => {
 }
 
 export const getSpotifyToken = async () => {
-  let spotifyToken
-  spotifyToken = await AsyncStorage.getItem('spotifyToken').then((res) =>
+  let spotifyToken = await AsyncStorage.getItem('spotifyToken').then((res) =>
     JSON.parse(res)
   )
+
+  if (spotifyToken === null) {
+    spotifyToken = await setSpotifyToken()
+  }
+
   const currentDate = +dayjs().format('X')
   const timeLeft = spotifyToken.date - currentDate
 
@@ -88,7 +92,11 @@ export const getSpotifyTrackInfo = async (artist, track) => {
 
       if (items.length === 0) {
         console.log(
-          '[Similar Track] Nothing was found for : ' + track + ' from ' + artist
+          '[Similar track] : ' +
+            artist +
+            ' - ' +
+            track +
+            ' > No data was found on Spotify.'
         )
         return null
       }

@@ -35,6 +35,7 @@ const ListItemCover = (props) => {
                 'transparent',
                 'rgba(0,0,0,0.2)',
                 'rgba(0,0,0,0.5)',
+                'rgba(0,0,0,0.7)',
                 'rgba(0,0,0,0.8)',
               ]}
               style={styles.itemGradientInfo}
