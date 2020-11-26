@@ -107,12 +107,13 @@ export const getTopAlbums = async (
   username,
   period
 ) => {
+  const encodedArtistName = encodeURIComponent(artistName)
   let methodUrl
   if (methodSelected === 'user') {
     methodUrl = `?method=${methodSelected}.gettopalbums&user=${username}&period=${period.duration}&limit=20`
   }
   if (methodSelected === 'artist') {
-    methodUrl = `?method=${methodSelected}.gettopalbums&artist=${artistName}&limit=5`
+    methodUrl = `?method=${methodSelected}.gettopalbums&artist=${encodedArtistName}&limit=5`
   }
   methodUrl += `&api_key=${api_key}&format=json`
 
@@ -159,12 +160,13 @@ export const getTopTracks = async (
   username,
   period
 ) => {
+  const encodedArtistName = encodeURIComponent(artistName)
   let methodUrl
   if (methodSelected === 'user') {
     methodUrl = `?method=user.gettoptracks&user=${username}&period=${period.duration}&limit=20`
   }
   if (methodSelected === 'artist') {
-    methodUrl = `?method=artist.gettoptracks&artist=${artistName}&limit=5`
+    methodUrl = `?method=artist.gettoptracks&artist=${encodedArtistName}&limit=5`
   }
   methodUrl += `&api_key=${api_key}&format=json`
 
@@ -206,7 +208,8 @@ export const getTopTracks = async (
 }
 
 export const getArtistInfo = async (username, artistName) => {
-  const method = `?method=artist.getinfo&artist=${artistName}&username=${username}&api_key=${api_key}&format=json`
+  const encodedArtistName = encodeURIComponent(artistName)
+  const method = `?method=artist.getinfo&artist=${encodedArtistName}&username=${username}&api_key=${api_key}&format=json`
 
   try {
     const response = await fetch(baseUrl + method).then((res) => res.json())
@@ -231,7 +234,9 @@ export const getArtistInfo = async (username, artistName) => {
 }
 
 export const getAlbumInfo = async (username, artistName, albumName) => {
-  const method = `?method=album.getinfo&api_key=${api_key}&artist=${artistName}&album=${albumName}&username=${username}&format=json`
+  const encodedArtistName = encodeURIComponent(artistName)
+  const encodedAlbumName = encodeURIComponent(albumName)
+  const method = `?method=album.getinfo&api_key=${api_key}&artist=${encodedArtistName}&album=${encodedAlbumName}&username=${username}&format=json`
 
   try {
     const response = await fetch(baseUrl + method).then((res) => res.json())
@@ -247,10 +252,10 @@ export const getAlbumInfo = async (username, artistName, albumName) => {
 }
 
 export const getTrackInfo = async (username, artistName, trackName) => {
-  const regex = /[&]/gi
-  const updatedTrack = trackName.replace(regex, '%26')
+  const encodedArtistName = encodeURIComponent(artistName)
+  const encodedTrackName = encodeURIComponent(trackName)
 
-  const method = `?method=track.getInfo&api_key=${api_key}&artist=${artistName}&track=${updatedTrack}&username=${username}&format=json&autocorrect=1`
+  const method = `?method=track.getInfo&api_key=${api_key}&artist=${encodedArtistName}&track=${encodedTrackName}&username=${username}&format=json&autocorrect=1`
 
   try {
     const response = await fetch(baseUrl + method).then((res) => res.json())
@@ -272,7 +277,8 @@ export const getTrackInfo = async (username, artistName, trackName) => {
 }
 
 export const getSimilarArtists = async (artistName) => {
-  const method = `?method=artist.getsimilar&artist=${artistName}&api_key=${api_key}&limit=8&format=json`
+  const encodedArtistName = encodeURIComponent(artistName)
+  const method = `?method=artist.getsimilar&artist=${encodedArtistName}&api_key=${api_key}&limit=8&format=json`
 
   try {
     const response = await fetch(baseUrl + method).then((res) => res.json())
@@ -304,15 +310,19 @@ export const getSimilarArtists = async (artistName) => {
   }
 }
 
-export const getSimilarTracks = async (artist, track) => {
-  const method = `?method=track.getsimilar&artist=${artist}&track=${track}&api_key=${api_key}&limit=5&format=json`
+export const getSimilarTracks = async (artistName, trackName) => {
+  const encodedArtistName = encodeURIComponent(artistName)
+  const encodedTrackName = encodeURIComponent(trackName)
+  const method = `?method=track.getsimilar&artist=${encodedArtistName}&track=${encodedTrackName}&api_key=${api_key}&limit=5&format=json`
 
   try {
     const response = await fetch(baseUrl + method).then((res) => res.json())
     const data = []
 
     if (response.similartracks.track.length === 0) {
-      console.log(artist + ' - ' + track + ' : No similar tracks were found.')
+      console.log(
+        artistName + ' - ' + trackName + ' : No similar tracks were found.'
+      )
       return data
     }
 

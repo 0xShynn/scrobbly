@@ -60,8 +60,10 @@ export const getSpotifyToken = async () => {
   return spotifyToken
 }
 
-export const getSpotifyTrackInfo = async (artist, track) => {
+export const getSpotifyTrackInfo = async (artistName, trackName) => {
   const spotifyToken = await getSpotifyToken()
+  const encodedArtistName = encodeURIComponent(artistName)
+  const encodedTrackName = encodeURIComponent(trackName)
 
   let data = {
     image_640: image_blank_640,
@@ -70,12 +72,9 @@ export const getSpotifyTrackInfo = async (artist, track) => {
     albumName: '',
   }
 
-  const regex = /[&]/gi
-  const updatedTrack = track.replace(regex, '%26')
-
   try {
     const response = await fetch(
-      `https://api.spotify.com/v1/search?q=track:${updatedTrack}+artist:${artist}&type=track`,
+      `https://api.spotify.com/v1/search?q=track:${encodedTrackName}+artist:${encodedArtistName}&type=track`,
       {
         method: 'GET',
         headers: {
@@ -88,14 +87,14 @@ export const getSpotifyTrackInfo = async (artist, track) => {
     if (response.tracks.items.length === 0) {
       const {
         tracks: { items },
-      } = await spotifySearch(track, 'track')
+      } = await spotifySearch(encodedTrackName, 'track')
 
       if (items.length === 0) {
         console.log(
           '[Similar track] > ' +
-            artist +
+            artistName +
             ' - ' +
-            track +
+            trackName +
             ' : No data was found on Spotify.'
         )
         return null
@@ -103,7 +102,7 @@ export const getSpotifyTrackInfo = async (artist, track) => {
 
       // Match the artist name
       const selectedTrack = items.find(
-        (track) => track.artists[0].name === artist
+        (track) => track.artists[0].name === artistName
       )
 
       if (selectedTrack !== undefined) {
@@ -135,21 +134,22 @@ export const getSpotifyTrackInfo = async (artist, track) => {
   }
 }
 
-export const getSpotifyArtistInfo = async (artist) => {
+export const getSpotifyArtistInfo = async (artistName) => {
+  const encodedArtistName = encodeURIComponent(artistName)
   let image_640 = image_blank_640
   let image_300 = image_blank_300
 
   try {
     const {
       artists: { items },
-    } = await spotifySearch(encodeURI(artist), 'artist')
+    } = await spotifySearch(encodedArtistName, 'artist')
 
     if (items.length === 0) {
       return { image_640, image_300 }
     }
 
     const selectedArtist = items.find(
-      (item) => item.name.toLowerCase() === artist.toLowerCase()
+      (item) => item.name.toLowerCase() === artistName.toLowerCase()
     )
 
     if (selectedArtist === undefined) {
@@ -170,8 +170,10 @@ export const getSpotifyArtistInfo = async (artist) => {
   }
 }
 
-export const getSpotifyAlbumInfo = async (artist, album) => {
-  const albumId = await getSpotifyAlbumId(artist, album)
+export const getSpotifyAlbumInfo = async (artistName, albumName) => {
+  const encodedArtistName = encodeURIComponent(artistName)
+  const encodedAlbumName = encodeURIComponent(albumName)
+  const albumId = await getSpotifyAlbumId(encodedArtistName, encodedAlbumName)
   const spotifyToken = await getSpotifyToken()
 
   const response = await fetch(`https://api.spotify.com/v1/albums/${albumId}`, {
@@ -230,13 +232,12 @@ export const getSpotifyAlbumInfo = async (artist, album) => {
   return data
 }
 
-export const getSpotifyAlbumId = async (artist, album) => {
+export const getSpotifyAlbumId = async (artistName, albumName) => {
   const spotifyToken = await getSpotifyToken()
-  const updatedAlbum = encodeURIComponent(album)
 
   try {
     const response = await fetch(
-      `https://api.spotify.com/v1/search?q=album:${updatedAlbum}+artist:${artist}&type=album&limit=3`,
+      `https://api.spotify.com/v1/search?q=album:${albumName}+artist:${artistName}&type=album&limit=3`,
       {
         method: 'GET',
         headers: {
@@ -252,10 +253,11 @@ export const getSpotifyAlbumId = async (artist, album) => {
     let albumId
 
     if (response.albums.items.length === 0) {
-      const result = await spotifySearch(album, 'album')
+      const result = await spotifySearch(albumName, 'album')
 
       const selectedId = result.albums.items.find(
-        (item) => item.artists[0].name.toLowerCase() === artist.toLowerCase()
+        (item) =>
+          item.artists[0].name.toLowerCase() === artistName.toLowerCase()
       )
 
       if (selectedId === undefined) {
@@ -267,7 +269,7 @@ export const getSpotifyAlbumId = async (artist, album) => {
     albumId = response.albums.items[0].id
 
     const selectedAlbum = response.albums.items.find(
-      (item) => item.name === album
+      (item) => item.name === albumName
     )
 
     if (selectedAlbum !== undefined) {
