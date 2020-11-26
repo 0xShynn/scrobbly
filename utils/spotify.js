@@ -5,36 +5,7 @@ import prettyMilliseconds from 'pretty-ms'
 import dayjs from 'dayjs'
 
 export const setSpotifyToken = async () => {
-  const response = await fetch('https://accounts.spotify.com/api/token', {
-    method: 'POST',
-    headers: {
-      Authorization: `Basic ${process.env.SPOTIFY_BASE64_KEY}`,
-      'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
-    },
-    body: 'grant_type=client_credentials',
-  }).then((res) => res.json())
-
-  let expiryDate = +dayjs().format('X') + 3600
-
-  AsyncStorage.setItem(
-    'spotifyToken',
-    JSON.stringify({ token: response.access_token, date: expiryDate })
-  )
-}
-
-export const getSpotifyToken = async () => {
-  let spotifyToken = await AsyncStorage.getItem('spotifyToken').then((res) =>
-    JSON.parse(res)
-  )
-
-  const currentDate = +dayjs().format('X')
-  const timeLeft = spotifyToken.date - currentDate
-
-  if (timeLeft <= 0) {
-    console.log(
-      'The Spotify token (1 hour) is expired, a new one will be created.'
-    )
-
+  try {
     const response = await fetch('https://accounts.spotify.com/api/token', {
       method: 'POST',
       headers: {
@@ -44,17 +15,45 @@ export const getSpotifyToken = async () => {
       body: 'grant_type=client_credentials',
     }).then((res) => res.json())
 
-    AsyncStorage.setItem(
-      'spotifyToken',
-      JSON.stringify({ token: response.access_token, date: now })
+    const expiryDate = +dayjs().format('X') + +response.expires_in
+    const accessToken = response.access_token
+    const spotifyToken = { token: accessToken, date: expiryDate }
+
+    AsyncStorage.setItem('spotifyToken', JSON.stringify(spotifyToken))
+
+    return spotifyToken
+  } catch (error) {
+    throw error
+  }
+}
+
+export const getSpotifyToken = async () => {
+  let spotifyToken
+  spotifyToken = await AsyncStorage.getItem('spotifyToken').then((res) =>
+    JSON.parse(res)
+  )
+  const currentDate = +dayjs().format('X')
+  const timeLeft = spotifyToken.date - currentDate
+
+  if (timeLeft <= 0) {
+    console.log(
+      'The Spotify token (1 hour) is expired, a new one will be created.'
     )
 
-    const newSpotifyToken = response.access_token
+    const newSpotifyToken = await setSpotifyToken()
+
+    AsyncStorage.setItem(
+      'spotifyToken',
+      JSON.stringify({
+        token: newSpotifyToken.token,
+        date: newSpotifyToken.date,
+      })
+    )
 
     return newSpotifyToken
-  } else {
-    return spotifyToken
   }
+
+  return spotifyToken
 }
 
 export const getSpotifyTrackInfo = async (artist, track) => {
