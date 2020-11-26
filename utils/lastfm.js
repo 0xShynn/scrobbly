@@ -32,13 +32,30 @@ export const getUserScrobbles = async (username) => {
     }
 
     const data = []
+    const lastFmBlankImageFilename = new RegExp(
+      '2a96cbd8b46e442fc41c2b86b821562f'
+    )
+    let isAlbumImageBlank
+    let spotifyTrackData
+
     for (const track of response.recenttracks.track) {
+      let trackAlbumImage = track.image[2]['#text']
+      isAlbumImageBlank = lastFmBlankImageFilename.test(trackAlbumImage)
+
+      if (isAlbumImageBlank) {
+        spotifyTrackData = await getSpotifyTrackInfo(
+          track.artist['#text'],
+          track.name
+        )
+        trackAlbumImage = spotifyTrackData.image_300
+      }
+
       data.push(
         new Scrobble(
           track.artist['#text'],
           track.name,
           track.album['#text'],
-          track.image[3]['#text'],
+          trackAlbumImage,
           track.hasOwnProperty(['@attr']) ? true : false,
           track.playcount,
           track.hasOwnProperty('date') ? track.date['#text'] : undefined,
@@ -168,12 +185,12 @@ export const getTopTracks = async (
         new Scrobble(
           track.artist.name,
           track.name,
-          spotifyData !== null
-            ? spotifyData.albumName
-            : track.image[2]['#text'],
+          spotifyData !== null ? spotifyData.albumName : '',
           spotifyData !== null
             ? spotifyData.image_300
-            : track.image[2]['#text'],
+            : track.image[2]['#text'] !== ''
+            ? track.image[2]['#text']
+            : image_blank_300,
           false,
           track.playcount,
           undefined,
@@ -262,7 +279,7 @@ export const getSimilarArtists = async (artistName) => {
     const data = []
 
     if (response.similarartists.artist.length === 0) {
-      console.log(artistName + ' > No similar artists were found.')
+      console.log(artistName + ' : No similar artists were found.')
       return data
     }
 
@@ -295,7 +312,7 @@ export const getSimilarTracks = async (artist, track) => {
     const data = []
 
     if (response.similartracks.track.length === 0) {
-      console.log(artist + ' - ' + track + ' > No similar tracks were found.')
+      console.log(artist + ' - ' + track + ' : No similar tracks were found.')
       return data
     }
 

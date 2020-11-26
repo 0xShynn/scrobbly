@@ -50,14 +50,15 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
       try {
         artistInfoHandler()
 
-        const similarArtistsData = await getSimilarArtists(artistName)
-        setSimilarArtists(similarArtistsData)
-
         const artistTopTracksData = await getTopTracks('artist', artistName)
         setArtistTopTracks(artistTopTracksData)
 
         const artistTopAlbumsData = await getTopAlbums('artist', artistName)
         setArtistTopAlbums(artistTopAlbumsData)
+
+        const similarArtistsData = await getSimilarArtists(artistName)
+        setSimilarArtists(similarArtistsData)
+
         setIsLoading(false)
       } catch (error) {
         console.log(error)

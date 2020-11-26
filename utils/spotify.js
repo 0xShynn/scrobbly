@@ -92,11 +92,11 @@ export const getSpotifyTrackInfo = async (artist, track) => {
 
       if (items.length === 0) {
         console.log(
-          '[Similar track] : ' +
+          '[Similar track] > ' +
             artist +
             ' - ' +
             track +
-            ' > No data was found on Spotify.'
+            ' : No data was found on Spotify.'
         )
         return null
       }
