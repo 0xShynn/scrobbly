@@ -40,27 +40,27 @@ const NewListItem = (props) => {
       />
       <View style={{ flex: 1, paddingRight: spacing.md }}>
         <TitleH6
-          numberOfLines={1}
+          numberOfLines={2}
           style={{ color: 'white' }}
           children={props.title}
         />
         <TextH6
           numberOfLines={1}
-          style={{ marginTop: 2, marginBottom: 4, color: 'white' }}
+          style={{
+            marginTop: 2,
+            color: myColors.cool_gray_300,
+          }}
           children={props.subtitle}
         />
-        {props.date ? <Badge>{timestamp}</Badge> : null}
-        {props.nowPlaying ? <Badge>Now Playing</Badge> : null}
+
         {props.playcount ? (
-          <TextH6 style={{ marginTop: 2, color: myColors.cool_gray_400 }}>
-            {props.playcount} scrobbles
-          </TextH6>
+          <Badge style={{ marginTop: 2 }}>{props.playcount} scrobbles</Badge>
         ) : null}
       </View>
+      {props.date ? <Badge>{timestamp}</Badge> : null}
+      {/* {props.nowPlaying ? <Badge>Now Playing</Badge> : null} */}
       {props.nowPlaying ? (
-        <View style={{ paddingRight: spacing.xs }}>
-          <Ionicons name="ios-musical-notes" size={20} color="white" />
-        </View>
+        <Ionicons name="ios-musical-notes" size={20} color="white" />
       ) : null}
     </TouchableItem>
   )

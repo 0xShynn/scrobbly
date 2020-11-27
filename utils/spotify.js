@@ -28,36 +28,44 @@ export const setSpotifyToken = async () => {
 }
 
 export const getSpotifyToken = async () => {
-  let spotifyToken = await AsyncStorage.getItem('spotifyToken').then((res) =>
-    JSON.parse(res)
-  )
-
-  if (spotifyToken === null) {
-    spotifyToken = await setSpotifyToken()
-  }
-
-  const currentDate = +dayjs().format('X')
-  const timeLeft = spotifyToken.date - currentDate
-
-  if (timeLeft <= 0) {
-    console.log(
-      'The Spotify token (1 hour) is expired, a new one will be created.'
+  try {
+    let spotifyToken = await AsyncStorage.getItem('spotifyToken').then((res) =>
+      JSON.parse(res)
     )
 
-    const newSpotifyToken = await setSpotifyToken()
+    if (spotifyToken === null) {
+      console.log(
+        'The Spotify token is null, a new one will be requested.',
+        spotifyToken
+      )
+      spotifyToken = await setSpotifyToken()
+    }
 
-    AsyncStorage.setItem(
-      'spotifyToken',
-      JSON.stringify({
-        token: newSpotifyToken.token,
-        date: newSpotifyToken.date,
-      })
-    )
+    const currentDate = +dayjs().format('X')
+    const timeLeft = spotifyToken.date - currentDate
 
-    return newSpotifyToken
+    if (timeLeft <= 0) {
+      console.log(
+        'The Spotify token (1 hour) is expired, a new one will be requested.'
+      )
+
+      const newSpotifyToken = await setSpotifyToken()
+
+      AsyncStorage.setItem(
+        'spotifyToken',
+        JSON.stringify({
+          token: newSpotifyToken.token,
+          date: newSpotifyToken.date,
+        })
+      )
+
+      return newSpotifyToken
+    }
+
+    return spotifyToken
+  } catch (error) {
+    throw error
   }
-
-  return spotifyToken
 }
 
 export const getSpotifyTrackInfo = async (artistName, trackName) => {
@@ -117,7 +125,6 @@ export const getSpotifyTrackInfo = async (artistName, trackName) => {
       if (selectedTrack === undefined) {
         return null
       }
-
       return data
     }
 

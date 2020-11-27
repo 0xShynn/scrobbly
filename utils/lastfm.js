@@ -35,11 +35,12 @@ export const getUserScrobbles = async (username) => {
     const lastFmBlankImageFilename = new RegExp(
       '2a96cbd8b46e442fc41c2b86b821562f'
     )
+    let trackAlbumImage
     let isAlbumImageBlank
     let spotifyTrackData
 
     for (const track of response.recenttracks.track) {
-      let trackAlbumImage = track.image[2]['#text']
+      trackAlbumImage = track.image[2]['#text']
       isAlbumImageBlank = lastFmBlankImageFilename.test(trackAlbumImage)
 
       if (isAlbumImageBlank) {
@@ -47,7 +48,10 @@ export const getUserScrobbles = async (username) => {
           track.artist['#text'],
           track.name
         )
-        trackAlbumImage = spotifyTrackData.image_300
+        trackAlbumImage =
+          spotifyTrackData !== undefined
+            ? spotifyTrackData.image_300
+            : image_blank_300
       }
 
       data.push(
@@ -63,6 +67,7 @@ export const getUserScrobbles = async (username) => {
         )
       )
     }
+
     return data
   } catch (error) {
     throw error
