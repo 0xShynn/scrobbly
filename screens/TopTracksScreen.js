@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import * as scrobblesActions from '../store/scrobblesActions'
 
 import FlatListItems from '../components/FlatListItems'
-import NewListItem from '../components/NewListItem'
+import ListItem from '../components/ListItem'
 import CustomHeaderTitle from '../components/CustomHeaderTitle'
 import PeriodSelector from '../components/PeriodSelector'
 import ErrorContainer from '../components/UI/ErrorContainer'
@@ -54,7 +54,7 @@ const TopTracksScreen = ({ navigation }) => {
 
   const listItem = ({ item }) => {
     return (
-      <NewListItem
+      <ListItem
         image={item.albumArt}
         title={item.trackName}
         subtitle={item.artistName}

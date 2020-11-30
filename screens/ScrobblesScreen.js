@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import * as scrobblesActions from '../store/scrobblesActions'
 
 import FlatListItems from '../components/FlatListItems'
-import NewListItem from '../components/NewListItem'
+import ListItem from '../components/ListItem'
 import CustomHeaderTitle from '../components/CustomHeaderTitle'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import ErrorContainer from '../components/UI/ErrorContainer'
@@ -50,7 +50,7 @@ const ScrobblesScreen = ({ navigation }) => {
 
   const listItem = useCallback(({ item }) => {
     return (
-      <NewListItem
+      <ListItem
         image={item.albumArt}
         title={item.trackName}
         subtitle={item.artistName}

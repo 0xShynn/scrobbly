@@ -1,25 +1,13 @@
 import React, { useCallback, useEffect, useLayoutEffect } from 'react'
 import { useState } from 'react'
-import {
-  View,
-  ScrollView,
-  Image,
-  FlatList,
-  ImageBackground,
-  TouchableOpacity,
-} from 'react-native'
+import { View, ScrollView, Image, FlatList } from 'react-native'
 import { useSelector } from 'react-redux'
-import { LinearGradient } from 'expo-linear-gradient'
 
-import {
-  DetailsTitle,
-  TextH6,
-  TitleH2,
-  TitleH5,
-} from '../components/UI/Typography'
+import { DetailsTitle, TextH6, TitleH2 } from '../components/UI/Typography'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import TouchableItem from '../components/TouchableItem'
 import SimilarItem from '../components/SimilarItem'
+import ListItemsArtist from '../components/ListItemsArtist'
 
 import myColors from '../constants/myColors'
 import {
@@ -79,54 +67,18 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
 
   const listItemSimilarArtist = ({ item, index }) => {
     return (
-      <TouchableOpacity
+      <ListItemsArtist
         onPress={itemSimilarArtistHandler.bind(
           this,
           item.artistName,
           item.artistImage300,
           item.playcount
         )}
-      >
-        <View
-          style={{
-            paddingLeft: index === 0 ? 20 : 0,
-            paddingRight: index === similarArtists.length - 1 ? 20 : 0,
-          }}
-        >
-          <ImageBackground
-            source={{ uri: item.artistImage300 }}
-            style={{
-              width: 150,
-              height: 150,
-              borderRadius: 10,
-              overflow: 'hidden',
-            }}
-          >
-            <LinearGradient
-              colors={[
-                'transparent',
-                'rgba(0,0,0,0.2)',
-                'rgba(0,0,0,0.5)',
-                'rgba(0,0,0,0.8)',
-              ]}
-              style={{
-                position: 'absolute',
-                left: 0,
-                right: 0,
-                bottom: 0,
-                height: 100,
-                flex: 1,
-              }}
-            />
-            <TitleH5
-              style={{ padding: 10, position: 'absolute', bottom: 0 }}
-              numberOfLines={1}
-            >
-              {item.artistName}
-            </TitleH5>
-          </ImageBackground>
-        </View>
-      </TouchableOpacity>
+        image={item.artistImage300}
+        title={item.artistName}
+        itemsNumber={similarArtists.length}
+        index={index}
+      />
     )
   }
 
@@ -232,7 +184,8 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
                 {artistTopTracks.map((item) => (
                   <SimilarItem
                     title={item.trackName}
-                    subtitle={abbreviateNumber(item.playcount) + ' scrobbles'}
+                    subtitle={item.albumName}
+                    playcount={item.playcount}
                     image={item.albumArt}
                     key={item.id}
                     onPress={itemTopTracksHandler.bind(
@@ -260,7 +213,6 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
                   return (
                     <SimilarItem
                       title={item.albumName}
-                      subtitle={item.artistName}
                       image={item.albumArt}
                       playcount={item.playcount}
                       key={item.id}

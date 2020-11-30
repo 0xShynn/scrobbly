@@ -9,7 +9,7 @@ import { TextH6, TitleH3, TitleH6 } from './UI/Typography'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
 
-const NewListItem = (props) => {
+const ListItem = (props) => {
   const timestamp = dayjs(props.date).utc(true).fromNow()
 
   return (
@@ -89,4 +89,4 @@ const NewListItem = (props) => {
   )
 }
 
-export default NewListItem
+export default ListItem
