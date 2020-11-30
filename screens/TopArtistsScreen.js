@@ -86,11 +86,13 @@ const TopArtistsScreen = ({ navigation }) => {
         <CustomHeaderTitle
           title="Top Artists"
           periodSelected={periodSelected.name}
+          isRefreshing={isRefreshing}
+          isLoading={isLoading}
         />
       ),
       headerRight: periodSelectorHandler,
     })
-  }, [navigation, periodSelected])
+  }, [navigation, periodSelected, isLoading, isRefreshing])
 
   if (isFirstLoading) {
     return <LoadingContainer />

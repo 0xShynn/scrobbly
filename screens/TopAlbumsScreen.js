@@ -91,11 +91,13 @@ const TopAlbumsScreen = ({ navigation }) => {
         <CustomHeaderTitle
           title="Top Albums"
           periodSelected={periodSelected.name}
+          isRefreshing={isRefreshing}
+          isLoading={isLoading}
         />
       ),
       headerRight: periodSelectorHandler,
     })
-  }, [navigation, periodSelected])
+  }, [navigation, periodSelected, isLoading, isRefreshing])
 
   if (isFirstLoading) {
     return <LoadingContainer />

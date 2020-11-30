@@ -28,16 +28,39 @@ const NewListItem = (props) => {
           </TitleH3>
         </View>
       ) : null}
-      <Image
-        source={{ uri: props.image }}
-        style={{
-          width: 60,
-          height: 60,
-          borderRadius: 4,
-          marginRight: spacing.sm,
-          overflow: 'hidden',
-        }}
-      />
+      <View>
+        <View
+          style={{
+            position: 'relative',
+            width: 60,
+            height: 60,
+            marginRight: spacing.sm,
+            borderRadius: 4,
+            overflow: 'hidden',
+          }}
+        >
+          {props.isLoading && !props.isRefreshing ? (
+            <View
+              style={{
+                width: '100%',
+                height: '100%',
+                backgroundColor: 'rgba(0,0,0, 0.5)',
+                zIndex: 1,
+              }}
+            />
+          ) : null}
+
+          <Image
+            source={{ uri: props.image }}
+            style={{
+              width: 60,
+              height: 60,
+              position: 'absolute',
+            }}
+          />
+        </View>
+      </View>
+
       <View style={{ flex: 1, paddingRight: spacing.md }}>
         <TitleH6
           numberOfLines={2}

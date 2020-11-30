@@ -8,7 +8,13 @@ const CustomHeaderTitle = (props) => {
         {props.title}
       </TitleH4>
       {props.periodSelected && (
-        <TextH4 style={{ color: 'white' }}> / {props.periodSelected}</TextH4>
+        <TextH4 style={{ color: 'white' }}>
+          {' '}
+          /{' '}
+          {props.isLoading || props.isRefreshing
+            ? 'Loading...'
+            : props.periodSelected}
+        </TextH4>
       )}
     </>
   )
