@@ -3,7 +3,7 @@ import { View, StyleSheet, Image, ScrollView } from 'react-native'
 import { useSelector } from 'react-redux'
 import myColors from '../constants/myColors'
 
-import SimilarTrack from '../components/SimilarTrack'
+import SimilarItem from '../components/SimilarItem'
 import DetailsHeader from '../components/DetailsHeader'
 import TouchableItem from '../components/TouchableItem'
 
@@ -223,7 +223,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
             <View>
               <DetailsTitle children="Similar Tracks" />
               {similarTracks.map((item) => (
-                <SimilarTrack
+                <SimilarItem
                   title={item.trackName}
                   subtitle={item.artistName}
                   image={item.albumArt}

@@ -6,14 +6,21 @@ import {
   Image,
   FlatList,
   ImageBackground,
+  TouchableOpacity,
 } from 'react-native'
-import RoundedContainer from '../components/UI/RoundedContainer'
+import { useSelector } from 'react-redux'
+import { LinearGradient } from 'expo-linear-gradient'
+
 import {
   DetailsTitle,
   TextH6,
   TitleH2,
   TitleH5,
 } from '../components/UI/Typography'
+import LoadingContainer from '../components/UI/LoadingContainer'
+import TouchableItem from '../components/TouchableItem'
+import SimilarItem from '../components/SimilarItem'
+
 import myColors from '../constants/myColors'
 import {
   getArtistInfo,
@@ -22,12 +29,6 @@ import {
   getTopTracks,
 } from '../utils/lastfm'
 import { abbreviateNumber } from '../utils/numbers'
-import { LinearGradient } from 'expo-linear-gradient'
-import SimilarTrack from '../components/SimilarTrack'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import { useSelector } from 'react-redux'
-import LoadingContainer from '../components/UI/LoadingContainer'
-import TouchableItem from '../components/TouchableItem'
 
 const listItemSeparator = () => <View style={{ width: 20 }} />
 
@@ -229,11 +230,10 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
               >
                 <DetailsTitle children="Top Tracks" />
                 {artistTopTracks.map((item) => (
-                  <SimilarTrack
+                  <SimilarItem
                     title={item.trackName}
-                    subtitle={item.artistName}
+                    subtitle={abbreviateNumber(item.playcount) + ' scrobbles'}
                     image={item.albumArt}
-                    playcount={item.playcount}
                     key={item.id}
                     onPress={itemTopTracksHandler.bind(
                       this,
@@ -258,7 +258,7 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
                 <DetailsTitle children="Top Albums" />
                 {artistTopAlbums.map((item) => {
                   return (
-                    <SimilarTrack
+                    <SimilarItem
                       title={item.albumName}
                       subtitle={item.artistName}
                       image={item.albumArt}

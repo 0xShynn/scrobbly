@@ -2,7 +2,7 @@ import React, { useEffect, useState, useLayoutEffect } from 'react'
 
 import { FlatList, View } from 'react-native'
 import DetailsHeader from '../components/DetailsHeader'
-import SimilarTrack from '../components/SimilarTrack'
+import SimilarItem from '../components/SimilarItem'
 import { TextH6, TitleH3 } from '../components/UI/Typography'
 import myColors from '../constants/myColors'
 import { getSimilarTracks } from '../utils/lastfm'
@@ -36,7 +36,7 @@ const TrackDetailsScreen = ({ route, navigation }) => {
 
   const itemList = ({ item }) => {
     return (
-      <SimilarTrack
+      <SimilarItem
         title={item.trackName}
         subtitle={item.artistName}
         image={item.albumArt}

@@ -7,7 +7,7 @@ import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
 import TouchableItem from './TouchableItem'
 
-const SimilarTrack = (props) => {
+const SimilarItem = (props) => {
   return (
     <TouchableItem onPress={props.onPress} style={{ marginBottom: 10 }}>
       <Image
@@ -38,4 +38,4 @@ const SimilarTrack = (props) => {
   )
 }
 
-export default SimilarTrack
+export default SimilarItem
