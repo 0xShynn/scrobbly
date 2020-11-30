@@ -27,6 +27,7 @@ import SimilarTrack from '../components/SimilarTrack'
 import { TouchableOpacity } from 'react-native-gesture-handler'
 import { useSelector } from 'react-redux'
 import LoadingContainer from '../components/UI/LoadingContainer'
+import TouchableItem from '../components/TouchableItem'
 
 const listItemSeparator = () => <View style={{ width: 20 }} />
 
@@ -206,11 +207,15 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
                 }}
               >
                 <DetailsTitle children="Biography" />
-                <RoundedContainer style={{ flex: 1 }}>
+                <TouchableItem
+                  onPress={() => {
+                    navigation.navigate('Biography', { biography: data.bio })
+                  }}
+                >
                   <TextH6 style={{ lineHeight: 18 }} numberOfLines={6}>
                     {data.bio}
                   </TextH6>
-                </RoundedContainer>
+                </TouchableItem>
               </View>
             ) : null}
 

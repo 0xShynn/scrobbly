@@ -6,6 +6,7 @@ import TrackDetailsScreen from '../screens/TrackDetailsScreen'
 import ScrobbleDetailsScreen from '../screens/ScrobbleDetailsScreen'
 import AlbumDetailsScreen from '../screens/AlbumDetailsScreen'
 import ArtistDetailsScreen from '../screens/ArtistDetailsScreen'
+import BiographyScreen from '../screens/BiographyScreen'
 
 const Stack = createStackNavigator()
 
@@ -17,6 +18,7 @@ const TopTracksStackScreen = () => {
       <Stack.Screen name="Scrobble Details" component={ScrobbleDetailsScreen} />
       <Stack.Screen name="Album Details" component={AlbumDetailsScreen} />
       <Stack.Screen name="Artist Details" component={ArtistDetailsScreen} />
+      <Stack.Screen name="Biography" component={BiographyScreen} />
     </Stack.Navigator>
   )
 }
