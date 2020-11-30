@@ -1,7 +1,6 @@
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-
 import RoundedContainer from './UI/RoundedContainer'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'

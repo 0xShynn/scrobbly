@@ -1,11 +1,11 @@
 import React from 'react'
 import { View, Image } from 'react-native'
-import { abbreviateNumber } from '../utils/numbers'
+import TouchableItem from './TouchableItem'
 import Badge from './UI/Badge'
 import { TextH6, TitleH6 } from './UI/Typography'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
-import TouchableItem from './TouchableItem'
+import { abbreviateNumber } from '../utils/numbers'
 
 const SimilarItem = (props) => {
   return (

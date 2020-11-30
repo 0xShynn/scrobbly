@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { View, StyleSheet, Image, ScrollView } from 'react-native'
+import { View, Image, ScrollView } from 'react-native'
 import { useSelector } from 'react-redux'
 import myColors from '../constants/myColors'
 
@@ -180,7 +180,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
               >
                 <TitleH5
                   numberOfLines={2}
-                  style={styles.albumTitle}
+                  style={{ marginBottom: 4 }}
                   children={albumInfo.albumName}
                 />
                 <TextH6
@@ -245,19 +245,5 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
     </ScrollView>
   )
 }
-
-const styles = StyleSheet.create({
-  albumDetailsContainer: {
-    flexDirection: 'row',
-  },
-  albumInfoContainer: {
-    marginLeft: 14,
-    flex: 1,
-    justifyContent: 'center',
-  },
-  albumTitle: {
-    marginBottom: 4,
-  },
-})
 
 export default ScrobbleDetailsScreen

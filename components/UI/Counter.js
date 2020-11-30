@@ -1,9 +1,9 @@
 import React from 'react'
 import { View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
-import { TextH6, TitleH5 } from './Typography'
 import myColors from '../../constants/myColors'
 import spacing from '../../constants/spacing'
+import { TextH6, TitleH5 } from './Typography'
 
 const Counter = (props) => {
   return (

@@ -1,5 +1,4 @@
-import React from 'react'
-import { useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { FlatList, View, RefreshControl } from 'react-native'
 import myColors from '../constants/myColors'
 

@@ -1,9 +1,9 @@
 import React from 'react'
-import spacing from '../constants/spacing'
-import { abbreviateNumber } from '../utils/numbers'
-import Counter from './UI/Counter'
 import RoundedContainer from './UI/RoundedContainer'
+import Counter from './UI/Counter'
+import spacing from '../constants/spacing'
 import myColors from '../constants/myColors'
+import { abbreviateNumber } from '../utils/numbers'
 
 const ItemStats = ({ playcount, listeners, userplaycount, topPlaycount }) => {
   return (

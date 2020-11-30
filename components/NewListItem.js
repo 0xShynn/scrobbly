@@ -3,11 +3,11 @@ import { View, Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import dayjs from 'dayjs'
 import { updatedLocale } from '../utils/dayjs'
+import TouchableItem from './TouchableItem'
 import Badge from './UI/Badge'
 import { TextH6, TitleH3, TitleH6 } from './UI/Typography'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
-import TouchableItem from './TouchableItem'
 
 const NewListItem = (props) => {
   const timestamp = dayjs(props.date).utc(true).fromNow()

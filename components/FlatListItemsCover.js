@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { FlatList, View, RefreshControl } from 'react-native'
-import myColors from '../constants/myColors'
 import { TextH6 } from './UI/Typography'
+import myColors from '../constants/myColors'
 
 const listItemSeparator = () => <View style={{ height: 12 }} />
 

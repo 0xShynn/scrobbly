@@ -1,16 +1,15 @@
 import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import * as scrobblesActions from '../store/scrobblesActions'
 
-import LoadingContainer from '../components/UI/LoadingContainer'
 import FlatListItems from '../components/FlatListItems'
 import NewListItem from '../components/NewListItem'
 import CustomHeaderTitle from '../components/CustomHeaderTitle'
 import PeriodSelector from '../components/PeriodSelector'
 import ErrorContainer from '../components/UI/ErrorContainer'
+import LoadingContainer from '../components/UI/LoadingContainer'
 
 import { periods } from '../utils/lastfm'
-
-import * as scrobblesActions from '../store/scrobblesActions'
-import { useDispatch, useSelector } from 'react-redux'
 
 const TopTracksScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false)

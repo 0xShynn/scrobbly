@@ -3,10 +3,10 @@ import { View, StatusBar } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import * as scrobblesActions from '../store/scrobblesActions'
 
-import LoadingContainer from '../components/UI/LoadingContainer'
 import FlatListItems from '../components/FlatListItems'
 import NewListItem from '../components/NewListItem'
 import CustomHeaderTitle from '../components/CustomHeaderTitle'
+import LoadingContainer from '../components/UI/LoadingContainer'
 import ErrorContainer from '../components/UI/ErrorContainer'
 
 import myColors from '../constants/myColors'

@@ -1,9 +1,10 @@
 import React, { useEffect, useState, useLayoutEffect } from 'react'
-
 import { FlatList, View } from 'react-native'
+
 import DetailsHeader from '../components/DetailsHeader'
 import SimilarItem from '../components/SimilarItem'
 import { TextH6, TitleH3 } from '../components/UI/Typography'
+
 import myColors from '../constants/myColors'
 import { getSimilarTracks } from '../utils/lastfm'
 

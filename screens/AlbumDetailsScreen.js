@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { Dimensions, FlatList, StyleSheet, View } from 'react-native'
+import { FlatList, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import DetailsHeader from '../components/DetailsHeader'
@@ -16,7 +16,13 @@ import { getAlbumInfo } from '../utils/lastfm'
 
 const itemList = ({ item }) => {
   return (
-    <View style={styles.trackItem}>
+    <View
+      style={{
+        flexDirection: 'row',
+        paddingHorizontal: 30,
+        paddingVertical: 18,
+      }}
+    >
       <TitleH6
         style={{ minWidth: 25, color: 'white' }}
         children={item.trackNumber}
@@ -31,7 +37,9 @@ const itemList = ({ item }) => {
   )
 }
 
-const itemSeparator = () => <View style={styles.itemSeparator} />
+const itemSeparator = () => (
+  <View style={{ height: 1, backgroundColor: '#1C1C1C' }} />
+)
 
 const AlbumDetailsScreen = ({ navigation, route }) => {
   const { artistName, albumName, albumArt, topPlaycount } = route.params
@@ -159,7 +167,13 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
     }
 
     return (
-      <View style={{ ...styles.listContainer, ...styles.listEmpty }}>
+      <View
+        style={{
+          height: 200,
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}
+      >
         <TextH6
           style={{ textAlign: 'center' }}
           children="Tracklist not found"
@@ -181,7 +195,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
   }, [navigation])
 
   return (
-    <View style={styles.container}>
+    <View style={{ flex: 1, backgroundColor: myColors.dark_gray }}>
       <FlatList
         data={albumTracklist}
         renderItem={itemList}
@@ -191,37 +205,9 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
         ListEmptyComponent={ListEmpty}
         ListFooterComponent={ListFooter}
         initialNumToRender={12}
-        style={styles.listContainer}
       />
     </View>
   )
 }
 
 export default AlbumDetailsScreen
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: myColors.dark_gray,
-  },
-  listContainer: {
-    height: Dimensions.get('window').height,
-  },
-  listEmpty: {
-    height: Dimensions.get('window').height / 4,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  tracklistHeader: {
-    color: myColors.cool_gray_500,
-  },
-  trackItem: {
-    flexDirection: 'row',
-    paddingHorizontal: 30,
-    paddingVertical: 18,
-  },
-  itemSeparator: {
-    height: 1,
-    backgroundColor: '#1C1C1C',
-  },
-})

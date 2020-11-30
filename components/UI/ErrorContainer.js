@@ -1,9 +1,9 @@
 import React from 'react'
+import { View } from 'react-native'
 import CenteredContainer from './CenteredContainer'
 import { TextH6, TitleH3 } from './Typography'
 import { SimpleLineIcons } from '@expo/vector-icons'
 import myColors from '../../constants/myColors'
-import { View } from 'react-native'
 
 const ErrorContainer = (props) => {
   return (

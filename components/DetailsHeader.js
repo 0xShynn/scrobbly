@@ -1,14 +1,28 @@
 import React from 'react'
-import { StyleSheet, View, Image } from 'react-native'
+import { View, Image } from 'react-native'
 import { TitleH3, TextH4 } from './UI/Typography'
 
 const DetailsHeader = (props) => {
   return (
-    <View style={{ ...styles.header, ...props.style }}>
-      <View>
-        <Image source={{ uri: props.image }} style={styles.image} />
-      </View>
-      <View style={styles.albumInfo}>
+    <View
+      style={{
+        alignItems: 'center',
+        paddingHorizontal: 40,
+        paddingTop: 40,
+        ...props.style,
+      }}
+    >
+      <Image
+        source={{ uri: props.image }}
+        style={{
+          width: 200,
+          height: 200,
+          borderRadius: 6,
+          overflow: 'hidden',
+          marginBottom: 20,
+        }}
+      />
+      <View style={{ flex: 1 }}>
         <TitleH3
           style={{ color: 'white', textAlign: 'center' }}
           numberOfLines={2}
@@ -25,21 +39,3 @@ const DetailsHeader = (props) => {
 }
 
 export default DetailsHeader
-
-const styles = StyleSheet.create({
-  header: {
-    alignItems: 'center',
-    paddingHorizontal: 40,
-    paddingTop: 40,
-  },
-  albumInfo: {
-    flex: 1,
-  },
-  image: {
-    width: 200,
-    height: 200,
-    borderRadius: 6,
-    overflow: 'hidden',
-    marginBottom: 20,
-  },
-})
