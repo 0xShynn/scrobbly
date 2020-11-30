@@ -37,11 +37,12 @@ const TopAlbumsScreen = ({ navigation }) => {
     [dispatch]
   )
 
-  const itemSelectHandler = (artistName, albumName, albumArt) => {
+  const itemSelectHandler = (artistName, albumName, albumArt, playcount) => {
     navigation.navigate('Album Details', {
       artistName,
       albumArt,
       albumName,
+      topPlaycount: playcount,
     })
   }
 
@@ -56,7 +57,8 @@ const TopAlbumsScreen = ({ navigation }) => {
           this,
           item.artistName,
           item.albumName,
-          item.albumArt
+          item.albumArt,
+          item.playcount
         )}
         isLoading={isLoading}
         isRefreshing={isRefreshing}

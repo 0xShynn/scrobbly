@@ -245,11 +245,17 @@ export const getAlbumInfo = async (username, artistName, albumName) => {
 
   try {
     const response = await fetch(baseUrl + method).then((res) => res.json())
+
     if (response.hasOwnProperty('error')) {
       throw new Error(response.message)
     }
+    const data = {
+      listeners: response.album.listeners,
+      playcount: response.album.playcount,
+      userplaycount: response.album.userplaycount,
+      albumName: response.album.name,
+    }
 
-    const data = response.album
     return data
   } catch (error) {
     throw error

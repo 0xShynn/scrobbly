@@ -1,15 +1,18 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
 import { Dimensions, FlatList, StyleSheet, View } from 'react-native'
+import { useSelector } from 'react-redux'
 
 import DetailsHeader from '../components/DetailsHeader'
+import ItemStats from '../components/ItemStats'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import { TextH6, TitleH6 } from '../components/UI/Typography'
+import CustomButton from '../components/UI/CustomButton'
 
 import { Ionicons } from '@expo/vector-icons'
 import myColors from '../constants/myColors'
-import { getSpotifyAlbumInfo } from '../utils/spotify'
 import spacing from '../constants/spacing'
-import CustomButton from '../components/UI/CustomButton'
+import { getSpotifyAlbumInfo } from '../utils/spotify'
+import { getAlbumInfo } from '../utils/lastfm'
 
 const itemList = ({ item }) => {
   return (
@@ -31,10 +34,12 @@ const itemList = ({ item }) => {
 const itemSeparator = () => <View style={styles.itemSeparator} />
 
 const AlbumDetailsScreen = ({ navigation, route }) => {
-  const { artistName, albumName, albumArt } = route.params
+  const { artistName, albumName, albumArt, topPlaycount } = route.params
   const [isLoading, setIsLoading] = useState(false)
   const [albumTracklist, setAlbumTracklist] = useState([])
   const [data, setData] = useState({})
+  const [albumInfo, setAlbumInfo] = useState()
+  const username = useSelector((state) => state.auth.username)
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,6 +47,9 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
 
       const spotifyData = await getSpotifyAlbumInfo(artistName, albumName)
       setData(spotifyData)
+
+      const albumInfoData = await getAlbumInfo(username, artistName, albumName)
+      setAlbumInfo(albumInfoData)
 
       if (spotifyData !== null) {
         setAlbumTracklist(spotifyData.tracklist)
@@ -61,10 +69,25 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
           subtitle={artistName}
           image={albumArt}
         />
+
         {data && !isLoading ? (
           <View>
+            {albumInfo && !isLoading ? (
+              <View style={{ paddingTop: 20, paddingHorizontal: 20 }}>
+                <ItemStats
+                  playcount={albumInfo.playcount}
+                  userplaycount={albumInfo.userplaycount}
+                  listeners={albumInfo.listeners}
+                  topPlaycount={topPlaycount}
+                />
+              </View>
+            ) : null}
+
             <View
-              style={{ alignItems: 'center', marginBottom: 20, marginTop: 15 }}
+              style={{
+                alignItems: 'center',
+                paddingBottom: 20,
+              }}
             >
               <TextH6 style={{ color: myColors.cool_gray_500 }}>
                 {data.release_year}
@@ -117,11 +140,11 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
           paddingHorizontal: 30,
         }}
       >
-        {data && (
+        {data && !isLoading ? (
           <TextH6 style={{ color: myColors.cool_gray_500 }}>
             {data.copyrights}
           </TextH6>
-        )}
+        ) : null}
       </View>
     )
   }
@@ -196,7 +219,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     paddingHorizontal: 30,
     paddingVertical: 18,
-    backgroundColor: myColors.dark_gray,
   },
   itemSeparator: {
     height: 1,

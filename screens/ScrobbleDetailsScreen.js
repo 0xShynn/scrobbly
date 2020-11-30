@@ -8,14 +8,12 @@ import DetailsHeader from '../components/DetailsHeader'
 import TouchableItem from '../components/TouchableItem'
 
 import RoundedContainer from '../components/UI/RoundedContainer'
-import Counter from '../components/UI/Counter'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import CustomButton from '../components/UI/CustomButton'
 import {
   TextH5,
   TextH6,
   DetailsTitle,
-  TitleH4,
   TitleH5,
 } from '../components/UI/Typography'
 
@@ -27,6 +25,7 @@ import {
 } from '../utils/lastfm'
 import { abbreviateNumber } from '../utils/numbers'
 import spacing from '../constants/spacing'
+import ItemStats from '../components/ItemStats'
 
 const ScrobbleDetailsScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -150,32 +149,12 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
           ) : null}
 
           {trackInfo !== undefined && (
-            <RoundedContainer
-              style={{
-                flex: 1,
-                justifyContent: 'center',
-                flexDirection: 'row',
-                marginBottom: spacing.md,
-              }}
-            >
-              <Counter
-                title="Played"
-                icon="ios-musical-notes"
-                value={topPlaycount ? topPlaycount : trackInfo.userplaycount}
-              />
-
-              <Counter
-                title="Scrobbles"
-                icon="ios-globe"
-                value={abbreviateNumber(trackInfo.playcount)}
-              />
-
-              <Counter
-                title="Listeners"
-                icon="md-person"
-                value={abbreviateNumber(trackInfo.listeners)}
-              />
-            </RoundedContainer>
+            <ItemStats
+              playcount={trackInfo.playcount}
+              userplaycount={trackInfo.userplaycount}
+              listeners={trackInfo.listeners}
+              topPlaycount={topPlaycount}
+            />
           )}
 
           {albumInfo !== undefined && (
@@ -202,10 +181,12 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                 <TitleH5
                   numberOfLines={2}
                   style={styles.albumTitle}
-                  children={albumInfo.name}
+                  children={albumInfo.albumName}
                 />
                 <TextH6
-                  children={albumInfo.listeners + ' Listeners'}
+                  children={
+                    abbreviateNumber(albumInfo.playcount) + ' scrobbles'
+                  }
                   style={{ color: myColors.cool_gray_500 }}
                 />
               </View>
@@ -227,15 +208,12 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                 }}
               />
               <View style={{ flex: 1 }}>
-                <TitleH4 style={{ marginBottom: 4 }} children={artistName} />
+                <TitleH5 style={{ marginBottom: 4 }} children={artistName} />
                 <TextH6
                   style={{ color: myColors.cool_gray_500 }}
                   numberOfLines={2}
                 >
-                  {abbreviateNumber(artistInfo.playcount)} Scrobbles
-                </TextH6>
-                <TextH6 style={{ color: myColors.cool_gray_500 }}>
-                  {abbreviateNumber(artistInfo.listeners)} Listeners
+                  {abbreviateNumber(artistInfo.playcount)} scrobbles
                 </TextH6>
               </View>
             </TouchableItem>
