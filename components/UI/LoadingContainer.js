@@ -2,9 +2,9 @@ import React from 'react'
 import { ActivityIndicator } from 'react-native'
 import CenteredContainer from './CenteredContainer'
 
-const LoadingContainer = () => {
+const LoadingContainer = (props) => {
   return (
-    <CenteredContainer>
+    <CenteredContainer style={props.style}>
       <ActivityIndicator size="large" color="white" />
     </CenteredContainer>
   )

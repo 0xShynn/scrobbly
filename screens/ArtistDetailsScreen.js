@@ -1,6 +1,5 @@
-import React, { useCallback, useEffect, useLayoutEffect } from 'react'
-import { useState } from 'react'
-import { View, ScrollView, Image, FlatList } from 'react-native'
+import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import { View, ScrollView, Image, FlatList, StyleSheet } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import { DetailsTitle, TextH6, TitleH2 } from '../components/UI/Typography'
@@ -16,12 +15,13 @@ import {
   getTopAlbums,
   getTopTracks,
 } from '../utils/lastfm'
-import { abbreviateNumber } from '../utils/numbers'
+import ItemStats from '../components/ItemStats'
+import spacing from '../constants/spacing'
 
 const listItemSeparator = () => <View style={{ width: 20 }} />
 
 const ArtistDetailsScreen = ({ navigation, route }) => {
-  const { artistName, artistImage, playcount, listeners } = route.params
+  const { artistName, artistImage, topPlaycount } = route.params
   const [similarArtists, setSimilarArtists] = useState()
   const [artistTopTracks, setArtistTopTracks] = useState()
   const [artistTopAlbums, setArtistTopAlbums] = useState()
@@ -129,36 +129,23 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
             resizeMode="cover"
           />
         </View>
-
-        <View style={{ alignItems: 'center' }}>
-          <TitleH2 style={{ marginBottom: 5 }}>{artistName}</TitleH2>
-          <TextH6
-            style={{
-              color: myColors.cool_gray_400,
-              marginBottom: 30,
-            }}
-          >
-            Scrobbles{' '}
-            {playcount
-              ? abbreviateNumber(playcount)
-              : abbreviateNumber(data.playcount)}{' '}
-            | Listeners{' '}
-            {listeners
-              ? abbreviateNumber(listeners)
-              : abbreviateNumber(data.listeners)}
-          </TextH6>
-        </View>
+        <TitleH2 style={{ alignSelf: 'center', marginBottom: spacing.md }}>
+          {artistName}
+        </TitleH2>
 
         {!isLoading ? (
           <>
+            <View style={{ paddingHorizontal: spacing.md }}>
+              <ItemStats
+                playcount={data.playcount}
+                userplaycount={data.userplaycount}
+                listeners={data.listeners}
+                topPlaycount={topPlaycount}
+              />
+            </View>
+
             {data.bio ? (
-              <View
-                style={{
-                  flex: 1,
-                  paddingHorizontal: 20,
-                  marginBottom: 10,
-                }}
-              >
+              <View style={styles.container}>
                 <DetailsTitle children="Biography" />
                 <TouchableItem
                   onPress={() => {
@@ -173,13 +160,7 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
             ) : null}
 
             {artistTopTracks && artistTopTracks.length !== 0 ? (
-              <View
-                style={{
-                  flex: 1,
-                  width: '100%',
-                  padding: 20,
-                }}
-              >
+              <View style={styles.container}>
                 <DetailsTitle children="Top Tracks" />
                 {artistTopTracks.map((item) => (
                   <SimilarItem
@@ -201,13 +182,7 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
             ) : null}
 
             {artistTopAlbums && artistTopAlbums.length !== 0 ? (
-              <View
-                style={{
-                  flex: 1,
-                  width: '100%',
-                  padding: 20,
-                }}
-              >
+              <View style={styles.container}>
                 <DetailsTitle children="Top Albums" />
                 {artistTopAlbums.map((item) => {
                   return (
@@ -229,7 +204,7 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
             ) : null}
 
             {similarArtists && similarArtists.length !== 0 ? (
-              <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, paddingVertical: spacing.sm }}>
                 <DetailsTitle
                   children="Similar Artists"
                   style={{ marginLeft: 20 }}
@@ -244,7 +219,7 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
             ) : null}
           </>
         ) : (
-          <LoadingContainer />
+          <LoadingContainer style={{ padding: 40 }} />
         )}
       </View>
     </ScrollView>
@@ -252,3 +227,11 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
 }
 
 export default ArtistDetailsScreen
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingHorizontal: spacing.md,
+    paddingVertical: spacing.sm,
+  },
+})

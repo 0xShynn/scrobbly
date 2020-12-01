@@ -231,6 +231,7 @@ export const getArtistInfo = async (username, artistName) => {
       playcount: response.artist.stats.playcount,
       listeners: response.artist.stats.listeners,
       image: artistImage.image_300,
+      userplaycount: response.artist.stats.userplaycount,
     }
     return data
   } catch (error) {

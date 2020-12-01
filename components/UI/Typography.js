@@ -185,15 +185,14 @@ export const DetailsTitle = (props) => {
         color={myColors.cool_gray_600}
       />
 
-      <TitleH4
+      <TitleH3
         style={{
-          fontFamily: 'Inter_400Regular',
-          color: myColors.cool_gray_400,
+          color: 'white',
           marginLeft: 10,
         }}
       >
         {props.children}
-      </TitleH4>
+      </TitleH3>
     </View>
   )
 }
