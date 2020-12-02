@@ -138,7 +138,6 @@ export const getTopAlbums = async (
         album.artist.name,
         album.name
       )
-
       data.push(
         new Album(
           album.artist.name,
@@ -148,6 +147,7 @@ export const getTopAlbums = async (
             : album.image[2]['#text'] !== ''
             ? album.image[2]['#text']
             : image_blank_300,
+          spotifyAlbumData.release_year,
           album.playcount
         )
       )

@@ -22,23 +22,39 @@ const listItemSeparator = () => <View style={{ width: 20 }} />
 
 const ArtistDetailsScreen = ({ navigation, route }) => {
   const { artistName, artistImage, topPlaycount } = route.params
-  const [similarArtists, setSimilarArtists] = useState()
+  const [isLoading, setIsLoading] = useState(false)
+  const [artistInfo, setArtistInfo] = useState()
   const [artistTopTracks, setArtistTopTracks] = useState()
   const [artistTopAlbums, setArtistTopAlbums] = useState()
-  const [data, setData] = useState({})
-  const [isLoading, setIsLoading] = useState(false)
+  const [similarArtists, setSimilarArtists] = useState()
   const username = useSelector((state) => state.auth.username)
 
-  const artistInfoHandler = useCallback(async () => {
-    const data = await getArtistInfo(username, artistName)
-    setData(data)
-  }, [artistName])
+  // const artistInfoHandler = useCallback(async () => {
+  //   const data = await getArtistInfo(username, artistName)
+  //   setArtistInfo(data)
+  // }, [artistName])
+
+  // const artistTopTracksHandler = useCallback(async () => {
+  //   const data = await getTopTracks('artist', artistName)
+  //   setArtistTopTracks(data)
+  // }, [artistName])
+
+  // const artistTopAlbumsHandler = useCallback(async () => {
+  //   const data = await getTopAlbums('artist', artistName)
+  //   setArtistTopAlbums(data)
+  // }, [artistName])
+
+  // const similarArtistsHandler = useCallback(async () => {
+  //   const data = await getSimilarArtists(artistName)
+  //   setSimilarArtists(data)
+  // }, [artistName])
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true)
       try {
-        artistInfoHandler()
+        const artistInfoData = await getArtistInfo(username, artistName)
+        setArtistInfo(artistInfoData)
 
         const artistTopTracksData = await getTopTracks('artist', artistName)
         setArtistTopTracks(artistTopTracksData)
@@ -135,27 +151,33 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
 
         {!isLoading ? (
           <>
-            <View style={{ paddingHorizontal: spacing.md }}>
-              <ItemStats
-                playcount={data.playcount}
-                userplaycount={data.userplaycount}
-                listeners={data.listeners}
-                topPlaycount={topPlaycount}
-              />
-            </View>
-
-            {data.bio ? (
-              <View style={styles.container}>
-                <DetailsTitle children="Biography" />
-                <TouchableItem
-                  onPress={() => {
-                    navigation.navigate('Biography', { biography: data.bio })
-                  }}
-                >
-                  <TextH6 style={{ lineHeight: 18 }} numberOfLines={6}>
-                    {data.bio}
-                  </TextH6>
-                </TouchableItem>
+            {artistInfo ? (
+              <View>
+                <View style={{ paddingHorizontal: spacing.md }}>
+                  <ItemStats
+                    playcount={artistInfo.playcount}
+                    userplaycount={artistInfo.userplaycount}
+                    listeners={artistInfo.listeners}
+                    topPlaycount={topPlaycount}
+                  />
+                </View>
+                {artistInfo.bio ? (
+                  <View style={styles.container}>
+                    <DetailsTitle children="Biography" />
+                    <TouchableItem
+                      onPress={() => {
+                        navigation.navigate('Biography', {
+                          biography: artistInfo.bio,
+                        })
+                      }}
+                      style={{ marginBottom: 8 }}
+                    >
+                      <TextH6 style={{ lineHeight: 18 }} numberOfLines={6}>
+                        {artistInfo.bio}
+                      </TextH6>
+                    </TouchableItem>
+                  </View>
+                ) : null}
               </View>
             ) : null}
 
@@ -188,6 +210,7 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
                   return (
                     <SimilarItem
                       title={item.albumName}
+                      subtitle={item.releaseYear}
                       image={item.albumArt}
                       playcount={item.playcount}
                       key={item.id}
@@ -232,6 +255,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: spacing.md,
-    paddingVertical: spacing.sm,
+    paddingVertical: spacing.xs,
   },
 })

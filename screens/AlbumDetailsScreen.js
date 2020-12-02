@@ -1,41 +1,26 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { FlatList, View } from 'react-native'
+import { FlatList, Image, View } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import DetailsHeader from '../components/DetailsHeader'
 import ItemStats from '../components/ItemStats'
 import LoadingContainer from '../components/UI/LoadingContainer'
-import { TextH6, TitleH6 } from '../components/UI/Typography'
+import {
+  DetailsTitle,
+  TextH6,
+  TitleH5,
+  TitleH6,
+} from '../components/UI/Typography'
 import CustomButton from '../components/UI/CustomButton'
 
 import { Ionicons } from '@expo/vector-icons'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
 import { getSpotifyAlbumInfo } from '../utils/spotify'
-import { getAlbumInfo } from '../utils/lastfm'
-
-const itemList = ({ item }) => {
-  return (
-    <View
-      style={{
-        flexDirection: 'row',
-        paddingHorizontal: 30,
-        paddingVertical: 18,
-      }}
-    >
-      <TitleH6
-        style={{ minWidth: 25, color: 'white' }}
-        children={item.trackNumber}
-      />
-      <TextH6
-        numberOfLines={1}
-        style={{ flex: 1, color: 'white' }}
-        children={item.trackName}
-      />
-      <TextH6 style={{ paddingLeft: 10 }} children={item.duration} />
-    </View>
-  )
-}
+import { getAlbumInfo, getArtistInfo } from '../utils/lastfm'
+import { TouchableOpacity } from 'react-native-gesture-handler'
+import TouchableItem from '../components/TouchableItem'
+import { abbreviateNumber } from '../utils/numbers'
 
 const itemSeparator = () => (
   <View style={{ height: 1, backgroundColor: '#1C1C1C' }} />
@@ -47,7 +32,53 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
   const [albumTracklist, setAlbumTracklist] = useState([])
   const [data, setData] = useState({})
   const [albumInfo, setAlbumInfo] = useState()
+  const [artistInfo, setArtistInfo] = useState()
   const username = useSelector((state) => state.auth.username)
+
+  const itemTrackList = ({ item }) => {
+    return (
+      <TouchableOpacity
+        style={{
+          flexDirection: 'row',
+          paddingHorizontal: spacing.xl,
+          paddingVertical: spacing.lg,
+        }}
+        onPress={itemSelectTrackHandler.bind(this, item.trackName)}
+      >
+        <TitleH6
+          style={{ minWidth: 25, color: 'white' }}
+          children={item.trackNumber}
+        />
+        <TextH6
+          numberOfLines={1}
+          style={{ flex: 1, color: 'white' }}
+          children={item.trackName}
+        />
+        <TextH6 style={{ paddingLeft: 10 }} children={item.duration} />
+      </TouchableOpacity>
+    )
+  }
+
+  const itemSelectTrackHandler = (trackName) => {
+    navigation.navigate('Scrobble Details', {
+      artistName,
+      trackName,
+      albumArt,
+      albumName,
+    })
+  }
+
+  const itemSelectArtistHandler = () => {
+    const artistImage = artistInfo.image
+    const playcount = artistInfo.playcount
+    const listeners = artistInfo.listeners
+    navigation.navigate('Artist Details', {
+      artistName,
+      artistImage,
+      playcount,
+      listeners,
+    })
+  }
 
   useEffect(() => {
     const fetchData = async () => {
@@ -58,6 +89,9 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
 
       const albumInfoData = await getAlbumInfo(username, artistName, albumName)
       setAlbumInfo(albumInfoData)
+
+      const artistInfoData = await getArtistInfo(username, artistName)
+      setArtistInfo(artistInfoData)
 
       if (spotifyData !== null) {
         setAlbumTracklist(spotifyData.tracklist)
@@ -91,48 +125,50 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
               </View>
             ) : null}
 
-            <View
-              style={{
-                alignItems: 'center',
-                paddingBottom: 20,
-              }}
-            >
-              <TextH6 style={{ color: myColors.cool_gray_500 }}>
-                {data.release_year}
-                {' • '}
-                {data.total_tracks} {data.track_word}
-                {', '}
-                {data.total_length_text}
-              </TextH6>
-            </View>
-
-            <View
-              style={{
-                flexDirection: 'row',
-                borderBottomWidth: 1,
-                borderBottomColor: myColors.cool_gray_990,
-                paddingVertical: 10,
-              }}
-            >
-              <TextH6 style={{ marginLeft: 30, color: myColors.cool_gray_600 }}>
-                #
-              </TextH6>
-              <TextH6
+            {artistInfo && !isLoading ? (
+              <View
                 style={{
-                  marginLeft: 15,
-                  flex: 1,
-                  color: myColors.cool_gray_600,
+                  paddingHorizontal: spacing.md,
+                  marginBottom: spacing.xl,
                 }}
               >
-                TITLE
-              </TextH6>
-              <Ionicons
-                name="md-time"
-                size={18}
-                color={myColors.cool_gray_700}
-                style={{ justifyContent: 'flex-end', marginRight: 37 }}
-              />
-            </View>
+                <TouchableItem onPress={itemSelectArtistHandler}>
+                  <Image
+                    source={{ uri: artistInfo.image }}
+                    style={{
+                      width: 80,
+                      height: 80,
+                      borderRadius: 70,
+                      marginRight: 15,
+                    }}
+                  />
+                  <View style={{ flex: 1 }}>
+                    <TitleH5
+                      style={{ marginBottom: 4 }}
+                      children={artistName}
+                    />
+                    <TextH6
+                      style={{ color: myColors.cool_gray_500 }}
+                      numberOfLines={2}
+                    >
+                      {abbreviateNumber(artistInfo.playcount)} scrobbles
+                    </TextH6>
+                  </View>
+                </TouchableItem>
+              </View>
+            ) : null}
+
+            <DetailsTitle
+              style={{
+                paddingHorizontal: spacing.md,
+                borderBottomWidth: 1,
+                borderBottomColor: myColors.cool_gray_990,
+                marginBottom: 0,
+                paddingBottom: spacing.md,
+              }}
+            >
+              Tracklist
+            </DetailsTitle>
           </View>
         ) : null}
       </>
@@ -143,9 +179,9 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
     return (
       <View
         style={{
-          paddingTop: 10,
+          paddingTop: spacing.xs,
           paddingBottom: 40,
-          paddingHorizontal: 30,
+          paddingHorizontal: spacing.md,
         }}
       >
         {data && !isLoading ? (
@@ -198,7 +234,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
     <View style={{ flex: 1, backgroundColor: myColors.dark_gray }}>
       <FlatList
         data={albumTracklist}
-        renderItem={itemList}
+        renderItem={itemTrackList}
         keyExtractor={keyExtractor}
         ItemSeparatorComponent={itemSeparator}
         ListHeaderComponent={ListHeader}

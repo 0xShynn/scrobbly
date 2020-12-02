@@ -199,6 +199,7 @@ export const getSpotifyAlbumInfo = async (artistName, albumName) => {
     albumArt640: response.images[0].url,
     albumArt300: response.images[1].url,
     albumId: response.id,
+    albumName: response.name,
     artistName: response.artists[0].name,
     artistId: response.artists[0].id,
     copyrights: response.copyrights[0]['text'],

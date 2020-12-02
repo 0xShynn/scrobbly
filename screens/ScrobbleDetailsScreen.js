@@ -58,7 +58,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
   }
 
   const albumDetailsHandler = () => {
-    navigation.navigate('Album Details', {
+    navigation.push('Album Details', {
       artistName,
       albumArt,
       albumName,
