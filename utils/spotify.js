@@ -182,7 +182,6 @@ export const getSpotifyAlbumInfo = async (artistName, albumName) => {
   const encodedAlbumName = encodeURIComponent(albumName)
   const albumId = await getSpotifyAlbumId(encodedArtistName, encodedAlbumName)
   const spotifyToken = await getSpotifyToken()
-
   const response = await fetch(`https://api.spotify.com/v1/albums/${albumId}`, {
     method: 'GET',
     headers: {
@@ -204,13 +203,38 @@ export const getSpotifyAlbumInfo = async (artistName, albumName) => {
     artistId: response.artists[0].id,
     copyrights: response.copyrights[0]['text'],
     label: response.label,
+    total_length_text: response.total_tracks > 1 ? 'tracks' : 'track',
+    total_tracks: response.total_tracks,
     release_date: response.release_date,
     release_year: dayjs(response.release_date).format('YYYY'),
-    total_length_text: '',
-    total_tracks: response.total_tracks,
-    track_word: 'tracks',
-    tracklist: [],
   }
+
+  return data
+}
+
+export const getSpotifyAlbumTracklist = async (artistName, albumName) => {
+  const encodedArtistName = encodeURIComponent(artistName)
+  const encodedAlbumName = encodeURIComponent(albumName)
+  const albumId = await getSpotifyAlbumId(encodedArtistName, encodedAlbumName)
+  const spotifyToken = await getSpotifyToken()
+
+  const response = await fetch(`https://api.spotify.com/v1/albums/${albumId}`, {
+    method: 'GET',
+    headers: {
+      Authorization: `Bearer ${spotifyToken.token}`,
+    },
+  }).then((res) => res.json())
+
+  // The album ID wasn't found, so we return blank images and empty tracklist
+  if (response.hasOwnProperty('error')) {
+    return []
+  }
+
+  const data = {
+    total_length_text: '',
+    track_word: 'tracks',
+  }
+  const tracklist = []
 
   let total_length_ms = 0
   let updatedDuration
@@ -220,7 +244,7 @@ export const getSpotifyAlbumInfo = async (artistName, albumName) => {
       secondsDecimalDigits: 0,
       colonNotation: true,
     })
-    data.tracklist.push(
+    tracklist.push(
       new AlbumTrack(item.id, item.name, item.track_number, updatedDuration)
     )
     total_length_ms += item.duration_ms
@@ -233,11 +257,11 @@ export const getSpotifyAlbumInfo = async (artistName, albumName) => {
     })
   }
 
-  if (data.tracklist.length <= 1) {
+  if (tracklist.length <= 1) {
     data.track_word = 'track'
   }
 
-  return data
+  return { data, tracklist }
 }
 
 export const getSpotifyAlbumId = async (artistName, albumName) => {
@@ -277,7 +301,7 @@ export const getSpotifyAlbumId = async (artistName, albumName) => {
     albumId = response.albums.items[0].id
 
     const selectedAlbum = response.albums.items.find(
-      (item) => item.name === albumName
+      (item) => encodeURIComponent(item.name) === albumName
     )
 
     if (selectedAlbum !== undefined) {

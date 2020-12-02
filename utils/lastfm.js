@@ -147,12 +147,15 @@ export const getTopAlbums = async (
             : album.image[2]['#text'] !== ''
             ? album.image[2]['#text']
             : image_blank_300,
-          spotifyAlbumData.release_year,
+          spotifyAlbumData !== null ? spotifyAlbumData.release_year : null,
+          spotifyAlbumData !== null ? spotifyAlbumData.total_tracks : null,
+          spotifyAlbumData !== null ? spotifyAlbumData.total_length_text : null,
           album.playcount
         )
       )
     }
     data.sort((a, b) => b.playcount - a.playcount)
+    console.log(data)
     return data
   } catch (error) {
     console.log(error)

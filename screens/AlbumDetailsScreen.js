@@ -1,9 +1,10 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { FlatList, Image, View } from 'react-native'
+import { FlatList, Image, View, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import DetailsHeader from '../components/DetailsHeader'
 import ItemStats from '../components/ItemStats'
+import TouchableItem from '../components/TouchableItem'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import {
   DetailsTitle,
@@ -13,13 +14,10 @@ import {
 } from '../components/UI/Typography'
 import CustomButton from '../components/UI/CustomButton'
 
-import { Ionicons } from '@expo/vector-icons'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
-import { getSpotifyAlbumInfo } from '../utils/spotify'
+import { getSpotifyAlbumInfo, getSpotifyAlbumTracklist } from '../utils/spotify'
 import { getAlbumInfo, getArtistInfo } from '../utils/lastfm'
-import { TouchableOpacity } from 'react-native-gesture-handler'
-import TouchableItem from '../components/TouchableItem'
 import { abbreviateNumber } from '../utils/numbers'
 
 const itemSeparator = () => (
@@ -29,11 +27,40 @@ const itemSeparator = () => (
 const AlbumDetailsScreen = ({ navigation, route }) => {
   const { artistName, albumName, albumArt, topPlaycount } = route.params
   const [isLoading, setIsLoading] = useState(false)
+  const [albumStats, setAlbumStats] = useState()
+  const [spotifyAlbumInfo, setSpotifyAlbumInfo] = useState()
+  const [spotifyAlbumExtra, setSpotifyAlbumExtra] = useState()
   const [albumTracklist, setAlbumTracklist] = useState([])
-  const [data, setData] = useState({})
-  const [albumInfo, setAlbumInfo] = useState()
   const [artistInfo, setArtistInfo] = useState()
   const username = useSelector((state) => state.auth.username)
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true)
+
+      const albumStatsData = await getAlbumInfo(username, artistName, albumName)
+      setAlbumStats(albumStatsData)
+
+      const spotifyAlbumInfoData = await getSpotifyAlbumInfo(
+        artistName,
+        albumName
+      )
+      setSpotifyAlbumInfo(spotifyAlbumInfoData)
+
+      const { tracklist, data } = await getSpotifyAlbumTracklist(
+        artistName,
+        albumName
+      )
+      setAlbumTracklist(tracklist)
+      setSpotifyAlbumExtra(data)
+
+      const artistInfoData = await getArtistInfo(username, artistName)
+      setArtistInfo(artistInfoData)
+
+      setIsLoading(false)
+    }
+    fetchData()
+  }, [])
 
   const itemTrackList = ({ item }) => {
     return (
@@ -80,27 +107,6 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
     })
   }
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setIsLoading(true)
-
-      const spotifyData = await getSpotifyAlbumInfo(artistName, albumName)
-      setData(spotifyData)
-
-      const albumInfoData = await getAlbumInfo(username, artistName, albumName)
-      setAlbumInfo(albumInfoData)
-
-      const artistInfoData = await getArtistInfo(username, artistName)
-      setArtistInfo(artistInfoData)
-
-      if (spotifyData !== null) {
-        setAlbumTracklist(spotifyData.tracklist)
-      }
-      setIsLoading(false)
-    }
-    fetchData()
-  }, [])
-
   const keyExtractor = useCallback((item) => item + item.id, [])
 
   const ListHeader = () => {
@@ -112,14 +118,14 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
           image={albumArt}
         />
 
-        {data && !isLoading ? (
+        {spotifyAlbumInfo && !isLoading ? (
           <View>
-            {albumInfo && !isLoading ? (
+            {albumStats && !isLoading ? (
               <View style={{ paddingTop: 20, paddingHorizontal: 20 }}>
                 <ItemStats
-                  playcount={albumInfo.playcount}
-                  userplaycount={albumInfo.userplaycount}
-                  listeners={albumInfo.listeners}
+                  playcount={albumStats.playcount}
+                  userplaycount={albumStats.userplaycount}
+                  listeners={albumStats.listeners}
                   topPlaycount={topPlaycount}
                 />
               </View>
@@ -184,9 +190,9 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
           paddingHorizontal: spacing.md,
         }}
       >
-        {data && !isLoading ? (
+        {spotifyAlbumInfo && !isLoading ? (
           <TextH6 style={{ color: myColors.cool_gray_500 }}>
-            {data.copyrights}
+            {spotifyAlbumInfo.copyrights}
           </TextH6>
         ) : null}
       </View>
@@ -232,16 +238,20 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
 
   return (
     <View style={{ flex: 1, backgroundColor: myColors.dark_gray }}>
-      <FlatList
-        data={albumTracklist}
-        renderItem={itemTrackList}
-        keyExtractor={keyExtractor}
-        ItemSeparatorComponent={itemSeparator}
-        ListHeaderComponent={ListHeader}
-        ListEmptyComponent={ListEmpty}
-        ListFooterComponent={ListFooter}
-        initialNumToRender={12}
-      />
+      {!isLoading ? (
+        <FlatList
+          data={albumTracklist}
+          renderItem={itemTrackList}
+          keyExtractor={keyExtractor}
+          ItemSeparatorComponent={itemSeparator}
+          ListHeaderComponent={ListHeader}
+          ListEmptyComponent={ListEmpty}
+          ListFooterComponent={ListFooter}
+          initialNumToRender={12}
+        />
+      ) : (
+        <LoadingContainer />
+      )}
     </View>
   )
 }
