@@ -288,8 +288,7 @@ export const getSpotifyAlbumId = async (artistName, albumName) => {
       const result = await spotifySearch(albumName, 'album')
 
       const selectedId = result.albums.items.find(
-        (item) =>
-          item.artists[0].name.toLowerCase() === artistName.toLowerCase()
+        (item) => encodeURIComponent(item.artists[0].name) === artistName
       )
 
       if (selectedId === undefined) {

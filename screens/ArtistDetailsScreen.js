@@ -210,7 +210,7 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
                   return (
                     <SimilarItem
                       title={item.albumName}
-                      subtitle={item.releaseYear}
+                      subtitle={`${item.releaseYear} • ${item.totalTracks} ${item.totalTracksWord}`}
                       image={item.albumArt}
                       playcount={item.playcount}
                       key={item.id}

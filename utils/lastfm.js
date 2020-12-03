@@ -155,7 +155,6 @@ export const getTopAlbums = async (
       )
     }
     data.sort((a, b) => b.playcount - a.playcount)
-    console.log(data)
     return data
   } catch (error) {
     console.log(error)
