@@ -43,7 +43,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
     topPlaycount,
   } = route.params
 
-  const itemSelectHandler = async (
+  const itemSimilarTrackHandler = async (
     artistName,
     trackName,
     albumArt,
@@ -229,7 +229,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                   image={item.albumArt}
                   playcount={item.playcount}
                   key={item.id}
-                  onPress={itemSelectHandler.bind(
+                  onPress={itemSimilarTrackHandler.bind(
                     this,
                     item.artistName,
                     item.trackName,

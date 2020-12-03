@@ -34,10 +34,7 @@ export const getSpotifyToken = async () => {
     )
 
     if (spotifyToken === null) {
-      console.log(
-        'The Spotify token is null, a new one will be requested.',
-        spotifyToken
-      )
+      console.log('The Spotify token is null, a new one will be requested.')
       spotifyToken = await setSpotifyToken()
     }
 

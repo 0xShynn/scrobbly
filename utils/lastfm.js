@@ -366,3 +366,26 @@ export const getSimilarTracks = async (artistName, trackName) => {
     throw error
   }
 }
+
+export const getLastfmUserInfo = async (username) => {
+  const method = `?method=user.getinfo&user=${username}&api_key=${api_key}&format=json`
+
+  try {
+    const response = await fetch(baseUrl + method).then((res) => res.json())
+
+    if (response.hasOwnProperty('error')) {
+      throw new Error(response.message)
+    }
+
+    const data = {
+      country: response.user.country,
+      image: response.user.image[2]['#text'],
+      name: response.user.name,
+      playcount: response.user.playcount,
+      realname: response.user.realname,
+    }
+    return data
+  } catch (error) {
+    throw error
+  }
+}

@@ -1,6 +1,6 @@
 import * as Crypto from 'expo-crypto'
 import AsyncStorage from '@react-native-community/async-storage'
-import { baseUrl } from '../utils/lastfm'
+import { baseUrl, getLastfmUserInfo } from '../utils/lastfm'
 
 export const AUTHENTICATE = 'AUTHENTICATE'
 export const LOGOUT = 'LOGOUT'
@@ -18,37 +18,45 @@ export const authenticate = (username, token) => {
 
 export const logIn = (username, password) => {
   return async (dispatch) => {
-    const signature =
-      'api_key' +
-      process.env.LASTFM_API_KEY +
-      'methodauth.getMobileSession' +
-      'password' +
-      password +
-      'username' +
-      username +
-      process.env.LASTFM_SECRET
+    try {
+      const signature =
+        'api_key' +
+        process.env.LASTFM_API_KEY +
+        'methodauth.getMobileSession' +
+        'password' +
+        password +
+        'username' +
+        username +
+        process.env.LASTFM_SECRET
 
-    // LastFM api_sig requirement
-    const hashedSignature = await Crypto.digestStringAsync(
-      Crypto.CryptoDigestAlgorithm.MD5,
-      signature
-    )
+      // LastFM api_sig requirement
+      const hashedSignature = await Crypto.digestStringAsync(
+        Crypto.CryptoDigestAlgorithm.MD5,
+        signature
+      )
 
-    const response = await fetch(
-      `${baseUrl}?method=auth.getMobileSession&api_key=${process.env.LASTFM_API_KEY}&password=${password}&username=${username}&api_sig=${hashedSignature}&format=json`,
-      {
-        method: 'POST',
+      const response = await fetch(
+        `${baseUrl}?method=auth.getMobileSession&api_key=${process.env.LASTFM_API_KEY}&password=${password}&username=${username}&api_sig=${hashedSignature}&format=json`,
+        {
+          method: 'POST',
+        }
+      ).then((res) => res.json())
+
+      if (response.hasOwnProperty('error')) {
+        throw new Error(response.message)
       }
-    )
 
-    const resData = await response.json()
+      const userInfoResponse = await getLastfmUserInfo(username)
 
-    if (resData.hasOwnProperty('error')) {
-      throw new Error(resData.message)
+      dispatch(authenticate(response.session.name, response.session.key))
+      saveDataToStorage(
+        response.session.name,
+        response.session.key,
+        userInfoResponse
+      )
+    } catch (error) {
+      throw error
     }
-
-    dispatch(authenticate(resData.session.name, resData.session.key))
-    saveDataToStorage(resData.session.name, resData.session.key)
   }
 }
 
@@ -58,12 +66,13 @@ export const logOut = () => {
   return { type: LOGOUT }
 }
 
-const saveDataToStorage = (username, token) => {
+const saveDataToStorage = (username, token, userInfo) => {
   AsyncStorage.setItem(
     'userData',
     JSON.stringify({
       username,
       token,
+      userInfo,
     })
   )
 }

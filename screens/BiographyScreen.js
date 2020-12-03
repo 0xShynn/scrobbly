@@ -11,7 +11,6 @@ const BiographyScreen = (props) => {
     <ScrollView
       style={{
         backgroundColor: myColors.dark_gray,
-
         flex: 1,
       }}
     >
