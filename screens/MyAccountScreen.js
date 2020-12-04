@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Image, StyleSheet, View } from 'react-native'
+import { Image, StyleSheet, View, ScrollView } from 'react-native'
 import { useDispatch } from 'react-redux'
 import AsyncStorage from '@react-native-community/async-storage'
 
@@ -29,29 +29,38 @@ const MyAccountScreen = () => {
   }, [])
 
   return (
-    <View
-      style={{
-        backgroundColor: myColors.dark_gray,
-        flex: 1,
-        padding: spacing.xl,
-      }}
-    >
-      {data ? (
-        <View style={{ alignItems: 'center' }}>
-          <Image
-            source={{ uri: data.image }}
-            style={{
-              width: 160,
-              height: 160,
-              borderRadius: 80,
-              marginBottom: 20,
-            }}
-          />
-          <TitleH2 style={{ marginBottom: 20 }}>{data.realname}</TitleH2>
-        </View>
-      ) : null}
-      <CustomButton label="Logout" onPress={logOutHandler} />
-    </View>
+    <ScrollView style={{ backgroundColor: myColors.dark_gray }}>
+      <View
+        style={{
+          backgroundColor: myColors.dark_gray,
+          flex: 1,
+          paddingVertical: 40,
+          paddingHorizontal: spacing.lg,
+        }}
+      >
+        {data ? (
+          <View style={{ alignItems: 'center', flex: 1 }}>
+            <Image
+              source={{ uri: data.image }}
+              style={{
+                width: 160,
+                height: 160,
+                borderRadius: 80,
+                marginBottom: spacing.lg,
+              }}
+            />
+            <TitleH2 style={{ marginBottom: spacing.lg }}>
+              {data.realname}
+            </TitleH2>
+          </View>
+        ) : null}
+        <CustomButton
+          label="Logout"
+          onPress={logOutHandler}
+          color={myColors.primary}
+        />
+      </View>
+    </ScrollView>
   )
 }
 

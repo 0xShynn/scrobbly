@@ -68,7 +68,6 @@ const MainBottomTabNavigator = () => {
       <Tab.Screen name="Albums" component={TopAlbumsStackScreen} />
       <Tab.Screen name="Tracks" component={TopTracksStackScreen} />
       <Tab.Screen name="Artists" component={TopArtistsStackScreen} />
-      <Tab.Screen name="My Account" component={MyAccountStackScreen} />
     </Tab.Navigator>
   )
 }

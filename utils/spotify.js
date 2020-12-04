@@ -227,38 +227,17 @@ export const getSpotifyAlbumTracklist = async (artistName, albumName) => {
     return []
   }
 
-  const data = {
-    total_length_text: '',
-    track_word: 'tracks',
-  }
   const tracklist = []
 
-  let total_length_ms = 0
-  let updatedDuration
-
   for (const item of response.tracks.items) {
-    updatedDuration = prettyMilliseconds(item.duration_ms + 500, {
-      secondsDecimalDigits: 0,
-      colonNotation: true,
-    })
-    tracklist.push(
-      new AlbumTrack(item.id, item.name, item.track_number, updatedDuration)
-    )
-    total_length_ms += item.duration_ms
-  }
-
-  // Set the tracks total length in minutes
-  if (total_length_ms !== undefined) {
-    data.total_length_text = prettyMilliseconds(total_length_ms + 500, {
-      compact: true,
-    })
+    tracklist.push(new AlbumTrack(item.id, item.name, item.track_number))
   }
 
   if (tracklist.length <= 1) {
     data.track_word = 'track'
   }
 
-  return { data, tracklist }
+  return { tracklist }
 }
 
 export const getSpotifyAlbumId = async (artistName, albumName) => {

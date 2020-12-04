@@ -3,17 +3,17 @@ import { TouchableOpacity } from 'react-native'
 import myColors from '../../constants/myColors'
 import { TitleH5 } from './Typography'
 
-export default function CustomButton({ label, onPress, style }) {
+export default function CustomButton({ label, onPress, style, color }) {
   return (
     <TouchableOpacity
       style={{
-        borderRadius: 10,
+        borderRadius: 24,
         paddingVertical: 14,
         paddingHorizontal: 12,
-        minWidth: 160,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: myColors.primary,
+        minWidth: 160,
+        backgroundColor: color ? color : myColors.cool_gray_700,
         ...style,
       }}
       activeOpacity={0.7}

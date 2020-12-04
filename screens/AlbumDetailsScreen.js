@@ -29,7 +29,6 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [albumStats, setAlbumStats] = useState()
   const [spotifyAlbumInfo, setSpotifyAlbumInfo] = useState()
-  const [spotifyAlbumExtra, setSpotifyAlbumExtra] = useState()
   const [albumTracklist, setAlbumTracklist] = useState([])
   const [artistInfo, setArtistInfo] = useState()
   const username = useSelector((state) => state.auth.username)
@@ -47,12 +46,11 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
       )
       setSpotifyAlbumInfo(spotifyAlbumInfoData)
 
-      const { tracklist, data } = await getSpotifyAlbumTracklist(
+      const { tracklist } = await getSpotifyAlbumTracklist(
         artistName,
         albumName
       )
       setAlbumTracklist(tracklist)
-      setSpotifyAlbumExtra(data)
 
       const artistInfoData = await getArtistInfo(username, artistName)
       setArtistInfo(artistInfoData)

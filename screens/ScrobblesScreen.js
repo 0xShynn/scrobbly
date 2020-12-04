@@ -1,7 +1,8 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { View, StatusBar } from 'react-native'
+import { View, StatusBar, TouchableWithoutFeedback } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import * as scrobblesActions from '../store/scrobblesActions'
+import { SimpleLineIcons } from '@expo/vector-icons'
 
 import FlatListItems from '../components/FlatListItems'
 import ListItem from '../components/ListItem'
@@ -10,7 +11,7 @@ import LoadingContainer from '../components/UI/LoadingContainer'
 import ErrorContainer from '../components/UI/ErrorContainer'
 
 import myColors from '../constants/myColors'
-import { SimpleLineIcons } from '@expo/vector-icons'
+import spacing from '../constants/spacing'
 
 const listHeader = () => (
   <View>
@@ -67,14 +68,20 @@ const ScrobblesScreen = ({ navigation }) => {
     )
   }, [])
 
-  const settingsSelector = () => {
+  const settingsHandler = () => {
     return (
-      <SimpleLineIcons
-        name="settings"
-        size={24}
-        color="white"
-        style={{ marginHorizontal: 10 }}
-      />
+      <TouchableWithoutFeedback
+        onPress={() => {
+          navigation.navigate('My Account')
+        }}
+      >
+        <SimpleLineIcons
+          name="settings"
+          size={24}
+          color="white"
+          style={{ marginHorizontal: spacing.md }}
+        />
+      </TouchableWithoutFeedback>
     )
   }
 
@@ -88,7 +95,7 @@ const ScrobblesScreen = ({ navigation }) => {
     navigation.setOptions({
       // title: 'Top Artists / ' + periodSelected.name,
       headerTitle: <CustomHeaderTitle title="Scrobbles" />,
-      headerRight: settingsSelector,
+      headerRight: settingsHandler,
     })
   }, [navigation])
 
