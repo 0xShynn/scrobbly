@@ -230,13 +230,16 @@ export const getSpotifyAlbumTracklist = async (artistName, albumName) => {
   }
 
   const tracklist = []
+  let updatedDuration
 
   for (const item of response.tracks.items) {
-    tracklist.push(new AlbumTrack(item.id, item.name, item.track_number))
-  }
-
-  if (tracklist.length <= 1) {
-    data.track_word = 'track'
+    updatedDuration = prettyMilliseconds(item.duration_ms + 500, {
+      secondsDecimalDigits: 0,
+      colonNotation: true,
+    })
+    tracklist.push(
+      new AlbumTrack(item.id, item.name, item.track_number, updatedDuration)
+    )
   }
 
   return { tracklist }
