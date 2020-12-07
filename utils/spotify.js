@@ -68,7 +68,9 @@ export const getSpotifyToken = async () => {
 export const getSpotifyTrackInfo = async (artistName, trackName) => {
   const spotifyToken = await getSpotifyToken()
   const encodedArtistName = encodeURIComponent(artistName)
-  const encodedTrackName = encodeURIComponent(trackName)
+  // Spotify search isn't working for items with the ' sign, so we need to remove it.
+  const regex = /[']/gi
+  const encodedTrackName = encodeURIComponent(trackName.replace(regex, ''))
 
   let data = {
     image_640: image_blank_640,
