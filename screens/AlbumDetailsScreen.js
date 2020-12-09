@@ -89,7 +89,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
   }
 
   const itemSelectTrackHandler = (trackName) => {
-    navigation.navigate('Scrobble Details', {
+    navigation.push('Scrobble Details', {
       artistName,
       trackName,
       albumArt,
@@ -226,7 +226,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
         <CustomText
           children="Tracklist not found"
           size="H6"
-          style={{ textAlign: 'center' }}
+          complementaryStyle={{ textAlign: 'center' }}
         />
         <CustomButton
           label="Go Back"
