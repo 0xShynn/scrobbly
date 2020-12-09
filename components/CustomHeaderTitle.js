@@ -1,20 +1,25 @@
 import React from 'react'
-import { TextH4, TitleH4 } from './UI/Typography'
+import CustomText from './UI/CustomText'
 
 const CustomHeaderTitle = (props) => {
   return (
     <>
-      <TitleH4 style={{ color: 'white', marginRight: 6, marginBottom: 0 }}>
+      <CustomText
+        size="H4"
+        color="white"
+        bold
+        complementaryStyle={{ marginRight: 6, marginBottom: 0 }}
+      >
         {props.title}
-      </TitleH4>
+      </CustomText>
       {props.periodSelected && (
-        <TextH4 style={{ color: 'white' }}>
+        <CustomText size="H4" color="white">
           {' '}
           /{' '}
           {props.isLoading || props.isRefreshing
             ? 'Loading...'
             : props.periodSelected}
-        </TextH4>
+        </CustomText>
       )}
     </>
   )

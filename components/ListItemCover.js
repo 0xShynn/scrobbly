@@ -6,8 +6,8 @@ import {
   TouchableWithoutFeedback,
 } from 'react-native'
 import { LinearGradient } from 'expo-linear-gradient'
+import CustomText from './UI/CustomText'
 import { Ionicons } from '@expo/vector-icons'
-import { TextH6, TitleH3, TitleH5 } from './UI/Typography'
 import myColors from '../constants/myColors'
 
 const ListItemCover = (props) => {
@@ -47,22 +47,27 @@ const ListItemCover = (props) => {
                 color="white"
                 style={styles.itemIcon}
               />
-              <TitleH3
-                style={{ marginLeft: 8, color: 'white' }}
+              <CustomText
                 children={props.playcount}
+                size="H3"
+                bold
+                complementaryStyle={{ marginLeft: 8 }}
               />
             </View>
-            <TitleH5
-              style={{ color: 'white' }}
-              numberOfLines={1}
+            <CustomText
               children={props.title}
+              size="H5"
+              bold
+              numberOfLines={1}
             />
 
             {props.subtitle && (
-              <TextH6
-                style={{ color: myColors.cool_gray_200 }}
-                numberOfLines={1}
+              <CustomText
                 children={props.subtitle}
+                size="H6"
+                bold
+                color={myColors.cool_gray_300}
+                numberOfLines={1}
               />
             )}
           </View>

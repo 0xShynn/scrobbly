@@ -1,7 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient'
 import React from 'react'
 import { View, ImageBackground, TouchableOpacity } from 'react-native'
-import { TitleH5 } from './UI/Typography'
+import CustomText from './UI/CustomText'
 
 const ListItemsArtist = (props) => {
   return (
@@ -37,12 +37,17 @@ const ListItemsArtist = (props) => {
               flex: 1,
             }}
           />
-          <TitleH5
-            style={{ padding: 10, position: 'absolute', bottom: 0 }}
+          <CustomText
+            children={props.title}
+            size="H5"
+            bold
+            complementaryStyle={{
+              padding: 10,
+              position: 'absolute',
+              bottom: 0,
+            }}
             numberOfLines={1}
-          >
-            {props.title}
-          </TitleH5>
+          />
         </ImageBackground>
       </View>
     </TouchableOpacity>

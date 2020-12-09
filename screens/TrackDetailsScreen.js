@@ -3,7 +3,7 @@ import { FlatList, View } from 'react-native'
 
 import DetailsHeader from '../components/DetailsHeader'
 import SimilarItem from '../components/SimilarItem'
-import { TextH6, TitleH3 } from '../components/UI/Typography'
+import CustomText from '../components/UI/CustomText'
 
 import myColors from '../constants/myColors'
 import { getSimilarTracks } from '../utils/lastfm'
@@ -61,8 +61,8 @@ const TrackDetailsScreen = ({ route, navigation }) => {
           style={{ marginBottom: 40 }}
         />
         <View>
-          <TextH6>{playcount}</TextH6>
-          <TitleH3>From the Album</TitleH3>
+          <CustomText children={playcount} size="H6" />
+          <CustomText children="From the Album" size="H3" bold />
         </View>
       </>
     )

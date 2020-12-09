@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { Image, StyleSheet, View, ScrollView } from 'react-native'
-import { useDispatch } from 'react-redux'
+import { Image, View, ScrollView } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 
 import CustomButton from '../components/UI/CustomButton'
-import { TitleH2 } from '../components/UI/Typography'
+import CustomText from '../components/UI/CustomText'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
 
+import { useDispatch } from 'react-redux'
 import * as authActions from '../store/authActions'
 
 const MyAccountScreen = () => {
@@ -49,9 +49,9 @@ const MyAccountScreen = () => {
                 marginBottom: spacing.lg,
               }}
             />
-            <TitleH2 style={{ marginBottom: spacing.lg }}>
+            <CustomText size="H2" bold style={{ marginBottom: spacing.lg }}>
               {data.realname}
-            </TitleH2>
+            </CustomText>
           </View>
         ) : null}
         <CustomButton
@@ -65,5 +65,3 @@ const MyAccountScreen = () => {
 }
 
 export default MyAccountScreen
-
-const styles = StyleSheet.create({})

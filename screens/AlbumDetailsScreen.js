@@ -6,12 +6,7 @@ import DetailsHeader from '../components/DetailsHeader'
 import ItemStats from '../components/ItemStats'
 import TouchableItem from '../components/TouchableItem'
 import LoadingContainer from '../components/UI/LoadingContainer'
-import {
-  DetailsTitle,
-  TextH6,
-  TitleH5,
-  TitleH6,
-} from '../components/UI/Typography'
+import { DetailsTitle } from '../components/UI/Typography'
 import CustomButton from '../components/UI/CustomButton'
 
 import myColors from '../constants/myColors'
@@ -19,6 +14,7 @@ import spacing from '../constants/spacing'
 import { getSpotifyAlbumInfo, getSpotifyAlbumTracklist } from '../utils/spotify'
 import { getAlbumInfo, getArtistInfo } from '../utils/lastfm'
 import { abbreviateNumber } from '../utils/numbers'
+import CustomText from '../components/UI/CustomText'
 
 const itemSeparator = () => (
   <View style={{ height: 1, backgroundColor: '#1C1C1C' }} />
@@ -70,16 +66,24 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
         }}
         onPress={itemSelectTrackHandler.bind(this, item.trackName)}
       >
-        <TitleH6
-          style={{ minWidth: 25, color: 'white' }}
+        <CustomText
           children={item.trackNumber}
+          size="H6"
+          bold
+          complementaryStyle={{ minWidth: 25 }}
         />
-        <TextH6
-          numberOfLines={1}
-          style={{ flex: 1, color: 'white' }}
+        <CustomText
           children={item.trackName}
+          size="H6"
+          numberOfLines={1}
+          complementaryStyle={{ flex: 1 }}
         />
-        <TextH6 style={{ paddingLeft: 10 }} children={item.duration} />
+        <CustomText
+          children={item.duration}
+          size="H6"
+          color={myColors.cool_gray_500}
+          complementaryStyle={{ paddingLeft: 10 }}
+        />
       </TouchableOpacity>
     )
   }
@@ -147,16 +151,19 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
                     }}
                   />
                   <View style={{ flex: 1 }}>
-                    <TitleH5
-                      style={{ marginBottom: 4 }}
+                    <CustomText
                       children={artistName}
+                      size="H5"
+                      bold
+                      complementaryStyle={{ marginBottom: 4 }}
                     />
-                    <TextH6
-                      style={{ color: myColors.cool_gray_500 }}
+                    <CustomText
+                      size="H6"
+                      color={myColors.cool_gray_300}
                       numberOfLines={2}
                     >
                       {abbreviateNumber(artistInfo.playcount)} scrobbles
-                    </TextH6>
+                    </CustomText>
                   </View>
                 </TouchableItem>
               </View>
@@ -189,9 +196,11 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
         }}
       >
         {spotifyAlbumInfo && !isLoading ? (
-          <TextH6 style={{ color: myColors.cool_gray_500 }}>
-            {spotifyAlbumInfo.copyrights}
-          </TextH6>
+          <CustomText
+            children={spotifyAlbumInfo.copyrights}
+            size="H6"
+            color={myColors.cool_gray_400}
+          />
         ) : null}
       </View>
     )
@@ -214,9 +223,10 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
           alignItems: 'center',
         }}
       >
-        <TextH6
-          style={{ textAlign: 'center' }}
+        <CustomText
           children="Tracklist not found"
+          size="H6"
+          style={{ textAlign: 'center' }}
         />
         <CustomButton
           label="Go Back"

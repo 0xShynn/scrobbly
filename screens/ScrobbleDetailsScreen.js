@@ -9,13 +9,9 @@ import TouchableItem from '../components/TouchableItem'
 
 import RoundedContainer from '../components/UI/RoundedContainer'
 import LoadingContainer from '../components/UI/LoadingContainer'
+import CustomText from '../components/UI/CustomText'
 import CustomButton from '../components/UI/CustomButton'
-import {
-  TextH5,
-  TextH6,
-  DetailsTitle,
-  TitleH5,
-} from '../components/UI/Typography'
+import { DetailsTitle } from '../components/UI/Typography'
 
 import {
   getAlbumInfo,
@@ -138,7 +134,11 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
           {error ? (
             <>
               <RoundedContainer style={{ alignItems: 'center' }}>
-                <TextH5 style={{ marginVertical: 15 }}>{error.message}</TextH5>
+                <CustomText
+                  children={error.message}
+                  size="H5"
+                  style={{ marginVertical: 15 }}
+                />
               </RoundedContainer>
               <CustomButton
                 label="Go Back"
@@ -178,16 +178,19 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                   justifyContent: 'center',
                 }}
               >
-                <TitleH5
-                  numberOfLines={2}
-                  style={{ marginBottom: 4 }}
+                <CustomText
                   children={albumInfo.albumName}
+                  size="H5"
+                  bold
+                  numberOfLines={2}
+                  complementaryStyle={{ marginBottom: 4 }}
                 />
-                <TextH6
+                <CustomText
+                  size="H6"
                   children={
                     abbreviateNumber(albumInfo.playcount) + ' scrobbles'
                   }
-                  style={{ color: myColors.cool_gray_500 }}
+                  color={myColors.cool_gray_500}
                 />
               </View>
             </TouchableItem>
@@ -208,13 +211,19 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                 }}
               />
               <View style={{ flex: 1 }}>
-                <TitleH5 style={{ marginBottom: 4 }} children={artistName} />
-                <TextH6
-                  style={{ color: myColors.cool_gray_500 }}
+                <CustomText
+                  size="H5"
+                  bold
+                  complementaryStyle={{ marginBottom: 4 }}
+                  children={artistName}
+                />
+                <CustomText
+                  size="H6"
+                  color={myColors.cool_gray_500}
                   numberOfLines={2}
                 >
                   {abbreviateNumber(artistInfo.playcount)} scrobbles
-                </TextH6>
+                </CustomText>
               </View>
             </TouchableItem>
           )}

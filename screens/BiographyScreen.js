@@ -1,7 +1,6 @@
 import React from 'react'
-import { View } from 'react-native'
-import { ScrollView } from 'react-native-gesture-handler'
-import { TextH6 } from '../components/UI/Typography'
+import { View, ScrollView } from 'react-native'
+import CustomText from '../components/UI/CustomText'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
 
@@ -15,7 +14,7 @@ const BiographyScreen = (props) => {
       }}
     >
       <View style={{ padding: spacing.xl }}>
-        <TextH6 style={{ color: 'white' }}>{biography}</TextH6>
+        <CustomText children={biography} size="H6" />
       </View>
     </ScrollView>
   )

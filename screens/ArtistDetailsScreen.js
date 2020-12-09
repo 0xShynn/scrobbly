@@ -1,22 +1,23 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { View, ScrollView, Image, FlatList, StyleSheet } from 'react-native'
 import { useSelector } from 'react-redux'
 
-import { DetailsTitle, TextH6, TitleH2 } from '../components/UI/Typography'
+import { DetailsTitle } from '../components/UI/Typography'
 import LoadingContainer from '../components/UI/LoadingContainer'
+import CustomText from '../components/UI/CustomText'
 import TouchableItem from '../components/TouchableItem'
 import SimilarItem from '../components/SimilarItem'
 import ListItemsArtist from '../components/ListItemsArtist'
+import ItemStats from '../components/ItemStats'
 
 import myColors from '../constants/myColors'
+import spacing from '../constants/spacing'
 import {
   getArtistInfo,
   getSimilarArtists,
   getTopAlbums,
   getTopTracks,
 } from '../utils/lastfm'
-import ItemStats from '../components/ItemStats'
-import spacing from '../constants/spacing'
 
 const listItemSeparator = () => <View style={{ width: 20 }} />
 
@@ -145,9 +146,12 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
             resizeMode="cover"
           />
         </View>
-        <TitleH2 style={{ alignSelf: 'center', marginBottom: spacing.md }}>
-          {artistName}
-        </TitleH2>
+        <CustomText
+          children={artistName}
+          size="H2"
+          bold
+          complementaryStyle={{ alignSelf: 'center', marginBottom: spacing.md }}
+        />
 
         {!isLoading ? (
           <>
@@ -172,9 +176,12 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
                       }}
                       style={{ marginBottom: 8 }}
                     >
-                      <TextH6 style={{ lineHeight: 18 }} numberOfLines={6}>
-                        {artistInfo.bio}
-                      </TextH6>
+                      <CustomText
+                        children={artistInfo.bio}
+                        size="H6"
+                        complementaryStyle={{ lineHeight: 18 }}
+                        numberOfLines={6}
+                      />
                     </TouchableItem>
                   </View>
                 ) : null}

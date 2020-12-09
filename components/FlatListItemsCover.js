@@ -1,7 +1,7 @@
 import React, { useCallback } from 'react'
 import { FlatList, View, RefreshControl } from 'react-native'
-import { TextH6 } from './UI/Typography'
 import myColors from '../constants/myColors'
+import CustomText from './UI/CustomText'
 
 const listItemSeparator = () => <View style={{ height: 12 }} />
 
@@ -19,7 +19,7 @@ const listEmpty = () => {
         alignItems: 'center',
       }}
     >
-      <TextH6>No items found. Start scrobbling!</TextH6>
+      <CustomText size="H6">No items found. Start scrobbling!</CustomText>
     </View>
   )
 }

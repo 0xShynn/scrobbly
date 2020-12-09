@@ -1,17 +1,18 @@
 import React, { useRef } from 'react'
 import { View, StyleSheet } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
-import { useFormik } from 'formik'
-import * as Yup from 'yup'
 
 import CenteredContainer from '../../components/UI/CenteredContainer'
 import MyTextInput from '../../components/UI/MyTextInput'
 import CustomButton from '../../components/UI/CustomButton'
-import { TextH6 } from '../../components/UI/Typography'
-import myColors from '../../constants/myColors'
+import CustomText from '../../components/UI/CustomText'
 
 import { useDispatch } from 'react-redux'
 import * as authActions from '../../store/authActions'
+
+import myColors from '../../constants/myColors'
+import { useFormik } from 'formik'
+import * as Yup from 'yup'
 
 const authValidationSchema = Yup.object({
   username: Yup.string().required(),
@@ -83,9 +84,11 @@ const AuthScreen = (props) => {
         <View style={{ alignItems: 'center', marginTop: 20 }}>
           <CustomButton label="Login" onPress={handleSubmit} />
         </View>
-        <TextH6 style={{ color: 'white', textAlign: 'center', marginTop: 20 }}>
-          Doesn't have an last.fm account ? Sign Up
-        </TextH6>
+        <CustomText
+          children="Doesn't have an last.fm account ? Sign Up"
+          size="H6"
+          complementaryStyle={{ textAlign: 'center', marginTop: 20 }}
+        />
       </View>
     </CenteredContainer>
   )

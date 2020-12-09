@@ -4,8 +4,7 @@ import { Ionicons } from '@expo/vector-icons'
 import dayjs from 'dayjs'
 import { updatedLocale } from '../utils/dayjs'
 import TouchableItem from './TouchableItem'
-import Badge from './UI/Badge'
-import { TextH6, TitleH3, TitleH6 } from './UI/Typography'
+import CustomText from './UI/CustomText'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
 
@@ -16,16 +15,18 @@ const ListItem = (props) => {
     <TouchableItem onPress={props.onPress}>
       {props.rank ? (
         <View>
-          <TitleH3
-            style={{
+          <CustomText
+            size="H3"
+            color="white"
+            bold
+            complementaryStyle={{
               textAlign: 'center',
-              color: 'white',
               minWidth: 26,
               marginRight: 10,
             }}
           >
             {props.rank}
-          </TitleH3>
+          </CustomText>
         </View>
       ) : null}
       <View>
@@ -62,26 +63,35 @@ const ListItem = (props) => {
       </View>
 
       <View style={{ flex: 1, paddingRight: spacing.md }}>
-        <TitleH6
-          numberOfLines={2}
-          style={{ color: 'white' }}
+        <CustomText
           children={props.title}
+          size="H6"
+          bold
+          numberOfLines={2}
+          complementaryStyle={{ marginBottom: 2 }}
         />
-        <TextH6
-          numberOfLines={1}
-          style={{
-            marginTop: 2,
-            color: myColors.cool_gray_300,
-          }}
+        <CustomText
           children={props.subtitle}
+          size="H6"
+          color={myColors.cool_gray_300}
         />
 
         {props.playcount ? (
-          <Badge style={{ marginTop: 2 }}>{props.playcount} scrobbles</Badge>
+          <CustomText
+            size="H7"
+            color={myColors.cool_gray_400}
+            complementaryStyle={{ marginTop: 3 }}
+          >
+            {props.playcount} scrobbles
+          </CustomText>
         ) : null}
       </View>
-      {props.date ? <Badge>{timestamp}</Badge> : null}
-      {/* {props.nowPlaying ? <Badge>Now Playing</Badge> : null} */}
+      {props.date ? (
+        <CustomText size="H7" color={myColors.cool_gray_500}>
+          {timestamp}
+        </CustomText>
+      ) : null}
+      {/* {props.nowPlaying ? <CustomText size="H7">Now Playing</CustomText> : null} */}
       {props.nowPlaying ? (
         <Ionicons name="ios-musical-notes" size={20} color="white" />
       ) : null}
