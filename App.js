@@ -16,8 +16,6 @@ import authReducer from './store/authReducer'
 import scrobblesReducer from './store/scrobblesReducer'
 import { getSpotifyToken } from './utils/spotify'
 
-import { AppearanceProvider } from 'react-native-appearance'
-
 const roorReducer = combineReducers({
   auth: authReducer,
   scrobbles: scrobblesReducer,
@@ -44,9 +42,7 @@ export default function App() {
     return (
       <Provider store={store}>
         <OverflowMenuProvider>
-          <AppearanceProvider>
-            <AppNavigator />
-          </AppearanceProvider>
+          <AppNavigator />
         </OverflowMenuProvider>
       </Provider>
     )
