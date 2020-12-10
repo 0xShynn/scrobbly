@@ -1,4 +1,5 @@
 import React from 'react'
+import { Platform, useColorScheme } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { SimpleLineIcons } from '@expo/vector-icons'
 import myColors from '../constants/myColors'
@@ -7,12 +8,12 @@ import ScrobblesStackScreen from './ScrobblesStackScreen'
 import TopAlbumsStackScreen from './TopAlbumsStackScreen'
 import TopArtistsStackScreen from './TopArtistsStackScreen'
 import TopTracksStackScreen from './TopTracksStackScreen'
-import MyAccountStackScreen from './MyAccountStackScreen'
-import { Platform } from 'react-native'
 
 const Tab = createBottomTabNavigator()
 
 const MainBottomTabNavigator = () => {
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false
+
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -46,17 +47,19 @@ const MainBottomTabNavigator = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: 'white',
-        inactiveTintColor: myColors.cool_gray_600,
-        inactiveBackgroundColor: myColors.cool_gray_990,
-        activeBackgroundColor: myColors.cool_gray_990,
+        activeTintColor: isDarkTheme ? 'white' : myColors.cool_gray_700,
+        inactiveTintColor: isDarkTheme
+          ? myColors.cool_gray_600
+          : myColors.cool_gray_400,
+        inactiveBackgroundColor: isDarkTheme ? myColors.cool_gray_990 : 'white',
+        activeBackgroundColor: isDarkTheme ? myColors.cool_gray_990 : 'white',
         labelStyle: {
           fontSize: 10,
           fontFamily: 'Inter_700Bold',
         },
         style: {
-          backgroundColor: myColors.cool_gray_990,
-          borderTopColor: myColors.cool_gray_900,
+          backgroundColor: isDarkTheme ? myColors.cool_gray_990 : 'white',
+          borderTopColor: isDarkTheme ? myColors.cool_gray_900 : 'white',
           height: Platform.OS === 'android' ? '8%' : '10%',
         },
         tabStyle: {

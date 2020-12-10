@@ -1,14 +1,21 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { View, ScrollView, Image, FlatList, StyleSheet } from 'react-native'
+import {
+  View,
+  ScrollView,
+  Image,
+  FlatList,
+  StyleSheet,
+  useColorScheme,
+} from 'react-native'
 import { useSelector } from 'react-redux'
 
-import { DetailsTitle } from '../components/UI/Typography'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import CustomText from '../components/UI/CustomText'
 import TouchableItem from '../components/TouchableItem'
 import SimilarItem from '../components/SimilarItem'
 import ListItemsArtist from '../components/ListItemsArtist'
 import ItemStats from '../components/ItemStats'
+import DetailsTitle from '../components/DetailsTitle'
 
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
@@ -19,7 +26,7 @@ import {
   getTopTracks,
 } from '../utils/lastfm'
 
-const listItemSeparator = () => <View style={{ width: 20 }} />
+const listItemSeparator = () => <View style={{ width: spacing.md }} />
 
 const ArtistDetailsScreen = ({ navigation, route }) => {
   const { artistName, artistImage, topPlaycount } = route.params
@@ -28,6 +35,7 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
   const [artistTopTracks, setArtistTopTracks] = useState()
   const [artistTopAlbums, setArtistTopAlbums] = useState()
   const [similarArtists, setSimilarArtists] = useState()
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false
   const username = useSelector((state) => state.auth.username)
 
   // const artistInfoHandler = useCallback(async () => {
@@ -130,10 +138,15 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
   }
 
   return (
-    <ScrollView style={{ backgroundColor: myColors.dark_gray }}>
+    <ScrollView
+      style={{
+        backgroundColor: isDarkTheme
+          ? myColors.dark_gray
+          : myColors.cool_gray_100,
+      }}
+    >
       <View
         style={{
-          backgroundColor: myColors.dark_gray,
           flex: 1,
           paddingHorizontal: 0,
           paddingVertical: 50,
@@ -149,6 +162,7 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
         <CustomText
           children={artistName}
           size="H2"
+          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
           bold
           complementaryStyle={{ alignSelf: 'center', marginBottom: spacing.md }}
         />
@@ -179,6 +193,7 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
                       <CustomText
                         children={artistInfo.bio}
                         size="H6"
+                        color={isDarkTheme ? 'white' : myColors.cool_gray_900}
                         complementaryStyle={{ lineHeight: 18 }}
                         numberOfLines={6}
                       />
@@ -237,6 +252,7 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
               <View style={{ flex: 1, paddingVertical: spacing.sm }}>
                 <DetailsTitle
                   children="Similar Artists"
+                  complementaryStyle={{ paddingLeft: spacing.md }}
                   style={{ marginLeft: 20 }}
                 />
                 <FlatList
@@ -249,7 +265,9 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
             ) : null}
           </>
         ) : (
-          <LoadingContainer style={{ padding: 40 }} />
+          <View style={{ padding: 40 }}>
+            <LoadingContainer />
+          </View>
         )}
       </View>
     </ScrollView>

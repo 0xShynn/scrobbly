@@ -11,7 +11,7 @@ const Stack = createStackNavigator()
 
 const TopAlbumsStackScreen = () => {
   return (
-    <Stack.Navigator screenOptions={defaultNavOptions}>
+    <Stack.Navigator screenOptions={defaultNavOptions()}>
       <Stack.Screen name="Top Albums" component={TopAlbumsScreen} />
       <Stack.Screen name="Album Details" component={AlbumDetailsScreen} />
       <Stack.Screen name="Scrobble Details" component={ScrobbleDetailsScreen} />

@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { View, Image, ScrollView } from 'react-native'
+import { View, Image, ScrollView, useColorScheme } from 'react-native'
 import { useSelector } from 'react-redux'
 import myColors from '../constants/myColors'
 
@@ -11,7 +11,8 @@ import RoundedContainer from '../components/UI/RoundedContainer'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import CustomText from '../components/UI/CustomText'
 import CustomButton from '../components/UI/CustomButton'
-import { DetailsTitle } from '../components/UI/Typography'
+import ItemStats from '../components/ItemStats'
+import DetailsTitle from '../components/DetailsTitle'
 
 import {
   getAlbumInfo,
@@ -21,7 +22,6 @@ import {
 } from '../utils/lastfm'
 import { abbreviateNumber } from '../utils/numbers'
 import spacing from '../constants/spacing'
-import ItemStats from '../components/ItemStats'
 
 const ScrobbleDetailsScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false)
@@ -30,6 +30,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
   const [artistInfo, setArtistInfo] = useState()
   const [similarTracks, setSimilarTracks] = useState([])
   const [error, setError] = useState()
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false
   const username = useSelector((state) => state.auth.username)
   const {
     artistName,
@@ -117,7 +118,14 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
   }, [navigation])
 
   return (
-    <ScrollView style={{ flex: 1, backgroundColor: myColors.dark_gray }}>
+    <ScrollView
+      style={{
+        flex: 1,
+        backgroundColor: isDarkTheme
+          ? myColors.dark_gray
+          : myColors.cool_gray_100,
+      }}
+    >
       <DetailsHeader
         title={trackName}
         subtitle={artistName}
@@ -182,6 +190,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                   children={albumInfo.albumName}
                   size="H5"
                   bold
+                  color={isDarkTheme ? 'white' : myColors.cool_gray_900}
                   numberOfLines={2}
                   complementaryStyle={{ marginBottom: 4 }}
                 />
@@ -214,6 +223,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                 <CustomText
                   size="H5"
                   bold
+                  color={isDarkTheme ? 'white' : myColors.cool_gray_900}
                   complementaryStyle={{ marginBottom: 4 }}
                   children={artistName}
                 />

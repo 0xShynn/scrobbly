@@ -1,8 +1,11 @@
 import React from 'react'
-import { View, Image } from 'react-native'
-import { TitleH3, TextH4 } from './UI/Typography'
+import { View, Image, useColorScheme } from 'react-native'
+import myColors from '../constants/myColors'
+import CustomText from './UI/CustomText'
 
 const DetailsHeader = (props) => {
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false
+
   return (
     <View
       style={{
@@ -23,15 +26,20 @@ const DetailsHeader = (props) => {
         }}
       />
       <View style={{ flex: 1 }}>
-        <TitleH3
-          style={{ color: 'white', textAlign: 'center' }}
-          numberOfLines={2}
+        <CustomText
           children={props.title}
-        />
-        <TextH4
-          style={{ marginTop: 4, color: 'white', textAlign: 'center' }}
+          size="H3"
+          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+          bold
+          complementaryStyle={{ textAlign: 'center' }}
           numberOfLines={2}
+        />
+        <CustomText
           children={props.subtitle}
+          size="H4"
+          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+          complementaryStyle={{ textAlign: 'center', marginTop: 4 }}
+          numberOfLines={2}
         />
       </View>
     </View>

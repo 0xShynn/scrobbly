@@ -1,11 +1,13 @@
 import React from 'react'
-import { View } from 'react-native'
+import { useColorScheme, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import myColors from '../../constants/myColors'
 import spacing from '../../constants/spacing'
-import { TextH6, TitleH5 } from './Typography'
+import CustomText from './CustomText'
 
 const Counter = (props) => {
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false
+
   return (
     <View
       style={{
@@ -13,12 +15,11 @@ const Counter = (props) => {
         ...props.style,
       }}
     >
-      <TextH6
-        style={{
-          color: myColors.cool_gray_400,
-          marginBottom: 4,
-        }}
+      <CustomText
         children={props.title}
+        size="H6"
+        color={isDarkTheme ? myColors.cool_gray_400 : myColors.cool_gray_700}
+        complementaryStyle={{ marginBottom: 4 }}
       />
       <View
         style={{
@@ -26,10 +27,18 @@ const Counter = (props) => {
           alignItems: 'center',
         }}
       >
-        <Ionicons name={props.icon} size={20} color="white" />
-        <TitleH5 style={{ marginLeft: spacing.xs, color: 'white' }}>
-          {props.value}
-        </TitleH5>
+        <Ionicons
+          name={props.icon}
+          size={20}
+          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+        />
+        <CustomText
+          children={props.value}
+          bold
+          size="H5"
+          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+          complementaryStyle={{ marginLeft: spacing.xs }}
+        />
       </View>
     </View>
   )

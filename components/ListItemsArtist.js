@@ -1,6 +1,7 @@
 import { LinearGradient } from 'expo-linear-gradient'
 import React from 'react'
 import { View, ImageBackground, TouchableOpacity } from 'react-native'
+import spacing from '../constants/spacing'
 import CustomText from './UI/CustomText'
 
 const ListItemsArtist = (props) => {
@@ -8,8 +9,8 @@ const ListItemsArtist = (props) => {
     <TouchableOpacity onPress={props.onPress}>
       <View
         style={{
-          paddingLeft: props.index === 0 ? 20 : 0,
-          paddingRight: props.index === props.itemsNumber - 1 ? 20 : 0,
+          paddingLeft: props.index === 0 ? spacing.md : 0,
+          paddingRight: props.index === props.itemsNumber - 1 ? spacing.md : 0,
         }}
       >
         <ImageBackground

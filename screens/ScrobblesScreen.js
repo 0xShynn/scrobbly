@@ -1,5 +1,10 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { View, StatusBar, TouchableWithoutFeedback } from 'react-native'
+import {
+  View,
+  StatusBar,
+  TouchableWithoutFeedback,
+  useColorScheme,
+} from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import * as scrobblesActions from '../store/scrobblesActions'
 import { SimpleLineIcons } from '@expo/vector-icons'
@@ -13,10 +18,10 @@ import ErrorContainer from '../components/UI/ErrorContainer'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
 
-const listHeader = () => (
+const listHeader = (isDarkTheme) => (
   <View>
     <StatusBar
-      barStyle="light-content"
+      barStyle={isDarkTheme ? 'light-content' : 'dark-content'}
       backgroundColor={myColors.cool_gray_900}
     />
   </View>
@@ -28,6 +33,7 @@ const ScrobblesScreen = ({ navigation }) => {
   const [error, setError] = useState(null)
   const recentTracks = useSelector((state) => state.scrobbles.recentScrobbles)
   const dispatch = useDispatch()
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false
 
   const getScrobblesHandler = useCallback(async () => {
     setIsRefreshing(true)
@@ -78,7 +84,7 @@ const ScrobblesScreen = ({ navigation }) => {
         <SimpleLineIcons
           name="settings"
           size={24}
-          color="white"
+          color={isDarkTheme ? 'white' : myColors.cool_gray_700}
           style={{ marginHorizontal: spacing.md }}
         />
       </TouchableWithoutFeedback>
@@ -93,11 +99,10 @@ const ScrobblesScreen = ({ navigation }) => {
   // Set the header title
   useLayoutEffect(() => {
     navigation.setOptions({
-      // title: 'Top Artists / ' + periodSelected.name,
-      headerTitle: <CustomHeaderTitle title="Scrobbles" />,
+      headerTitle: <CustomHeaderTitle title="Recent Scrobbles" />,
       headerRight: settingsHandler,
     })
-  }, [navigation])
+  }, [navigation, isDarkTheme])
 
   if (isLoading) {
     return <LoadingContainer />
@@ -111,7 +116,7 @@ const ScrobblesScreen = ({ navigation }) => {
     <FlatListItems
       data={recentTracks}
       renderItem={listItem}
-      ListHeaderComponent={listHeader}
+      ListHeaderComponent={listHeader.bind(this, isDarkTheme)}
       onRefresh={getScrobblesHandler}
       isRefreshing={isRefreshing}
     />

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Image, View, ScrollView } from 'react-native'
+import { Image, View, ScrollView, useColorScheme } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 
 import CustomButton from '../components/UI/CustomButton'
@@ -13,6 +13,7 @@ import * as authActions from '../store/authActions'
 const MyAccountScreen = () => {
   const dispatch = useDispatch()
   const [data, setData] = useState()
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false
 
   const logOutHandler = async () => {
     dispatch(authActions.logOut())
@@ -29,10 +30,15 @@ const MyAccountScreen = () => {
   }, [])
 
   return (
-    <ScrollView style={{ backgroundColor: myColors.dark_gray }}>
+    <ScrollView
+      style={{
+        backgroundColor: isDarkTheme
+          ? myColors.dark_gray
+          : myColors.cool_gray_100,
+      }}
+    >
       <View
         style={{
-          backgroundColor: myColors.dark_gray,
           flex: 1,
           paddingVertical: 40,
           paddingHorizontal: spacing.lg,

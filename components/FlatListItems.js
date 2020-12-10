@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react'
-import { FlatList, View, RefreshControl } from 'react-native'
+import { FlatList, View, RefreshControl, useColorScheme } from 'react-native'
 import myColors from '../constants/myColors'
 
 const listItemSeparator = () => <View style={{ height: 10 }} />
@@ -10,6 +10,7 @@ const listFooter = () => {
 
 const FlatListItems = (props) => {
   const keyExtractor = useCallback((item) => item.id, [])
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false
 
   return (
     <FlatList
@@ -20,14 +21,16 @@ const FlatListItems = (props) => {
       ListFooterComponent={listFooter}
       ListHeaderComponent={props.ListHeaderComponent}
       style={{
-        backgroundColor: myColors.dark_gray,
+        backgroundColor: isDarkTheme
+          ? myColors.dark_gray
+          : myColors.cool_gray_100,
         paddingVertical: 20,
         paddingHorizontal: 15,
       }}
       refreshControl={
         <RefreshControl
           colors={['white', 'black']}
-          tintColor="white"
+          tintColor={isDarkTheme ? 'white' : myColors.cool_gray_300}
           onRefresh={props.onRefresh}
           refreshing={props.isRefreshing}
           enabled={true}

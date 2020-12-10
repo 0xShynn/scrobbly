@@ -12,7 +12,7 @@ const Stack = createStackNavigator()
 
 const TopTracksStackScreen = () => {
   return (
-    <Stack.Navigator screenOptions={defaultNavOptions}>
+    <Stack.Navigator screenOptions={defaultNavOptions()}>
       <Stack.Screen name="Top Tracks" component={TopTracksScreen} />
       <Stack.Screen name="Track Details" component={TrackDetailsScreen} />
       <Stack.Screen name="Scrobble Details" component={ScrobbleDetailsScreen} />

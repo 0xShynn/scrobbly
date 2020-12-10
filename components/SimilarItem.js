@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image } from 'react-native'
+import { View, Image, useColorScheme } from 'react-native'
 import TouchableItem from './TouchableItem'
 import CustomText from './UI/CustomText'
 import myColors from '../constants/myColors'
@@ -7,6 +7,8 @@ import spacing from '../constants/spacing'
 import { abbreviateNumber } from '../utils/numbers'
 
 const SimilarItem = (props) => {
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false
+
   return (
     <TouchableItem onPress={props.onPress} style={{ marginBottom: 10 }}>
       <Image
@@ -22,6 +24,7 @@ const SimilarItem = (props) => {
         <CustomText
           children={props.title}
           size="H6"
+          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
           bold
           complementaryStyle={{ marginBottom: 2 }}
           numberOfLines={2}
@@ -31,7 +34,9 @@ const SimilarItem = (props) => {
           <CustomText
             children={props.subtitle}
             size="H6"
-            color={myColors.cool_gray_300}
+            color={
+              isDarkTheme ? myColors.cool_gray_300 : myColors.cool_gray_600
+            }
           />
         ) : null}
       </View>

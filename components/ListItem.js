@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image } from 'react-native'
+import { View, Image, useColorScheme } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import dayjs from 'dayjs'
 import { updatedLocale } from '../utils/dayjs'
@@ -10,6 +10,7 @@ import spacing from '../constants/spacing'
 
 const ListItem = (props) => {
   const timestamp = dayjs(props.date).utc(true).fromNow()
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false
 
   return (
     <TouchableItem onPress={props.onPress}>
@@ -17,7 +18,7 @@ const ListItem = (props) => {
         <View>
           <CustomText
             size="H3"
-            color="white"
+            color={isDarkTheme ? 'white' : myColors.cool_gray_900}
             bold
             complementaryStyle={{
               textAlign: 'center',
@@ -66,6 +67,7 @@ const ListItem = (props) => {
         <CustomText
           children={props.title}
           size="H6"
+          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
           bold
           numberOfLines={2}
           complementaryStyle={{ marginBottom: 2 }}
@@ -73,13 +75,15 @@ const ListItem = (props) => {
         <CustomText
           children={props.subtitle}
           size="H6"
-          color={myColors.cool_gray_300}
+          color={isDarkTheme ? myColors.cool_gray_300 : myColors.cool_gray_900}
         />
 
         {props.playcount ? (
           <CustomText
             size="H7"
-            color={myColors.cool_gray_400}
+            color={
+              isDarkTheme ? myColors.cool_gray_400 : myColors.cool_gray_500
+            }
             complementaryStyle={{ marginTop: 3 }}
           >
             {props.playcount} scrobbles
@@ -93,7 +97,11 @@ const ListItem = (props) => {
       ) : null}
       {/* {props.nowPlaying ? <CustomText size="H7">Now Playing</CustomText> : null} */}
       {props.nowPlaying ? (
-        <Ionicons name="ios-musical-notes" size={20} color="white" />
+        <Ionicons
+          name="ios-musical-notes"
+          size={20}
+          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+        />
       ) : null}
     </TouchableItem>
   )

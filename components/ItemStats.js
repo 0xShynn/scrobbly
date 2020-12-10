@@ -1,13 +1,15 @@
 import React from 'react'
+import { Dimensions, useColorScheme } from 'react-native'
 import RoundedContainer from './UI/RoundedContainer'
 import Counter from './UI/Counter'
 import spacing from '../constants/spacing'
 import myColors from '../constants/myColors'
 import { abbreviateNumber } from '../utils/numbers'
-import { Dimensions } from 'react-native'
 
 const ItemStats = ({ playcount, listeners, userplaycount, topPlaycount }) => {
   const deviceWidth = Dimensions.get('window').width
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false
+
   return (
     <RoundedContainer
       style={{
@@ -16,8 +18,10 @@ const ItemStats = ({ playcount, listeners, userplaycount, topPlaycount }) => {
         justifyContent: 'flex-start',
         flexDirection: 'row',
         marginBottom: spacing.md,
-        backgroundColor: myColors.dark_gray,
-        borderColor: myColors.light_gray,
+        backgroundColor: isDarkTheme
+          ? myColors.dark_gray
+          : myColors.cool_gray_100,
+        borderColor: isDarkTheme ? myColors.light_gray : myColors.cool_gray_400,
         borderWidth: 1,
         padding: deviceWidth < 380 ? spacing.sm : spacing.md,
       }}

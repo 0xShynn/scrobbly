@@ -1,9 +1,11 @@
 import React from 'react'
-import { TouchableOpacity } from 'react-native'
+import { TouchableOpacity, useColorScheme } from 'react-native'
 import myColors from '../../constants/myColors'
-import { TitleH5 } from './Typography'
+import CustomText from './CustomText'
 
 export default function CustomButton({ label, onPress, style, color }) {
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false
+
   return (
     <TouchableOpacity
       style={{
@@ -13,13 +15,21 @@ export default function CustomButton({ label, onPress, style, color }) {
         justifyContent: 'center',
         alignItems: 'center',
         minWidth: 160,
-        backgroundColor: color ? color : myColors.cool_gray_700,
+        backgroundColor: color
+          ? color
+          : isDarkTheme
+          ? myColors.cool_gray_700
+          : myColors.cool_gray_300,
         ...style,
       }}
       activeOpacity={0.7}
       onPress={onPress}
     >
-      <TitleH5 style={{ fontSize: 16, color: 'white' }}>{label}</TitleH5>
+      <CustomText
+        children={label}
+        size="H5"
+        color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+      />
     </TouchableOpacity>
   )
 }

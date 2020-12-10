@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { View, StyleSheet } from 'react-native'
+import { View, useColorScheme } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 
 import CenteredContainer from '../../components/UI/CenteredContainer'
@@ -19,9 +19,10 @@ const authValidationSchema = Yup.object({
   password: Yup.string().required(),
 })
 
-const AuthScreen = (props) => {
+const AuthScreen = () => {
   const dispatch = useDispatch()
   const password = useRef(null)
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false
 
   const { handleChange, handleBlur, handleSubmit, errors, touched } = useFormik(
     {
@@ -43,9 +44,9 @@ const AuthScreen = (props) => {
 
   return (
     <CenteredContainer style={{ backgroundColor: myColors.cool_gray_900 }}>
-      <StatusBar barStyle="light-content" />
-      <View style={styles.container}>
-        <View style={styles.inputSpacing}>
+      <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} />
+      <View style={{ width: '80%' }}>
+        <View style={{ marginBottom: 20 }}>
           <MyTextInput
             icon="ios-person"
             placeholder="Enter your username"
@@ -62,7 +63,7 @@ const AuthScreen = (props) => {
             }}
           />
         </View>
-        <View style={styles.inputSpacing}>
+        <View style={{ marginBottom: 20 }}>
           <MyTextInput
             icon="md-lock"
             placeholder="Enter your password"
@@ -87,6 +88,7 @@ const AuthScreen = (props) => {
         <CustomText
           children="Doesn't have an last.fm account ? Sign Up"
           size="H6"
+          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
           complementaryStyle={{ textAlign: 'center', marginTop: 20 }}
         />
       </View>
@@ -95,12 +97,3 @@ const AuthScreen = (props) => {
 }
 
 export default AuthScreen
-
-const styles = StyleSheet.create({
-  container: {
-    width: '80%',
-  },
-  inputSpacing: {
-    marginBottom: 20,
-  },
-})
