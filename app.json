@@ -1,8 +1,9 @@
 {
   "expo": {
-    "name": "scrobbly",
+    "name": "Scrobbly",
     "slug": "scrobbly",
     "version": "1.0.0",
+    "description": "Scrobbly is an clean and simple scrobbler mobile app available for iOS/Android which uses last.fm data.",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
