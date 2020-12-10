@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "rn-mylastfm",
-    "slug": "rn-mylastfm",
+    "name": "scrobbly",
+    "slug": "scrobbly",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
