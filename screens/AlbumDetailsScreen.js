@@ -5,25 +5,25 @@ import { useSelector } from 'react-redux'
 import DetailsHeader from '../components/DetailsHeader'
 import ItemStats from '../components/ItemStats'
 import TouchableItem from '../components/TouchableItem'
+import DetailsTitle from '../components/DetailsTitle'
 import LoadingContainer from '../components/UI/LoadingContainer'
 import CustomButton from '../components/UI/CustomButton'
+import CustomText from '../components/UI/CustomText'
 
+import useColorScheme from '../hooks/useColorSchemeFix'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
-import { getSpotifyAlbumInfo, getSpotifyAlbumTracklist } from '../utils/spotify'
 import { getAlbumInfo, getArtistInfo } from '../utils/lastfm'
 import { abbreviateNumber } from '../utils/numbers'
-import CustomText from '../components/UI/CustomText'
-import DetailsTitle from '../components/DetailsTitle'
-import useColorScheme from '../hooks/useColorSchemeFix'
+import { getSpotifyAlbumInfo, getSpotifyAlbumTracklist } from '../utils/spotify'
 
 const itemSeparator = (isDarkTheme) => (
   <View
     style={{
       height: 1,
       backgroundColor: isDarkTheme
-        ? myColors.cool_gray_990
-        : myColors.cool_gray_300,
+        ? myColors.medium_gray
+        : myColors.cool_gray_200,
     }}
   />
 )
@@ -65,7 +65,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
     fetchData()
   }, [])
 
-  const itemTrackList = ({ item }) => {
+  const itemTrackList = useCallback((itemData) => {
     return (
       <TouchableOpacity
         style={{
@@ -73,31 +73,31 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
           paddingHorizontal: spacing.xl,
           paddingVertical: spacing.lg,
         }}
-        onPress={itemSelectTrackHandler.bind(this, item.trackName)}
+        onPress={itemSelectTrackHandler.bind(this, itemData.item.trackName)}
       >
         <CustomText
-          children={item.trackNumber}
+          children={itemData.item.trackNumber}
           size="H6"
           color={isDarkTheme ? 'white' : myColors.cool_gray_900}
           bold
           complementaryStyle={{ minWidth: 25 }}
         />
         <CustomText
-          children={item.trackName}
+          children={itemData.item.trackName}
           size="H6"
           color={isDarkTheme ? 'white' : myColors.cool_gray_900}
           numberOfLines={1}
           complementaryStyle={{ flex: 1 }}
         />
         <CustomText
-          children={item.duration}
+          children={itemData.item.duration}
           size="H6"
           color={myColors.cool_gray_500}
           complementaryStyle={{ paddingLeft: 10 }}
         />
       </TouchableOpacity>
     )
-  }
+  }, [])
 
   const itemSelectTrackHandler = (trackName) => {
     navigation.push('Scrobble Details', {
@@ -120,7 +120,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
     })
   }
 
-  const keyExtractor = useCallback((item) => item + item.id, [])
+  const keyExtractor = useCallback((item) => item.id, [])
 
   const ListHeader = () => {
     return (
@@ -189,8 +189,8 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
                 paddingHorizontal: spacing.md,
                 borderBottomWidth: 1,
                 borderBottomColor: isDarkTheme
-                  ? myColors.cool_gray_990
-                  : myColors.cool_gray_300,
+                  ? myColors.cool_gray_900
+                  : myColors.cool_gray_200,
                 marginBottom: 0,
                 paddingBottom: spacing.md,
               }}

@@ -22,7 +22,7 @@ const ItemStats = ({ playcount, listeners, userplaycount, topPlaycount }) => {
         backgroundColor: isDarkTheme
           ? myColors.dark_gray
           : myColors.cool_gray_100,
-        borderColor: isDarkTheme ? myColors.light_gray : myColors.cool_gray_400,
+        borderColor: isDarkTheme ? myColors.light_gray : myColors.cool_gray_200,
         borderWidth: 1,
         padding: deviceWidth < 380 ? spacing.sm : spacing.md,
       }}

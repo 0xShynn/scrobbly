@@ -146,7 +146,16 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
           paddingVertical: 50,
         }}
       >
-        <View style={{ alignItems: 'center', marginBottom: 30 }}>
+        <View
+          style={{
+            alignItems: 'center',
+            marginBottom: 30,
+            shadowColor: 'black',
+            shadowRadius: 10,
+            shadowOffset: { width: 3, height: 6 },
+            shadowOpacity: 0.2,
+          }}
+        >
           <Image
             source={{ uri: artistImage }}
             style={{ width: 200, height: 200, borderRadius: 100 }}
@@ -243,7 +252,12 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
             ) : null}
 
             {similarArtists && similarArtists.length !== 0 ? (
-              <View style={{ flex: 1, paddingVertical: spacing.sm }}>
+              <View
+                style={{
+                  flex: 1,
+                  paddingVertical: spacing.sm,
+                }}
+              >
                 <DetailsTitle
                   children="Similar Artists"
                   complementaryStyle={{ paddingLeft: spacing.md }}

@@ -16,16 +16,25 @@ const DetailsHeader = (props) => {
         ...props.style,
       }}
     >
-      <Image
-        source={{ uri: props.image }}
+      <View
         style={{
-          width: 200,
-          height: 200,
-          borderRadius: 6,
-          overflow: 'hidden',
-          marginBottom: 20,
+          shadowColor: 'black',
+          shadowRadius: 10,
+          shadowOffset: { width: 3, height: 6 },
+          shadowOpacity: 0.2,
         }}
-      />
+      >
+        <Image
+          source={{ uri: props.image }}
+          style={{
+            width: 200,
+            height: 200,
+            borderRadius: 6,
+            overflow: 'hidden',
+            marginBottom: 20,
+          }}
+        />
+      </View>
       <View style={{ flex: 1 }}>
         <CustomText
           children={props.title}
