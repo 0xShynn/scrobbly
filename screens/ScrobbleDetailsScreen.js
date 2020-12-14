@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { View, Image, ScrollView, useColorScheme } from 'react-native'
+import { View, Image, ScrollView } from 'react-native'
 import { useSelector } from 'react-redux'
 import myColors from '../constants/myColors'
 
@@ -22,6 +22,7 @@ import {
 } from '../utils/lastfm'
 import { abbreviateNumber } from '../utils/numbers'
 import spacing from '../constants/spacing'
+import useColorScheme from '../hooks/useColorSchemeFix'
 
 const ScrobbleDetailsScreen = ({ navigation, route }) => {
   const [isLoading, setIsLoading] = useState(false)

@@ -1,6 +1,6 @@
 import React from 'react'
-import { useColorScheme } from 'react-native'
 import myColors from '../constants/myColors'
+import useColorScheme from '../hooks/useColorSchemeFix'
 import CustomText from './UI/CustomText'
 
 const CustomHeaderTitle = (props) => {

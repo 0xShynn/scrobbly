@@ -1,5 +1,4 @@
 import React from 'react'
-import { useColorScheme } from 'react-native'
 import {
   HiddenItem,
   OverflowMenu,
@@ -8,6 +7,7 @@ import {
 import { SimpleLineIcons } from '@expo/vector-icons'
 import { periods } from '../utils/lastfm'
 import myColors from '../constants/myColors'
+import useColorScheme from '../hooks/useColorSchemeFix'
 
 const PeriodSelector = (props) => {
   const isDarkTheme = useColorScheme() === 'dark' ? true : false

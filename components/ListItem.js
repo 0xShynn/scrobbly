@@ -1,5 +1,5 @@
 import React from 'react'
-import { View, Image, useColorScheme } from 'react-native'
+import { View, Image } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import dayjs from 'dayjs'
 import { updatedLocale } from '../utils/dayjs'
@@ -7,6 +7,7 @@ import TouchableItem from './TouchableItem'
 import CustomText from './UI/CustomText'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
+import useColorScheme from '../hooks/useColorSchemeFix'
 
 const ListItem = (props) => {
   const timestamp = dayjs(props.date).utc(true).fromNow()

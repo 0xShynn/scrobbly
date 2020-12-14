@@ -1,8 +1,9 @@
 import React from 'react'
-import { View, ScrollView, useColorScheme } from 'react-native'
+import { View, ScrollView } from 'react-native'
 import CustomText from '../components/UI/CustomText'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
+import useColorScheme from '../hooks/useColorSchemeFix'
 
 const BiographyScreen = (props) => {
   const { biography } = props.route.params

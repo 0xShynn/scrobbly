@@ -1,6 +1,6 @@
-import { useColorScheme } from 'react-native'
 import { TransitionPresets } from '@react-navigation/stack'
 import myColors from '../constants/myColors'
+import useColorScheme from '../hooks/useColorSchemeFix'
 
 export const defaultNavOptions = () => {
   const isDarkTheme = useColorScheme() === 'dark' ? true : false

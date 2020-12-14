@@ -1,10 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import {
-  View,
-  StatusBar,
-  TouchableWithoutFeedback,
-  useColorScheme,
-} from 'react-native'
+import { View, StatusBar, TouchableWithoutFeedback } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import * as scrobblesActions from '../store/scrobblesActions'
 import { SimpleLineIcons } from '@expo/vector-icons'
@@ -17,6 +12,7 @@ import ErrorContainer from '../components/UI/ErrorContainer'
 
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
+import useColorScheme from '../hooks/useColorSchemeFix'
 
 const listHeader = (isDarkTheme) => (
   <View>

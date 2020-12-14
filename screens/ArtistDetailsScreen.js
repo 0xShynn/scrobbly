@@ -1,12 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from 'react'
-import {
-  View,
-  ScrollView,
-  Image,
-  FlatList,
-  StyleSheet,
-  useColorScheme,
-} from 'react-native'
+import { View, ScrollView, Image, FlatList, StyleSheet } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import LoadingContainer from '../components/UI/LoadingContainer'
@@ -25,6 +18,7 @@ import {
   getTopAlbums,
   getTopTracks,
 } from '../utils/lastfm'
+import useColorScheme from '../hooks/useColorSchemeFix'
 
 const listItemSeparator = () => <View style={{ width: spacing.md }} />
 

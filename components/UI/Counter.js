@@ -1,9 +1,10 @@
 import React from 'react'
-import { useColorScheme, View } from 'react-native'
+import { View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import myColors from '../../constants/myColors'
 import spacing from '../../constants/spacing'
 import CustomText from './CustomText'
+import useColorScheme from '../../hooks/useColorSchemeFix'
 
 const Counter = (props) => {
   const isDarkTheme = useColorScheme() === 'dark' ? true : false

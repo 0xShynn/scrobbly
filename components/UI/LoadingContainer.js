@@ -1,6 +1,7 @@
 import React from 'react'
-import { ActivityIndicator, useColorScheme } from 'react-native'
+import { ActivityIndicator } from 'react-native'
 import myColors from '../../constants/myColors'
+import useColorScheme from '../../hooks/useColorSchemeFix'
 import CenteredContainer from './CenteredContainer'
 
 const LoadingContainer = () => {

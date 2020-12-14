@@ -1,6 +1,7 @@
 import React from 'react'
-import { TouchableOpacity, useColorScheme } from 'react-native'
+import { TouchableOpacity } from 'react-native'
 import myColors from '../../constants/myColors'
+import useColorScheme from '../../hooks/useColorSchemeFix'
 import CustomText from './CustomText'
 
 export default function CustomButton({ label, onPress, style, color }) {

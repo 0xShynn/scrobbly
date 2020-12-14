@@ -1,7 +1,8 @@
 import React from 'react'
-import { useColorScheme, View } from 'react-native'
+import { View } from 'react-native'
 import myColors from '../../constants/myColors'
 import spacing from '../../constants/spacing'
+import useColorScheme from '../../hooks/useColorSchemeFix'
 
 const RoundedContainer = (props) => {
   const isDarkTheme = useColorScheme() === 'dark' ? true : false

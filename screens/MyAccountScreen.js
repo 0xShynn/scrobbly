@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { Image, View, ScrollView, useColorScheme } from 'react-native'
+import { Image, View, ScrollView } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 
 import CustomButton from '../components/UI/CustomButton'
@@ -9,6 +9,7 @@ import spacing from '../constants/spacing'
 
 import { useDispatch } from 'react-redux'
 import * as authActions from '../store/authActions'
+import useColorScheme from '../hooks/useColorSchemeFix'
 
 const MyAccountScreen = () => {
   const dispatch = useDispatch()

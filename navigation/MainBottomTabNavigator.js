@@ -1,5 +1,5 @@
 import React from 'react'
-import { Platform, useColorScheme } from 'react-native'
+import { Platform } from 'react-native'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import { SimpleLineIcons } from '@expo/vector-icons'
 import myColors from '../constants/myColors'
@@ -8,6 +8,7 @@ import ScrobblesStackScreen from './ScrobblesStackScreen'
 import TopAlbumsStackScreen from './TopAlbumsStackScreen'
 import TopArtistsStackScreen from './TopArtistsStackScreen'
 import TopTracksStackScreen from './TopTracksStackScreen'
+import useColorScheme from '../hooks/useColorSchemeFix'
 
 const Tab = createBottomTabNavigator()
 

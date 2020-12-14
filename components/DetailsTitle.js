@@ -1,8 +1,9 @@
 import React from 'react'
-import { useColorScheme, View } from 'react-native'
+import { View } from 'react-native'
 import CustomText from './UI/CustomText'
 import { Ionicons } from '@expo/vector-icons'
 import myColors from '../constants/myColors'
+import useColorScheme from '../hooks/useColorSchemeFix'
 
 const DetailsTitle = (props) => {
   const isDarkTheme = useColorScheme() === 'dark' ? true : false

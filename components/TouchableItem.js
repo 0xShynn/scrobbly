@@ -1,9 +1,10 @@
 import React from 'react'
-import { TouchableOpacity, View, useColorScheme } from 'react-native'
+import { TouchableOpacity, View } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import RoundedContainer from './UI/RoundedContainer'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
+import useColorScheme from '../hooks/useColorSchemeFix'
 
 const TouchableItem = (props) => {
   const isDarkTheme = useColorScheme() === 'dark' ? true : false

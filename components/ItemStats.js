@@ -1,10 +1,11 @@
 import React from 'react'
-import { Dimensions, useColorScheme } from 'react-native'
+import { Dimensions } from 'react-native'
 import RoundedContainer from './UI/RoundedContainer'
 import Counter from './UI/Counter'
 import spacing from '../constants/spacing'
 import myColors from '../constants/myColors'
 import { abbreviateNumber } from '../utils/numbers'
+import useColorScheme from '../hooks/useColorSchemeFix'
 
 const ItemStats = ({ playcount, listeners, userplaycount, topPlaycount }) => {
   const deviceWidth = Dimensions.get('window').width

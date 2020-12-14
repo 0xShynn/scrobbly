@@ -1,6 +1,7 @@
 import React from 'react'
-import { View, Image, useColorScheme } from 'react-native'
+import { Image, View } from 'react-native'
 import myColors from '../constants/myColors'
+import useColorScheme from '../hooks/useColorSchemeFix'
 import CustomText from './UI/CustomText'
 
 const DetailsHeader = (props) => {

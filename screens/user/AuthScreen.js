@@ -1,5 +1,5 @@
 import React, { useRef } from 'react'
-import { View, useColorScheme } from 'react-native'
+import { View } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 
 import CenteredContainer from '../../components/UI/CenteredContainer'
@@ -13,6 +13,7 @@ import * as authActions from '../../store/authActions'
 import myColors from '../../constants/myColors'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
+import useColorScheme from '../../hooks/useColorSchemeFix'
 
 const authValidationSchema = Yup.object({
   username: Yup.string().required(),

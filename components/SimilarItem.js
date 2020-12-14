@@ -1,10 +1,11 @@
 import React from 'react'
-import { View, Image, useColorScheme } from 'react-native'
+import { View, Image } from 'react-native'
 import TouchableItem from './TouchableItem'
 import CustomText from './UI/CustomText'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
 import { abbreviateNumber } from '../utils/numbers'
+import useColorScheme from '../hooks/useColorSchemeFix'
 
 const SimilarItem = (props) => {
   const isDarkTheme = useColorScheme() === 'dark' ? true : false

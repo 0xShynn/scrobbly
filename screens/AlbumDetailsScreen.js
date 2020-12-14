@@ -1,11 +1,5 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import {
-  FlatList,
-  Image,
-  View,
-  TouchableOpacity,
-  useColorScheme,
-} from 'react-native'
+import { FlatList, Image, View, TouchableOpacity } from 'react-native'
 import { useSelector } from 'react-redux'
 
 import DetailsHeader from '../components/DetailsHeader'
@@ -21,6 +15,7 @@ import { getAlbumInfo, getArtistInfo } from '../utils/lastfm'
 import { abbreviateNumber } from '../utils/numbers'
 import CustomText from '../components/UI/CustomText'
 import DetailsTitle from '../components/DetailsTitle'
+import useColorScheme from '../hooks/useColorSchemeFix'
 
 const itemSeparator = (isDarkTheme) => (
   <View
