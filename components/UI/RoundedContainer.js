@@ -10,7 +10,7 @@ const RoundedContainer = (props) => {
   return (
     <View
       style={{
-        backgroundColor: isDarkTheme ? myColors.medium_gray : 'white',
+        backgroundColor: isDarkTheme ? myColors.gray_1050 : 'white',
         borderRadius: spacing.md,
         padding: spacing.sm,
         shadowColor: 'black',

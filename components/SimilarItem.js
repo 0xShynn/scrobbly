@@ -25,7 +25,7 @@ const SimilarItem = (props) => {
         <CustomText
           children={props.title}
           size="H6"
-          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+          color={isDarkTheme ? 'white' : myColors.gray_900}
           bold
           complementaryStyle={{ marginBottom: 2 }}
           numberOfLines={2}
@@ -35,15 +35,13 @@ const SimilarItem = (props) => {
           <CustomText
             children={props.subtitle}
             size="H6"
-            color={
-              isDarkTheme ? myColors.cool_gray_300 : myColors.cool_gray_600
-            }
+            color={isDarkTheme ? myColors.gray_300 : myColors.gray_600}
           />
         ) : null}
       </View>
       {props.playcount ? (
         <View style={{ marginLeft: 10 }}>
-          <CustomText size="H7" color={myColors.cool_gray_500}>
+          <CustomText size="H7" color={myColors.gray_500}>
             {abbreviateNumber(props.playcount)}
           </CustomText>
         </View>

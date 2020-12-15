@@ -134,9 +134,7 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
   return (
     <ScrollView
       style={{
-        backgroundColor: isDarkTheme
-          ? myColors.dark_gray
-          : myColors.cool_gray_100,
+        backgroundColor: isDarkTheme ? myColors.gray_1100 : myColors.gray_100,
       }}
     >
       <View
@@ -165,7 +163,7 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
         <CustomText
           children={artistName}
           size="H2"
-          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+          color={isDarkTheme ? 'white' : myColors.gray_900}
           bold
           complementaryStyle={{ alignSelf: 'center', marginBottom: spacing.md }}
         />
@@ -196,7 +194,7 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
                       <CustomText
                         children={artistInfo.bio}
                         size="H6"
-                        color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+                        color={isDarkTheme ? 'white' : myColors.gray_900}
                         complementaryStyle={{ lineHeight: 18 }}
                         numberOfLines={6}
                       />

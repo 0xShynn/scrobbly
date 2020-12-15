@@ -44,7 +44,7 @@ const AuthScreen = () => {
   }
 
   return (
-    <CenteredContainer style={{ backgroundColor: myColors.cool_gray_900 }}>
+    <CenteredContainer style={{ backgroundColor: myColors.gray_900 }}>
       <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} />
       <View style={{ width: '80%' }}>
         <View style={{ marginBottom: 20 }}>
@@ -89,7 +89,7 @@ const AuthScreen = () => {
         <CustomText
           children="Doesn't have an last.fm account ? Sign Up"
           size="H6"
-          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+          color={isDarkTheme ? 'white' : myColors.gray_900}
           complementaryStyle={{ textAlign: 'center', marginTop: 20 }}
         />
       </View>

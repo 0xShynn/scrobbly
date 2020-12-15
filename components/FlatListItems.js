@@ -22,16 +22,14 @@ const FlatListItems = (props) => {
       ListFooterComponent={listFooter}
       ListHeaderComponent={props.ListHeaderComponent}
       style={{
-        backgroundColor: isDarkTheme
-          ? myColors.dark_gray
-          : myColors.cool_gray_100,
+        backgroundColor: isDarkTheme ? myColors.gray_1100 : myColors.gray_100,
         paddingVertical: 20,
         paddingHorizontal: 15,
       }}
       refreshControl={
         <RefreshControl
           colors={['white', 'black']}
-          tintColor={isDarkTheme ? 'white' : myColors.cool_gray_300}
+          tintColor={isDarkTheme ? 'white' : myColors.gray_300}
           onRefresh={props.onRefresh}
           refreshing={props.isRefreshing}
           enabled={true}

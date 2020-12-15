@@ -18,7 +18,7 @@ const listHeader = (isDarkTheme) => (
   <View>
     <StatusBar
       barStyle={isDarkTheme ? 'light-content' : 'dark-content'}
-      backgroundColor={myColors.cool_gray_900}
+      backgroundColor={myColors.gray_900}
     />
   </View>
 )
@@ -35,7 +35,7 @@ const ScrobblesScreen = ({ navigation }) => {
     setIsRefreshing(true)
     setError(null)
     try {
-      await dispatch(scrobblesActions.fetchUserScrobbles())
+      await dispatch(scrobblesActions.fetchUserScrobbless())
     } catch (error) {
       setError(error.message)
     }
@@ -80,7 +80,7 @@ const ScrobblesScreen = ({ navigation }) => {
         <SimpleLineIcons
           name="settings"
           size={24}
-          color={isDarkTheme ? 'white' : myColors.cool_gray_700}
+          color={isDarkTheme ? 'white' : myColors.gray_700}
           style={{ marginHorizontal: spacing.md }}
         />
       </TouchableWithoutFeedback>
@@ -105,7 +105,7 @@ const ScrobblesScreen = ({ navigation }) => {
   }
 
   if (error) {
-    return <ErrorContainer error={error} />
+    return <ErrorContainer error={error} retryFunc={getScrobblesHandler} />
   }
 
   return (

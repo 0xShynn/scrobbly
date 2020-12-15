@@ -39,7 +39,7 @@ const DetailsHeader = (props) => {
         <CustomText
           children={props.title}
           size="H3"
-          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+          color={isDarkTheme ? 'white' : myColors.gray_900}
           bold
           complementaryStyle={{ textAlign: 'center' }}
           numberOfLines={2}
@@ -47,7 +47,7 @@ const DetailsHeader = (props) => {
         <CustomText
           children={props.subtitle}
           size="H4"
-          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+          color={isDarkTheme ? 'white' : myColors.gray_900}
           complementaryStyle={{ textAlign: 'center', marginTop: 4 }}
           numberOfLines={2}
         />

@@ -48,19 +48,18 @@ const MainBottomTabNavigator = () => {
         },
       })}
       tabBarOptions={{
-        activeTintColor: isDarkTheme ? 'white' : myColors.cool_gray_900,
-        inactiveTintColor: isDarkTheme
-          ? myColors.cool_gray_600
-          : myColors.cool_gray_400,
-        inactiveBackgroundColor: isDarkTheme ? myColors.medium_gray : 'white',
-        activeBackgroundColor: isDarkTheme ? myColors.medium_gray : 'white',
+        activeTintColor: isDarkTheme ? 'white' : myColors.gray_1000,
+        inactiveTintColor: isDarkTheme ? myColors.gray_600 : myColors.gray_400,
+        inactiveBackgroundColor: isDarkTheme ? myColors.gray_1000 : 'white',
+        activeBackgroundColor: isDarkTheme ? myColors.gray_1000 : 'white',
         labelStyle: {
           fontSize: 10,
           fontFamily: 'Inter_700Bold',
         },
         style: {
-          backgroundColor: isDarkTheme ? myColors.medium_gray : 'white',
-          borderTopColor: isDarkTheme ? myColors.light_gray : 'white',
+          backgroundColor: isDarkTheme ? myColors.gray_1000 : 'white',
+          borderTopWidth: 1,
+          borderTopColor: isDarkTheme ? myColors.gray_900 : myColors.gray_100,
           height: Platform.OS === 'android' ? '8%' : '10%',
         },
         tabStyle: {

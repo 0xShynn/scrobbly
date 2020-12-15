@@ -122,9 +122,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
     <ScrollView
       style={{
         flex: 1,
-        backgroundColor: isDarkTheme
-          ? myColors.dark_gray
-          : myColors.cool_gray_100,
+        backgroundColor: isDarkTheme ? myColors.gray_1100 : myColors.gray_100,
       }}
     >
       <DetailsHeader
@@ -191,7 +189,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                   children={albumInfo.albumName}
                   size="H5"
                   bold
-                  color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+                  color={isDarkTheme ? 'white' : myColors.gray_900}
                   numberOfLines={2}
                   complementaryStyle={{ marginBottom: 4 }}
                 />
@@ -200,7 +198,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                   children={
                     abbreviateNumber(albumInfo.playcount) + ' scrobbles'
                   }
-                  color={myColors.cool_gray_500}
+                  color={myColors.gray_500}
                 />
               </View>
             </TouchableItem>
@@ -224,13 +222,13 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                 <CustomText
                   size="H5"
                   bold
-                  color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+                  color={isDarkTheme ? 'white' : myColors.gray_900}
                   complementaryStyle={{ marginBottom: 4 }}
                   children={artistName}
                 />
                 <CustomText
                   size="H6"
-                  color={myColors.cool_gray_500}
+                  color={myColors.gray_500}
                   numberOfLines={2}
                 >
                   {abbreviateNumber(artistInfo.playcount)} scrobbles

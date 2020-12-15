@@ -19,7 +19,7 @@ const PeriodSelector = (props) => {
         <SimpleLineIcons
           name="calendar"
           size={24}
-          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+          color={isDarkTheme ? 'white' : myColors.gray_900}
         />
       }
     >

@@ -18,15 +18,11 @@ const DetailsTitle = (props) => {
         ...props.complementaryStyle,
       }}
     >
-      <Ionicons
-        name="md-arrow-dropright"
-        size={24}
-        color={myColors.cool_gray_600}
-      />
+      <Ionicons name="md-arrow-dropright" size={24} color={myColors.gray_600} />
       <CustomText
         size="H3"
         bold
-        color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+        color={isDarkTheme ? 'white' : myColors.gray_900}
         complementaryStyle={{ marginLeft: 10 }}
       >
         {props.children}

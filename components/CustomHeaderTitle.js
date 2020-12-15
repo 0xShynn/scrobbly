@@ -9,17 +9,14 @@ const CustomHeaderTitle = (props) => {
     <>
       <CustomText
         size="H4"
-        color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+        color={isDarkTheme ? 'white' : myColors.gray_900}
         bold
         complementaryStyle={{ marginRight: 6, marginBottom: 0 }}
       >
         {props.title}
       </CustomText>
       {props.periodSelected && (
-        <CustomText
-          size="H4"
-          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
-        >
+        <CustomText size="H4" color={isDarkTheme ? 'white' : myColors.gray_900}>
           {' '}
           /{' '}
           {props.isLoading || props.isRefreshing

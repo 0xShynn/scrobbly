@@ -33,9 +33,7 @@ const MyAccountScreen = () => {
   return (
     <ScrollView
       style={{
-        backgroundColor: isDarkTheme
-          ? myColors.dark_gray
-          : myColors.cool_gray_100,
+        backgroundColor: isDarkTheme ? myColors.gray_1100 : myColors.gray_100,
       }}
     >
       <View

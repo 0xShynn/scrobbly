@@ -19,7 +19,7 @@ const ListItem = (props) => {
         <View>
           <CustomText
             size="H3"
-            color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+            color={isDarkTheme ? 'white' : myColors.gray_900}
             bold
             complementaryStyle={{
               textAlign: 'center',
@@ -68,7 +68,7 @@ const ListItem = (props) => {
         <CustomText
           children={props.title}
           size="H6"
-          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+          color={isDarkTheme ? 'white' : myColors.gray_900}
           bold
           numberOfLines={2}
           complementaryStyle={{ marginBottom: 2 }}
@@ -76,15 +76,13 @@ const ListItem = (props) => {
         <CustomText
           children={props.subtitle}
           size="H6"
-          color={isDarkTheme ? myColors.cool_gray_300 : myColors.cool_gray_900}
+          color={isDarkTheme ? myColors.gray_300 : myColors.gray_900}
         />
 
         {props.playcount ? (
           <CustomText
             size="H7"
-            color={
-              isDarkTheme ? myColors.cool_gray_400 : myColors.cool_gray_500
-            }
+            color={isDarkTheme ? myColors.gray_400 : myColors.gray_500}
             complementaryStyle={{ marginTop: 3 }}
           >
             {props.playcount} scrobbles
@@ -92,7 +90,7 @@ const ListItem = (props) => {
         ) : null}
       </View>
       {props.date ? (
-        <CustomText size="H7" color={myColors.cool_gray_500}>
+        <CustomText size="H7" color={myColors.gray_500}>
           {timestamp}
         </CustomText>
       ) : null}
@@ -101,7 +99,7 @@ const ListItem = (props) => {
         <Ionicons
           name="ios-musical-notes"
           size={20}
-          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+          color={isDarkTheme ? 'white' : myColors.gray_900}
         />
       ) : null}
     </TouchableItem>

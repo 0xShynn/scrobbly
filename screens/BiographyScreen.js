@@ -11,9 +11,7 @@ const BiographyScreen = (props) => {
   return (
     <ScrollView
       style={{
-        backgroundColor: isDarkTheme
-          ? myColors.dark_gray
-          : myColors.cool_gray_100,
+        backgroundColor: isDarkTheme ? myColors.gray_1100 : myColors.gray_100,
         flex: 1,
       }}
     >
@@ -21,7 +19,7 @@ const BiographyScreen = (props) => {
         <CustomText
           children={biography}
           size="H6"
-          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+          color={isDarkTheme ? 'white' : myColors.gray_900}
         />
       </View>
     </ScrollView>

@@ -26,9 +26,7 @@ const TouchableItem = (props) => {
           <Ionicons
             name="ios-arrow-forward"
             size={20}
-            color={
-              isDarkTheme ? myColors.cool_gray_500 : myColors.cool_gray_400
-            }
+            color={isDarkTheme ? myColors.gray_500 : myColors.gray_400}
           />
         </View>
       </RoundedContainer>

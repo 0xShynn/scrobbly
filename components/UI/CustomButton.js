@@ -19,8 +19,8 @@ export default function CustomButton({ label, onPress, style, color }) {
         backgroundColor: color
           ? color
           : isDarkTheme
-          ? myColors.cool_gray_700
-          : myColors.cool_gray_300,
+          ? myColors.gray_700
+          : myColors.gray_300,
         ...style,
       }}
       activeOpacity={0.7}
@@ -29,7 +29,7 @@ export default function CustomButton({ label, onPress, style, color }) {
       <CustomText
         children={label}
         size="H5"
-        color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+        color={isDarkTheme ? 'white' : myColors.gray_900}
       />
     </TouchableOpacity>
   )

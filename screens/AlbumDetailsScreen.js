@@ -21,9 +21,7 @@ const itemSeparator = (isDarkTheme) => (
   <View
     style={{
       height: 1,
-      backgroundColor: isDarkTheme
-        ? myColors.medium_gray
-        : myColors.cool_gray_200,
+      backgroundColor: isDarkTheme ? myColors.gray_1000 : myColors.gray_200,
     }}
   />
 )
@@ -65,39 +63,42 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
     fetchData()
   }, [])
 
-  const itemTrackList = useCallback((itemData) => {
-    return (
-      <TouchableOpacity
-        style={{
-          flexDirection: 'row',
-          paddingHorizontal: spacing.xl,
-          paddingVertical: spacing.lg,
-        }}
-        onPress={itemSelectTrackHandler.bind(this, itemData.item.trackName)}
-      >
-        <CustomText
-          children={itemData.item.trackNumber}
-          size="H6"
-          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
-          bold
-          complementaryStyle={{ minWidth: 25 }}
-        />
-        <CustomText
-          children={itemData.item.trackName}
-          size="H6"
-          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
-          numberOfLines={1}
-          complementaryStyle={{ flex: 1 }}
-        />
-        <CustomText
-          children={itemData.item.duration}
-          size="H6"
-          color={myColors.cool_gray_500}
-          complementaryStyle={{ paddingLeft: 10 }}
-        />
-      </TouchableOpacity>
-    )
-  }, [])
+  const itemTrackList = useCallback(
+    (itemData) => {
+      return (
+        <TouchableOpacity
+          style={{
+            flexDirection: 'row',
+            paddingHorizontal: spacing.xl,
+            paddingVertical: spacing.lg,
+          }}
+          onPress={itemSelectTrackHandler.bind(this, itemData.item.trackName)}
+        >
+          <CustomText
+            children={itemData.item.trackNumber}
+            size="H6"
+            color={isDarkTheme ? 'white' : myColors.gray_900}
+            bold
+            complementaryStyle={{ minWidth: 25 }}
+          />
+          <CustomText
+            children={itemData.item.trackName}
+            size="H6"
+            color={isDarkTheme ? 'white' : myColors.gray_900}
+            numberOfLines={1}
+            complementaryStyle={{ flex: 1 }}
+          />
+          <CustomText
+            children={itemData.item.duration}
+            size="H6"
+            color={myColors.gray_500}
+            complementaryStyle={{ paddingLeft: 10 }}
+          />
+        </TouchableOpacity>
+      )
+    },
+    [isDarkTheme]
+  )
 
   const itemSelectTrackHandler = (trackName) => {
     navigation.push('Scrobble Details', {
@@ -165,16 +166,14 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
                     <CustomText
                       children={artistName}
                       size="H5"
-                      color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+                      color={isDarkTheme ? 'white' : myColors.gray_900}
                       bold
                       complementaryStyle={{ marginBottom: 4 }}
                     />
                     <CustomText
                       size="H6"
                       color={
-                        isDarkTheme
-                          ? myColors.cool_gray_300
-                          : myColors.cool_gray_600
+                        isDarkTheme ? myColors.gray_300 : myColors.gray_600
                       }
                       numberOfLines={2}
                     >
@@ -189,8 +188,8 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
                 paddingHorizontal: spacing.md,
                 borderBottomWidth: 1,
                 borderBottomColor: isDarkTheme
-                  ? myColors.cool_gray_900
-                  : myColors.cool_gray_200,
+                  ? myColors.gray_900
+                  : myColors.gray_200,
                 marginBottom: 0,
                 paddingBottom: spacing.md,
               }}
@@ -216,9 +215,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
           <CustomText
             children={spotifyAlbumInfo.copyrights}
             size="H6"
-            color={
-              isDarkTheme ? myColors.cool_gray_400 : myColors.cool_gray_600
-            }
+            color={isDarkTheme ? myColors.gray_400 : myColors.gray_600}
           />
         ) : null}
       </View>
@@ -267,9 +264,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
     <View
       style={{
         flex: 1,
-        backgroundColor: isDarkTheme
-          ? myColors.dark_gray
-          : myColors.cool_gray_100,
+        backgroundColor: isDarkTheme ? myColors.gray_1100 : myColors.gray_100,
       }}
     >
       {!isLoading ? (

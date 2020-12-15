@@ -6,10 +6,10 @@ import myColors from '../../constants/myColors'
 const MyTextInput = forwardRef(
   ({ icon, error, touched, ...otherProps }, ref) => {
     const validationColor = !touched
-      ? myColors.cool_gray_900
+      ? myColors.gray_900
       : error
       ? myColors.primary
-      : myColors.cool_gray_900
+      : myColors.gray_900
 
     return (
       <View
@@ -28,7 +28,7 @@ const MyTextInput = forwardRef(
         </View>
         <View style={{ flex: 1 }}>
           <TextInput
-            placeholderTextColor={myColors.cool_gray_600}
+            placeholderTextColor={myColors.gray_600}
             ref={ref}
             {...otherProps}
           />

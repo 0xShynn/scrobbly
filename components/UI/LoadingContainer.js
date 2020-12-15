@@ -10,14 +10,12 @@ const LoadingContainer = () => {
   return (
     <CenteredContainer
       style={{
-        backgroundColor: isDarkTheme
-          ? myColors.dark_gray
-          : myColors.cool_gray_100,
+        backgroundColor: isDarkTheme ? myColors.gray_1100 : myColors.gray_100,
       }}
     >
       <ActivityIndicator
         size="large"
-        color={isDarkTheme ? 'white' : myColors.cool_gray_600}
+        color={isDarkTheme ? 'white' : myColors.gray_600}
       />
     </CenteredContainer>
   )

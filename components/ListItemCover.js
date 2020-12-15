@@ -66,7 +66,7 @@ const ListItemCover = (props) => {
                 children={props.subtitle}
                 size="H6"
                 bold
-                color={myColors.cool_gray_300}
+                color={myColors.gray_300}
                 numberOfLines={1}
               />
             )}

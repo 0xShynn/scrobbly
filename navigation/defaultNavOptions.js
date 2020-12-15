@@ -7,19 +7,17 @@ export const defaultNavOptions = () => {
 
   const obj = {
     headerStyle: {
-      backgroundColor: isDarkTheme ? myColors.cool_gray_800 : 'white',
+      backgroundColor: isDarkTheme ? myColors.gray_1000 : 'white',
       shadowColor: 'transparent',
       elevation: 0,
-      borderBottomColor: isDarkTheme
-        ? myColors.cool_gray_700
-        : myColors.cool_gray_100,
       borderBottomWidth: 1,
+      borderBottomColor: isDarkTheme ? myColors.gray_900 : myColors.gray_100,
     },
     headerTitleStyle: {
       fontFamily: 'Inter_700Bold',
       fontSize: 18,
     },
-    headerTintColor: isDarkTheme ? 'white' : myColors.cool_gray_900,
+    headerTintColor: isDarkTheme ? 'white' : myColors.gray_900,
     ...TransitionPresets.SlideFromRightIOS, // This is where the transition happens
   }
   return obj

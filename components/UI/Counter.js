@@ -19,7 +19,7 @@ const Counter = (props) => {
       <CustomText
         children={props.title}
         size="H6"
-        color={isDarkTheme ? myColors.cool_gray_400 : myColors.cool_gray_700}
+        color={isDarkTheme ? myColors.gray_400 : myColors.gray_700}
         complementaryStyle={{ marginBottom: 4 }}
       />
       <View
@@ -31,13 +31,13 @@ const Counter = (props) => {
         <Ionicons
           name={props.icon}
           size={20}
-          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+          color={isDarkTheme ? 'white' : myColors.gray_900}
         />
         <CustomText
           children={props.value}
           bold
           size="H5"
-          color={isDarkTheme ? 'white' : myColors.cool_gray_900}
+          color={isDarkTheme ? 'white' : myColors.gray_900}
           complementaryStyle={{ marginLeft: spacing.xs }}
         />
       </View>

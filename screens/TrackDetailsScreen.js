@@ -69,13 +69,13 @@ const TrackDetailsScreen = ({ route, navigation }) => {
   }
 
   return (
-    <View style={{ backgroundColor: myColors.dark_gray, flex: 1 }}>
+    <View style={{ backgroundColor: myColors.gray_1100, flex: 1 }}>
       <FlatList
         data={similarTracks}
         renderItem={itemList}
         keyExtractor={(item) => item.id}
         ListHeaderComponent={listHeader}
-        style={{ backgroundColor: myColors.dark_gray, padding: 20 }}
+        style={{ backgroundColor: myColors.gray_1100, padding: 20 }}
       />
     </View>
   )

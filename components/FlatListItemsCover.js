@@ -42,14 +42,12 @@ const FlatListItemsCover = (props) => {
       style={{
         paddingHorizontal: 10,
         paddingVertical: 20,
-        backgroundColor: isDarkTheme
-          ? myColors.dark_gray
-          : myColors.cool_gray_100,
+        backgroundColor: isDarkTheme ? myColors.gray_1100 : myColors.gray_100,
       }}
       refreshControl={
         <RefreshControl
           colors={['white', 'black']}
-          tintColor={isDarkTheme ? 'white' : myColors.cool_gray_900}
+          tintColor={isDarkTheme ? 'white' : myColors.gray_900}
           onRefresh={props.onRefresh}
           refreshing={props.isRefreshing}
           enabled={true}
