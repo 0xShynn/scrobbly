@@ -35,7 +35,7 @@ const ScrobblesScreen = ({ navigation }) => {
     setIsRefreshing(true)
     setError(null)
     try {
-      await dispatch(scrobblesActions.fetchUserScrobbless())
+      await dispatch(scrobblesActions.fetchUserScrobbles())
     } catch (error) {
       setError(error.message)
     }
