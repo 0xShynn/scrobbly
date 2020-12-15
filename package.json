@@ -42,7 +42,8 @@
     "redux": "^4.0.5",
     "redux-thunk": "^2.3.0",
     "uuid": "^8.3.1",
-    "yup": "^0.29.3"
+    "yup": "^0.29.3",
+    "lottie-react-native": "~2.6.1"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

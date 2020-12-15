@@ -59,7 +59,7 @@ const MainBottomTabNavigator = () => {
         style: {
           backgroundColor: isDarkTheme ? myColors.gray_1000 : 'white',
           borderTopWidth: 1,
-          borderTopColor: isDarkTheme ? myColors.gray_900 : myColors.gray_100,
+          borderTopColor: isDarkTheme ? myColors.gray_950 : myColors.gray_100,
           height: Platform.OS === 'android' ? '8%' : '10%',
         },
         tabStyle: {

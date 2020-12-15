@@ -200,6 +200,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                   }
                   color={myColors.gray_500}
                 />
+                <CustomText size="H6" color={myColors.gray_500} />
               </View>
             </TouchableItem>
           )}

@@ -8,6 +8,7 @@ import CustomText from './UI/CustomText'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
 import useColorScheme from '../hooks/useColorSchemeFix'
+import LottieView from 'lottie-react-native'
 
 const ListItem = (props) => {
   const timestamp = dayjs(props.date).utc(true).fromNow()
@@ -96,10 +97,19 @@ const ListItem = (props) => {
       ) : null}
       {/* {props.nowPlaying ? <CustomText size="H7">Now Playing</CustomText> : null} */}
       {props.nowPlaying ? (
-        <Ionicons
-          name="ios-musical-notes"
-          size={20}
-          color={isDarkTheme ? 'white' : myColors.gray_900}
+        <LottieView
+          source={
+            isDarkTheme
+              ? require('../assets/lottiefiles/now-playing-dark.json')
+              : require('../assets/lottiefiles/now-playing-light.json')
+          }
+          autoPlay
+          loop
+          style={{
+            width: 24,
+            height: 24,
+            marginBottom: 10,
+          }}
         />
       ) : null}
     </TouchableItem>
