@@ -7,11 +7,11 @@ export const defaultNavOptions = () => {
 
   const obj = {
     headerStyle: {
-      backgroundColor: isDarkTheme ? myColors.gray_1000 : 'white',
+      backgroundColor: isDarkTheme ? myColors.gray_1100 : 'white',
       shadowColor: 'transparent',
       elevation: 0,
       borderBottomWidth: 1,
-      borderBottomColor: isDarkTheme ? myColors.gray_900 : myColors.gray_100,
+      borderBottomColor: isDarkTheme ? myColors.gray_1050 : myColors.gray_100,
     },
     headerTitleStyle: {
       fontFamily: 'Inter_700Bold',
