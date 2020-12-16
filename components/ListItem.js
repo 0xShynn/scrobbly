@@ -1,14 +1,15 @@
 import React from 'react'
 import { View, Image } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import LottieView from 'lottie-react-native'
 import dayjs from 'dayjs'
-import { updatedLocale } from '../utils/dayjs'
+
 import TouchableItem from './TouchableItem'
 import CustomText from './UI/CustomText'
+
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
 import useColorScheme from '../hooks/useColorSchemeFix'
-import LottieView from 'lottie-react-native'
+import { updatedLocale } from '../utils/dayjs'
 
 const ListItem = (props) => {
   const timestamp = dayjs(props.date).utc(true).fromNow()
@@ -95,7 +96,6 @@ const ListItem = (props) => {
           {timestamp}
         </CustomText>
       ) : null}
-      {/* {props.nowPlaying ? <CustomText size="H7">Now Playing</CustomText> : null} */}
       {props.nowPlaying ? (
         <LottieView
           source={

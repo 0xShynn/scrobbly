@@ -1,34 +1,23 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import { Image, View, ScrollView } from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage'
-
-import CustomButton from '../components/UI/CustomButton'
-import CustomText from '../components/UI/CustomText'
-import myColors from '../constants/myColors'
-import spacing from '../constants/spacing'
-
 import { useDispatch } from 'react-redux'
 import * as authActions from '../store/authActions'
+
+import CustomText from '../components/UI/CustomText'
+import LinkItem from '../components/LinkItem'
+
+import myColors from '../constants/myColors'
+import spacing from '../constants/spacing'
 import useColorScheme from '../hooks/useColorSchemeFix'
 
-const MyAccountScreen = () => {
+const MyAccountScreen = ({ route }) => {
   const dispatch = useDispatch()
-  const [data, setData] = useState()
   const isDarkTheme = useColorScheme() === 'dark' ? true : false
+  const { userData } = route.params
 
-  const logOutHandler = async () => {
+  const signOutHandler = async () => {
     dispatch(authActions.logOut())
   }
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const { userInfo } = await AsyncStorage.getItem('userData').then((res) =>
-        JSON.parse(res)
-      )
-      setData(userInfo)
-    }
-    fetchData()
-  }, [])
 
   return (
     <ScrollView
@@ -36,34 +25,74 @@ const MyAccountScreen = () => {
         backgroundColor: isDarkTheme ? myColors.gray_1100 : myColors.gray_100,
       }}
     >
-      <View
-        style={{
-          flex: 1,
-          paddingVertical: 40,
-          paddingHorizontal: spacing.lg,
-        }}
-      >
-        {data ? (
-          <View style={{ alignItems: 'center', flex: 1 }}>
+      <View>
+        {userData ? (
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              alignItems: 'center',
+              padding: spacing.lg,
+              backgroundColor: isDarkTheme ? myColors.gray_1050 : 'white',
+              borderBottomWidth: 1,
+              borderBottomColor: isDarkTheme
+                ? myColors.gray_950
+                : myColors.gray_200,
+              marginBottom: 40,
+            }}
+          >
             <Image
-              source={{ uri: data.image }}
+              source={{ uri: userData.image }}
               style={{
-                width: 160,
-                height: 160,
-                borderRadius: 80,
-                marginBottom: spacing.lg,
+                width: 80,
+                height: 80,
+                borderRadius: 40,
               }}
             />
-            <CustomText size="H2" bold style={{ marginBottom: spacing.lg }}>
-              {data.realname}
-            </CustomText>
+            <View
+              style={{
+                flex: 1,
+                marginLeft: spacing.lg,
+              }}
+            >
+              <CustomText
+                children={userData.name}
+                size="H3"
+                bold
+                color={isDarkTheme ? 'white' : myColors.gray_900}
+                complementaryStyle={{ marginBottom: 4 }}
+              />
+              <CustomText
+                children={userData.playcount + ' scrobbles'}
+                size="H6"
+                color={isDarkTheme ? myColors.gray_500 : myColors.gray_1000}
+              />
+            </View>
           </View>
         ) : null}
-        <CustomButton
-          label="Logout"
-          onPress={logOutHandler}
-          color={myColors.primary}
-        />
+
+        <View
+          style={{
+            marginBottom: 40,
+            borderTopWidth: 1,
+            borderTopColor: isDarkTheme ? myColors.gray_950 : myColors.gray_100,
+          }}
+        >
+          <LinkItem>About this version</LinkItem>
+          <LinkItem>Terms of Use</LinkItem>
+          <LinkItem>Privacy Policy</LinkItem>
+        </View>
+
+        <View
+          style={{
+            borderTopWidth: 1,
+            borderTopColor: isDarkTheme ? myColors.gray_950 : myColors.gray_100,
+          }}
+        >
+          <LinkItem onPress={signOutHandler} type="signout">
+            Sign out
+          </LinkItem>
+        </View>
       </View>
     </ScrollView>
   )

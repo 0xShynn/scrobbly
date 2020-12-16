@@ -188,7 +188,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
                 paddingHorizontal: spacing.md,
                 borderBottomWidth: 1,
                 borderBottomColor: isDarkTheme
-                  ? myColors.gray_900
+                  ? myColors.gray_1000
                   : myColors.gray_200,
                 marginBottom: 0,
                 paddingBottom: spacing.md,

@@ -11,7 +11,7 @@ export const defaultNavOptions = () => {
       shadowColor: 'transparent',
       elevation: 0,
       borderBottomWidth: 1,
-      borderBottomColor: isDarkTheme ? myColors.gray_1050 : myColors.gray_100,
+      borderBottomColor: isDarkTheme ? myColors.gray_1000 : myColors.gray_200,
     },
     headerTitleStyle: {
       fontFamily: 'Inter_700Bold',

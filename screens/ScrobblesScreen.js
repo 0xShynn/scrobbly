@@ -1,8 +1,8 @@
 import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { View, StatusBar, TouchableWithoutFeedback } from 'react-native'
+import { View, StatusBar, TouchableWithoutFeedback, Image } from 'react-native'
+import AsyncStorage from '@react-native-community/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
 import * as scrobblesActions from '../store/scrobblesActions'
-import { SimpleLineIcons } from '@expo/vector-icons'
 
 import FlatListItems from '../components/FlatListItems'
 import ListItem from '../components/ListItem'
@@ -11,7 +11,6 @@ import LoadingContainer from '../components/UI/LoadingContainer'
 import ErrorContainer from '../components/UI/ErrorContainer'
 
 import myColors from '../constants/myColors'
-import spacing from '../constants/spacing'
 import useColorScheme from '../hooks/useColorSchemeFix'
 
 const listHeader = (isDarkTheme) => (
@@ -27,9 +26,61 @@ const ScrobblesScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [error, setError] = useState(null)
+  const [userData, setUserData] = useState()
   const recentTracks = useSelector((state) => state.scrobbles.recentScrobbles)
   const dispatch = useDispatch()
   const isDarkTheme = useColorScheme() === 'dark' ? true : false
+
+  useEffect(() => {
+    setIsLoading(true)
+    const fetchData = async () => {
+      try {
+        const { userInfo } = await AsyncStorage.getItem(
+          'userData'
+        ).then((res) => JSON.parse(res))
+        setUserData(userInfo)
+      } catch (error) {
+        console.log(error)
+      }
+    }
+    fetchData()
+    getScrobblesHandler().then(() => setIsLoading(false))
+  }, [])
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: <CustomHeaderTitle title="Recent Scrobbles" />,
+      headerRight: userProfilHandler,
+    })
+  }, [navigation, isDarkTheme, userData])
+
+  const userProfilHandler = useCallback(() => {
+    return (
+      <TouchableWithoutFeedback
+        onPress={() => {
+          navigation.navigate('My Account', { userData })
+        }}
+      >
+        <Image
+          source={{ uri: userData ? userData.image : null }}
+          style={{
+            width: 30,
+            height: 30,
+            borderRadius: 15,
+            marginRight: 15,
+          }}
+        />
+      </TouchableWithoutFeedback>
+    )
+  }, [userData])
+
+  // // Set the header title
+  // useLayoutEffect(() => {
+  //   navigation.setOptions({
+  //     headerTitle: <CustomHeaderTitle title="Recent Scrobbles" />,
+  //     headerRight: userProfilHandler,
+  //   })
+  // }, [navigation, isDarkTheme])
 
   const getScrobblesHandler = useCallback(async () => {
     setIsRefreshing(true)
@@ -69,36 +120,6 @@ const ScrobblesScreen = ({ navigation }) => {
       />
     )
   }, [])
-
-  const settingsHandler = () => {
-    return (
-      <TouchableWithoutFeedback
-        onPress={() => {
-          navigation.navigate('My Account')
-        }}
-      >
-        <SimpleLineIcons
-          name="settings"
-          size={24}
-          color={isDarkTheme ? 'white' : myColors.gray_700}
-          style={{ marginHorizontal: spacing.md }}
-        />
-      </TouchableWithoutFeedback>
-    )
-  }
-
-  useEffect(() => {
-    setIsLoading(true)
-    getScrobblesHandler().then(() => setIsLoading(false))
-  }, [])
-
-  // Set the header title
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTitle: <CustomHeaderTitle title="Recent Scrobbles" />,
-      headerRight: settingsHandler,
-    })
-  }, [navigation, isDarkTheme])
 
   if (isLoading) {
     return <LoadingContainer />

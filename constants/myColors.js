@@ -10,8 +10,8 @@ export default {
   gray_700: '#626262',
   gray_800: '#515151',
   gray_900: '#3B3B3B',
-  gray_950: '#2E2E2E',
+  gray_950: '#2A2A2A',
   gray_1000: '#222222',
-  gray_1050: '#1E1E1E',
+  gray_1050: '#1A1A1A',
   gray_1100: '#111111',
 }
