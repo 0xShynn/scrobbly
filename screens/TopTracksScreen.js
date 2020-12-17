@@ -1,6 +1,13 @@
-import React, { useEffect, useLayoutEffect, useState, useCallback } from 'react'
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useState,
+  useCallback,
+  useRef,
+} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import * as scrobblesActions from '../store/scrobblesActions'
+import { useScrollToTop } from '@react-navigation/native'
 
 import FlatListItems from '../components/FlatListItems'
 import ListItem from '../components/ListItem'
@@ -14,12 +21,36 @@ import { periods } from '../utils/lastfm'
 const TopTracksScreen = ({ navigation }) => {
   const [isLoading, setIsLoading] = useState(false)
   const [isFirstLoading, setIsFirstLoading] = useState(false)
+  const [error, setError] = useState(null)
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [periodSelected, setPeriodSelected] = useState({})
-  const [error, setError] = useState(null)
-
   const dispatch = useDispatch()
   const topTracks = useSelector((state) => state.scrobbles.topTracks)
+  const flatListRef = useRef()
+
+  useEffect(() => {
+    setIsFirstLoading(true)
+    getTopTracksHandler(periods[0]).then(() => {
+      setIsFirstLoading(false)
+    })
+  }, [])
+
+  useScrollToTop(flatListRef)
+
+  // Set the header title
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: (
+        <CustomHeaderTitle
+          title="Top Tracks"
+          periodSelected={periodSelected.name}
+          isRefreshing={isRefreshing}
+          isLoading={isLoading}
+        />
+      ),
+      headerRight: periodSelectorHandler,
+    })
+  }, [navigation, periodSelected, isLoading, isRefreshing])
 
   const getTopTracksHandler = useCallback(
     async (period) => {
@@ -36,23 +67,20 @@ const TopTracksScreen = ({ navigation }) => {
     [dispatch]
   )
 
-  const itemSelectHandler = (
-    artistName,
-    trackName,
-    albumArt,
-    albumName,
-    topPlaycount
-  ) => {
-    navigation.navigate('Scrobble Details', {
-      artistName,
-      trackName,
-      albumArt,
-      albumName,
-      topPlaycount,
-    })
-  }
+  const itemSelectHandler = useCallback(
+    (artistName, trackName, albumArt, albumName, topPlaycount) => {
+      navigation.navigate('Scrobble Details', {
+        artistName,
+        trackName,
+        albumArt,
+        albumName,
+        topPlaycount,
+      })
+    },
+    []
+  )
 
-  const listItem = ({ item }) => {
+  const listItem = useCallback(({ item }) => {
     return (
       <ListItem
         image={item.albumArt}
@@ -72,7 +100,7 @@ const TopTracksScreen = ({ navigation }) => {
         )}
       />
     )
-  }
+  }, [])
 
   const periodSelectorHandler = () => {
     return <PeriodSelector onSelect={getTopTracksHandler} />
@@ -85,28 +113,6 @@ const TopTracksScreen = ({ navigation }) => {
     })
   }
 
-  useEffect(() => {
-    setIsFirstLoading(true)
-    getTopTracksHandler(periods[0]).then(() => {
-      setIsFirstLoading(false)
-    })
-  }, [])
-
-  // Set the header title
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTitle: (
-        <CustomHeaderTitle
-          title="Top Tracks"
-          periodSelected={periodSelected.name}
-          isRefreshing={isRefreshing}
-          isLoading={isLoading}
-        />
-      ),
-      headerRight: periodSelectorHandler,
-    })
-  }, [navigation, periodSelected, isLoading, isRefreshing])
-
   if (isFirstLoading) {
     return <LoadingContainer />
   }
@@ -117,6 +123,7 @@ const TopTracksScreen = ({ navigation }) => {
 
   return (
     <FlatListItems
+      ref={flatListRef}
       data={topTracks}
       renderItem={listItem}
       onRefresh={onRefreshHandler}

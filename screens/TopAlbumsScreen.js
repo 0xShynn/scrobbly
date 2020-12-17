@@ -1,6 +1,13 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+  useRef,
+} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import * as scrobblesActions from '../store/scrobblesActions'
+import { useScrollToTop } from '@react-navigation/native'
 
 import ListItemCover from '../components/ListItemCover'
 import FlatListItemsCover from '../components/FlatListItemsCover'
@@ -17,9 +24,33 @@ const TopAlbumsScreen = ({ navigation }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [periodSelected, setPeriodSelected] = useState({})
   const [error, setError] = useState(null)
-
   const dispatch = useDispatch()
   const topAlbums = useSelector((state) => state.scrobbles.topAlbums)
+  const flatListRef = useRef()
+
+  useEffect(() => {
+    setIsFirstLoading(true)
+    getTopAlbumsHandler(periods[0]).then(() => {
+      setIsFirstLoading(false)
+    })
+  }, [])
+
+  useScrollToTop(flatListRef)
+
+  // Set the header title
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerTitle: (
+        <CustomHeaderTitle
+          title="Top Albums"
+          periodSelected={periodSelected.name}
+          isRefreshing={isRefreshing}
+          isLoading={isLoading}
+        />
+      ),
+      headerRight: periodSelectorHandler,
+    })
+  }, [navigation, periodSelected, isLoading, isRefreshing])
 
   const getTopAlbumsHandler = useCallback(
     async (period) => {
@@ -36,14 +67,17 @@ const TopAlbumsScreen = ({ navigation }) => {
     [dispatch]
   )
 
-  const itemSelectHandler = (artistName, albumName, albumArt, playcount) => {
-    navigation.navigate('Album Details', {
-      artistName,
-      albumArt,
-      albumName,
-      topPlaycount: playcount,
-    })
-  }
+  const itemSelectHandler = useCallback(
+    (artistName, albumName, albumArt, playcount) => {
+      navigation.navigate('Album Details', {
+        artistName,
+        albumArt,
+        albumName,
+        topPlaycount: playcount,
+      })
+    },
+    []
+  )
 
   const listItem = ({ item }) => {
     return (
@@ -76,28 +110,6 @@ const TopAlbumsScreen = ({ navigation }) => {
     })
   }
 
-  useEffect(() => {
-    setIsFirstLoading(true)
-    getTopAlbumsHandler(periods[0]).then(() => {
-      setIsFirstLoading(false)
-    })
-  }, [])
-
-  // Set the header title
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTitle: (
-        <CustomHeaderTitle
-          title="Top Albums"
-          periodSelected={periodSelected.name}
-          isRefreshing={isRefreshing}
-          isLoading={isLoading}
-        />
-      ),
-      headerRight: periodSelectorHandler,
-    })
-  }, [navigation, periodSelected, isLoading, isRefreshing])
-
   if (isFirstLoading) {
     return <LoadingContainer />
   }
@@ -108,6 +120,7 @@ const TopAlbumsScreen = ({ navigation }) => {
 
   return (
     <FlatListItemsCover
+      ref={flatListRef}
       data={topAlbums}
       renderItem={listItem}
       onRefresh={onRefreshHandler}

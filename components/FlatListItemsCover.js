@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, forwardRef } from 'react'
 import { FlatList, View, RefreshControl } from 'react-native'
 import myColors from '../constants/myColors'
 import useColorScheme from '../hooks/useColorSchemeFix'
@@ -25,12 +25,13 @@ const listEmpty = () => {
   )
 }
 
-const FlatListItemsCover = (props) => {
+const FlatListItemsCover = forwardRef((props, ref) => {
   const keyExtractor = useCallback((item) => item.id, [])
   const isDarkTheme = useColorScheme() === 'dark' ? true : false
 
   return (
     <FlatList
+      ref={ref}
       data={props.data}
       renderItem={props.renderItem}
       ItemSeparatorComponent={listItemSeparator}
@@ -55,6 +56,6 @@ const FlatListItemsCover = (props) => {
       }
     />
   )
-}
+})
 
 export default FlatListItemsCover

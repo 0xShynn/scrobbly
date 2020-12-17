@@ -1,6 +1,13 @@
-import React, { useEffect, useState, useLayoutEffect, useCallback } from 'react'
+import React, {
+  useEffect,
+  useState,
+  useLayoutEffect,
+  useCallback,
+  useRef,
+} from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import * as scrobblesActions from '../store/scrobblesActions'
+import { useScrollToTop } from '@react-navigation/native'
 
 import ListItemCover from '../components/ListItemCover'
 import FlatListItemsCover from '../components/FlatListItemsCover'
@@ -17,9 +24,18 @@ const TopArtistsScreen = ({ navigation }) => {
   const [isRefreshing, setIsRefreshing] = useState(false)
   const [periodSelected, setPeriodSelected] = useState({})
   const [error, setError] = useState(null)
-
   const dispatch = useDispatch()
   const topArtists = useSelector((state) => state.scrobbles.topArtists)
+  const flatListRef = useRef()
+
+  useEffect(() => {
+    setIsFirstLoading(true)
+    getTopArtistsHandler(periods[0]).then(() => {
+      setIsFirstLoading(false)
+    })
+  }, [])
+
+  useScrollToTop(flatListRef)
 
   const getTopArtistsHandler = useCallback(
     async (period) => {
@@ -36,17 +52,16 @@ const TopArtistsScreen = ({ navigation }) => {
     [dispatch]
   )
 
-  const itemSelectArtistHandler = async (
-    artistName,
-    artistImage,
-    playcount
-  ) => {
-    navigation.navigate('Artist Details', {
-      artistName,
-      artistImage,
-      topPlaycount: playcount,
-    })
-  }
+  const itemSelectArtistHandler = useCallback(
+    (artistName, artistImage, playcount) => {
+      navigation.navigate('Artist Details', {
+        artistName,
+        artistImage,
+        topPlaycount: playcount,
+      })
+    },
+    []
+  )
 
   const listItem = ({ item }) => {
     return (
@@ -77,13 +92,6 @@ const TopArtistsScreen = ({ navigation }) => {
     })
   }
 
-  useEffect(() => {
-    setIsFirstLoading(true)
-    getTopArtistsHandler(periods[0]).then(() => {
-      setIsFirstLoading(false)
-    })
-  }, [])
-
   // Set the header title
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -109,6 +117,7 @@ const TopArtistsScreen = ({ navigation }) => {
 
   return (
     <FlatListItemsCover
+      ref={flatListRef}
       data={topArtists}
       renderItem={listItem}
       onRefresh={onRefreshHandler}

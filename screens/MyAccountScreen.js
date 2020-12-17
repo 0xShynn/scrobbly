@@ -65,7 +65,7 @@ const MyAccountScreen = ({ route }) => {
               <CustomText
                 children={userData.playcount + ' scrobbles'}
                 size="H6"
-                color={isDarkTheme ? myColors.gray_500 : myColors.gray_1000}
+                color={isDarkTheme ? myColors.gray_500 : myColors.gray_600}
               />
             </View>
           </View>

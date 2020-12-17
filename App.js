@@ -23,6 +23,9 @@ const roorReducer = combineReducers({
 
 const store = createStore(roorReducer, applyMiddleware(ReduxThunk))
 
+import { enableScreens } from 'react-native-screens'
+enableScreens()
+
 export default function App() {
   let [fontsLoaded] = useFonts({
     Inter_400Regular,

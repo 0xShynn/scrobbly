@@ -1,8 +1,15 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+  useRef,
+} from 'react'
 import { View, StatusBar, TouchableWithoutFeedback, Image } from 'react-native'
 import AsyncStorage from '@react-native-community/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
 import * as scrobblesActions from '../store/scrobblesActions'
+import { useScrollToTop } from '@react-navigation/native'
 
 import FlatListItems from '../components/FlatListItems'
 import ListItem from '../components/ListItem'
@@ -30,6 +37,7 @@ const ScrobblesScreen = ({ navigation }) => {
   const recentTracks = useSelector((state) => state.scrobbles.recentScrobbles)
   const dispatch = useDispatch()
   const isDarkTheme = useColorScheme() === 'dark' ? true : false
+  const flatListRef = useRef()
 
   useEffect(() => {
     setIsLoading(true)
@@ -47,12 +55,25 @@ const ScrobblesScreen = ({ navigation }) => {
     getScrobblesHandler().then(() => setIsLoading(false))
   }, [])
 
+  useScrollToTop(flatListRef)
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: <CustomHeaderTitle title="Recent Scrobbles" />,
       headerRight: userProfilHandler,
     })
   }, [navigation, isDarkTheme, userData])
+
+  const getScrobblesHandler = useCallback(async () => {
+    setIsRefreshing(true)
+    setError(null)
+    try {
+      await dispatch(scrobblesActions.fetchUserScrobbles())
+    } catch (error) {
+      setError(error.message)
+    }
+    setIsRefreshing(false)
+  }, [])
 
   const userProfilHandler = useCallback(() => {
     return (
@@ -73,25 +94,6 @@ const ScrobblesScreen = ({ navigation }) => {
       </TouchableWithoutFeedback>
     )
   }, [userData])
-
-  // // Set the header title
-  // useLayoutEffect(() => {
-  //   navigation.setOptions({
-  //     headerTitle: <CustomHeaderTitle title="Recent Scrobbles" />,
-  //     headerRight: userProfilHandler,
-  //   })
-  // }, [navigation, isDarkTheme])
-
-  const getScrobblesHandler = useCallback(async () => {
-    setIsRefreshing(true)
-    setError(null)
-    try {
-      await dispatch(scrobblesActions.fetchUserScrobbles())
-    } catch (error) {
-      setError(error.message)
-    }
-    setIsRefreshing(false)
-  }, [])
 
   const itemSelectHandler = (artistName, trackName, albumArt, albumName) => {
     navigation.navigate('Scrobble Details', {
@@ -131,6 +133,7 @@ const ScrobblesScreen = ({ navigation }) => {
 
   return (
     <FlatListItems
+      ref={flatListRef}
       data={recentTracks}
       renderItem={listItem}
       ListHeaderComponent={listHeader.bind(this, isDarkTheme)}
