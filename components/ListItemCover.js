@@ -5,17 +5,28 @@ import {
   ImageBackground,
   TouchableWithoutFeedback,
 } from 'react-native'
+import useWindowDimensions from 'react-native/Libraries/Utilities/useWindowDimensions'
 import { LinearGradient } from 'expo-linear-gradient'
 import CustomText from './UI/CustomText'
 import { Ionicons } from '@expo/vector-icons'
 import myColors from '../constants/myColors'
+import spacing from '../constants/spacing'
 
 const ListItemCover = (props) => {
+  const itemCoverHeight = (useWindowDimensions().width - spacing.lg * 2) / 2
+
   return (
     <TouchableWithoutFeedback style={styles.itemCover} onPress={props.onSelect}>
       <ImageBackground
         source={{ uri: props.image }}
-        style={styles.listImageBackground}
+        style={{
+          width: '100%',
+          height: itemCoverHeight,
+          flex: 1,
+          borderRadius: 10,
+          marginHorizontal: 6,
+          overflow: 'hidden',
+        }}
       >
         {props.isLoading && !props.isRefreshing ? (
           <View
