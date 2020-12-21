@@ -1,13 +1,12 @@
 import React, { useCallback, forwardRef } from 'react'
 import { FlatList, View, RefreshControl } from 'react-native'
+import ListEmpty from './ListEmpty'
+
 import myColors from '../constants/myColors'
 import useColorScheme from '../hooks/useColorSchemeFix'
 
 const listItemSeparator = () => <View style={{ height: 10 }} />
-
-const listFooter = () => {
-  return <View style={{ height: 40 }} />
-}
+const listFooter = () => <View style={{ height: 40 }} />
 
 const FlatListItems = forwardRef((props, ref) => {
   const keyExtractor = useCallback((item) => item.id, [])
@@ -20,8 +19,10 @@ const FlatListItems = forwardRef((props, ref) => {
       renderItem={props.renderItem}
       keyExtractor={keyExtractor}
       ItemSeparatorComponent={listItemSeparator}
-      ListFooterComponent={listFooter}
       ListHeaderComponent={props.ListHeaderComponent}
+      ListFooterComponent={listFooter}
+      ListEmptyComponent={ListEmpty}
+      contentContainerStyle={{ flexGrow: 1 }}
       style={{
         backgroundColor: isDarkTheme ? myColors.gray_1100 : myColors.gray_100,
         paddingVertical: 20,

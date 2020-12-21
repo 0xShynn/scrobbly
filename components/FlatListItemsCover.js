@@ -1,29 +1,12 @@
 import React, { useCallback, forwardRef } from 'react'
 import { FlatList, View, RefreshControl } from 'react-native'
+import ListEmpty from './ListEmpty'
+
 import myColors from '../constants/myColors'
 import useColorScheme from '../hooks/useColorSchemeFix'
-import CustomText from './UI/CustomText'
 
 const listItemSeparator = () => <View style={{ height: 12 }} />
-
-const listFooter = () => {
-  return <View style={{ height: 40 }} />
-}
-
-const listEmpty = () => {
-  return (
-    <View
-      style={{
-        flex: 1,
-        minHeight: 520,
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <CustomText size="H6">No items found. Start scrobbling!</CustomText>
-    </View>
-  )
-}
+const listFooter = () => <View style={{ height: 40 }} />
 
 const FlatListItemsCover = forwardRef((props, ref) => {
   const keyExtractor = useCallback((item) => item.id, [])
@@ -36,10 +19,11 @@ const FlatListItemsCover = forwardRef((props, ref) => {
       renderItem={props.renderItem}
       ItemSeparatorComponent={listItemSeparator}
       ListFooterComponent={listFooter}
-      ListEmptyComponent={listEmpty}
+      ListEmptyComponent={ListEmpty}
       keyExtractor={keyExtractor}
       horizontal={false}
       numColumns={2}
+      contentContainerStyle={{ flexGrow: 1 }}
       style={{
         paddingHorizontal: 10,
         paddingVertical: 20,

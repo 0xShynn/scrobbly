@@ -7,7 +7,7 @@
 _verb_ _Internet slang_ To publish one's music-listening habits to the Internet via software, in order to track when and how often certain songs are played.
 _noun_ A datum or the aggregate data collected by this means.
 
-#### Etymologies
+### Etymologies
 
 _from Wiktionary, Creative Commons Attribution/Share-Alike License_
 From the name of the Internet service Audioscrobbler.
@@ -18,11 +18,11 @@ Scrobbly is a React Native mobile app for iOS/Android, it retrieves your Last.fm
 
 ## About the project
 
-As a music lover I always wanted to create a project related to music, the idea to create a scrobbler app came when I wanted to share my 'top tracks' of the month to a friend, I had a few tracks in my mind but I couldn't gave some sort of list quickly. As we live in a digital era of abundance of releases of all kinds, it's hard to keep track of everything nowadays. That's when I thought about Last.fm services.
+As a music lover I always wanted to create a project related to music, the idea of creating a scrobbler app came the moment I wanted to share my 'top tracks of the month' to a friend. I had a few tracks in my mind but I was unable to share a quick list. As we live in a era of abundance of digital releases, it's hard to keep track of everything nowadays. That's when I thought about Last.fm services.
 
-Scrobbly fetch your music's data using Last.fm API and display your recent scrobbles, top artists,albums and tracks on your mobile phone, that way, your favorite music's data is always at hand.
+Scrobbly fetch your music's data using Last.fm API and display your recent scrobbles, your top artists, albums and tracks (on many periods) on your mobile phone. That way, your favorite music's data is always at hand.
 
-## How to use it ?
+## How to install
 
 Under construction
 
