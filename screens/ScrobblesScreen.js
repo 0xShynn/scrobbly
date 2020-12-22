@@ -6,7 +6,7 @@ import React, {
   useRef,
 } from 'react'
 import { View, StatusBar, TouchableWithoutFeedback, Image } from 'react-native'
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import { useDispatch, useSelector } from 'react-redux'
 import * as scrobblesActions from '../store/scrobblesActions'
 import { useScrollToTop } from '@react-navigation/native'
@@ -43,10 +43,10 @@ const ScrobblesScreen = ({ navigation }) => {
     setIsLoading(true)
     const fetchData = async () => {
       try {
-        const { userInfo } = await AsyncStorage.getItem(
-          'userData'
-        ).then((res) => JSON.parse(res))
-        setUserData(userInfo)
+        const response = await AsyncStorage.getItem('userData').then((res) =>
+          JSON.parse(res)
+        )
+        setUserData(response.userInfo)
       } catch (error) {
         console.log(error)
       }
@@ -57,7 +57,7 @@ const ScrobblesScreen = ({ navigation }) => {
 
   useScrollToTop(flatListRef)
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     navigation.setOptions({
       headerTitle: <CustomHeaderTitle title="Recent Scrobbles" />,
       headerRight: userProfilHandler,

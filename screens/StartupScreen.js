@@ -1,14 +1,11 @@
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import React, { useEffect } from 'react'
 import { useDispatch } from 'react-redux'
 import LoadingContainer from '../components/UI/LoadingContainer'
-import myColors from '../constants/myColors'
-import useColorScheme from '../hooks/useColorSchemeFix'
 import * as authActions from '../store/authActions'
 
 const StartupScreen = () => {
   const dispatch = useDispatch()
-  const isDarkTheme = useColorScheme() === 'dark' ? true : false
 
   useEffect(() => {
     const tryLogin = async () => {

@@ -1,4 +1,4 @@
-import AsyncStorage from '@react-native-community/async-storage'
+import AsyncStorage from '@react-native-async-storage/async-storage'
 import AlbumTrack from '../models/albumTrack'
 import { image_blank_300, image_blank_640 } from './expo'
 import prettyMilliseconds from 'pretty-ms'
