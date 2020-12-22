@@ -2,6 +2,7 @@ import React, { forwardRef } from 'react'
 import { TextInput, View } from 'react-native'
 import { Ionicons as Icon } from '@expo/vector-icons'
 import myColors from '../../constants/myColors'
+import spacing from '../../constants/spacing'
 
 const MyTextInput = forwardRef(
   ({ icon, error, touched, ...otherProps }, ref) => {
@@ -17,19 +18,19 @@ const MyTextInput = forwardRef(
           flexDirection: 'row',
           alignItems: 'center',
           borderRadius: 8,
-          padding: 10,
           borderColor: validationColor,
           borderWidth: 1,
           backgroundColor: 'white',
         }}
       >
-        <View style={{ paddingHorizontal: 8 }}>
+        <View style={{ paddingLeft: spacing.md, paddingRight: spacing.xs }}>
           <Icon name={icon} color={validationColor} size={20} />
         </View>
         <View style={{ flex: 1 }}>
           <TextInput
             placeholderTextColor={myColors.gray_600}
             ref={ref}
+            style={{ paddingVertical: spacing.md }}
             {...otherProps}
           />
         </View>

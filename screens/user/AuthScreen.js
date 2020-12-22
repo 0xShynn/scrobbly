@@ -4,8 +4,10 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
-  useWindowDimensions,
   View,
+  TouchableWithoutFeedback,
+  SafeAreaView,
+  useWindowDimensions,
 } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 
@@ -22,7 +24,6 @@ import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import useColorScheme from '../../hooks/useColorSchemeFix'
 import spacing from '../../constants/spacing'
-import { TouchableWithoutFeedback } from 'react-native-gesture-handler'
 
 const authValidationSchema = Yup.object({
   username: Yup.string().required(),
@@ -53,100 +54,123 @@ const AuthScreen = () => {
   }
 
   return (
-    <CenteredContainer
-      style={{
-        backgroundColor: isDarkTheme ? myColors.gray_1000 : myColors.gray_100,
-      }}
+    <KeyboardAvoidingView
+      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      style={{ flex: 1 }}
     >
-      <KeyboardAvoidingView
-        behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
-        style={{ width: '100%', paddingHorizontal: 20 }}
-        keyboardVerticalOffset={100}
+      <CenteredContainer
+        style={{
+          backgroundColor: isDarkTheme ? myColors.gray_1000 : myColors.gray_100,
+        }}
       >
-        <StatusBar barStyle={isDarkTheme ? 'light-content' : 'dark-content'} />
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-          <View
+          <SafeAreaView
             style={{
+              width: '100%',
+              height: useWindowDimensions().height,
               justifyContent: 'center',
-              alignItems: 'center',
+              paddingVertical: spacing.xl,
             }}
           >
-            <Image
-              source={require('../../assets/icon.png')}
+            <StatusBar
+              barStyle={isDarkTheme ? 'light-content' : 'dark-content'}
+            />
+            <View
               style={{
-                width: 80,
-                height: 80,
-                marginBottom: spacing.sm,
+                justifyContent: 'center',
+                alignItems: 'center',
               }}
-            />
-            <CustomText
-              size="H2"
-              bold
-              color={isDarkTheme ? 'white' : myColors.gray_900}
-              complementaryStyle={{ marginBottom: 40 }}
             >
-              Scrobbly
-            </CustomText>
-            <CustomText
-              size="H4"
-              bold
-              children="Log in with your Last.fm account"
-              color={isDarkTheme ? 'white' : myColors.gray_900}
-              complementaryStyle={{ marginBottom: spacing.xl }}
-            />
-          </View>
-          <View style={{ marginBottom: 20 }}>
-            <MyTextInput
-              icon="ios-person"
-              placeholder="Enter your username"
-              autoCapitalize="none"
-              autoCompleteType="username"
-              returnKeyType="next"
-              returnKeyLabel="next"
-              onChangeText={handleChange('username')}
-              onBlur={handleBlur('username')}
-              error={errors.username}
-              touched={touched.username}
-              onSubmitEditing={() => {
-                password.current?.focus()
+              <Image
+                source={require('../../assets/icon.png')}
+                style={{
+                  width: 80,
+                  height: 80,
+                  marginBottom: spacing.sm,
+                }}
+              />
+              <CustomText
+                size="H2"
+                bold
+                color={isDarkTheme ? 'white' : myColors.gray_900}
+                complementaryStyle={{ marginBottom: 40 }}
+              >
+                Scrobbly
+              </CustomText>
+              <CustomText
+                size="H4"
+                bold
+                children="Log in with your Last.fm account"
+                color={isDarkTheme ? 'white' : myColors.gray_900}
+                complementaryStyle={{ marginBottom: spacing.xl }}
+              />
+            </View>
+            <View
+              style={{
+                marginBottom: spacing.xs,
+                paddingHorizontal: spacing.xl,
               }}
-            />
-          </View>
-          <View style={{ marginBottom: 20 }}>
-            <MyTextInput
-              icon="md-lock"
-              placeholder="Enter your password"
-              autoCapitalize="none"
-              autoCompleteType="password"
-              secureTextEntry
-              returnKeyType="go"
-              returnKeyLabel="go"
-              onChangeText={handleChange('password')}
-              onBlur={handleBlur('password')}
-              error={errors.password}
-              touched={touched.password}
-              ref={password}
-              onSubmitEditing={() => {
-                handleSubmit()
+            >
+              <MyTextInput
+                icon="ios-person"
+                placeholder="Enter your username"
+                autoCapitalize="none"
+                autoCompleteType="username"
+                returnKeyType="next"
+                returnKeyLabel="next"
+                onChangeText={handleChange('username')}
+                onBlur={handleBlur('username')}
+                error={errors.username}
+                touched={touched.username}
+                onSubmitEditing={() => {
+                  password.current?.focus()
+                }}
+              />
+            </View>
+            <View
+              style={{
+                marginBottom: spacing.md,
+                paddingHorizontal: spacing.xl,
               }}
-            />
-          </View>
-          <View style={{ alignItems: 'center', marginTop: 20 }}>
-            <CustomButton
-              label="Login"
-              onPress={handleSubmit}
-              color={myColors.primary}
-            />
-          </View>
-          <CustomText
-            children="Doesn't have an last.fm account ? Sign Up"
-            size="H6"
-            color={isDarkTheme ? myColors.gray_500 : myColors.gray_900}
-            complementaryStyle={{ textAlign: 'center', marginTop: 30 }}
-          />
+            >
+              <MyTextInput
+                icon="md-lock"
+                placeholder="Enter your password"
+                autoCapitalize="none"
+                autoCompleteType="password"
+                secureTextEntry
+                returnKeyType="go"
+                returnKeyLabel="go"
+                onChangeText={handleChange('password')}
+                onBlur={handleBlur('password')}
+                error={errors.password}
+                touched={touched.password}
+                ref={password}
+                onSubmitEditing={() => {
+                  handleSubmit()
+                }}
+              />
+            </View>
+            <View style={{ paddingHorizontal: spacing.xl }}>
+              <CustomButton
+                label="Login"
+                onPress={handleSubmit}
+                color={myColors.primary}
+              />
+              <CustomText
+                children="Doesn't have an last.fm account ? Sign Up"
+                size="H6"
+                color={isDarkTheme ? myColors.gray_500 : myColors.gray_900}
+                complementaryStyle={{
+                  textAlign: 'center',
+                  marginTop: 30,
+                }}
+              />
+            </View>
+          </SafeAreaView>
         </TouchableWithoutFeedback>
-      </KeyboardAvoidingView>
-    </CenteredContainer>
+      </CenteredContainer>
+    </KeyboardAvoidingView>
   )
 }
 
