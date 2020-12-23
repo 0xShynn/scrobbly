@@ -4,8 +4,28 @@ import myColors from '../../constants/myColors'
 import useColorScheme from '../../hooks/useColorSchemeFix'
 import CustomText from './CustomText'
 
-export default function CustomButton({ label, onPress, style, color }) {
+export default function CustomButton({ label, onPress, themeColor }) {
   const isDarkTheme = useColorScheme() === 'dark' ? true : false
+
+  const buttonBgColorHandler = (value) => {
+    switch (value) {
+      case 'primary':
+        return myColors.primary
+
+      default:
+        return myColors.gray_700
+    }
+  }
+
+  const buttonTextColorHandler = (value) => {
+    switch (value) {
+      case 'primary':
+        return 'white'
+
+      default:
+        return 'white'
+    }
+  }
 
   return (
     <TouchableOpacity
@@ -16,12 +36,7 @@ export default function CustomButton({ label, onPress, style, color }) {
         justifyContent: 'center',
         alignItems: 'center',
         minWidth: 160,
-        backgroundColor: color
-          ? color
-          : isDarkTheme
-          ? myColors.gray_700
-          : myColors.gray_300,
-        ...style,
+        backgroundColor: buttonBgColorHandler(themeColor),
       }}
       activeOpacity={0.7}
       onPress={onPress}
@@ -29,7 +44,8 @@ export default function CustomButton({ label, onPress, style, color }) {
       <CustomText
         children={label}
         size="H5"
-        color={isDarkTheme ? 'white' : myColors.gray_900}
+        bold
+        color={buttonTextColorHandler(themeColor)}
       />
     </TouchableOpacity>
   )

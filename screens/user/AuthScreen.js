@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   SafeAreaView,
   useWindowDimensions,
+  Alert,
 } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 
@@ -19,10 +20,10 @@ import CustomText from '../../components/UI/CustomText'
 import { useDispatch } from 'react-redux'
 import * as authActions from '../../store/authActions'
 
-import myColors from '../../constants/myColors'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import useColorScheme from '../../hooks/useColorSchemeFix'
+import myColors from '../../constants/myColors'
 import spacing from '../../constants/spacing'
 
 const authValidationSchema = Yup.object({
@@ -49,7 +50,7 @@ const AuthScreen = () => {
     try {
       await dispatch(authActions.logIn(username, password))
     } catch (error) {
-      console.log(error)
+      Alert.alert('Error', error.message, [{ text: 'OK' }])
     }
   }
 
@@ -155,7 +156,7 @@ const AuthScreen = () => {
               <CustomButton
                 label="Login"
                 onPress={handleSubmit}
-                color={myColors.primary}
+                themeColor="primary"
               />
               <CustomText
                 children="Doesn't have an last.fm account ? Sign Up"
