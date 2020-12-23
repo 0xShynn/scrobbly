@@ -1,7 +1,11 @@
 import React from 'react'
 import { Text } from 'react-native'
+import myColors from '../../constants/myColors'
+import useColorScheme from '../../hooks/useColorSchemeFix'
 
 const CustomText = (props) => {
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false
+
   const fontSizeHandler = (size) => {
     switch (size) {
       case 'H7':
@@ -28,7 +32,11 @@ const CustomText = (props) => {
       style={{
         fontSize: fontSizeHandler(props.size),
         fontFamily: props.bold ? 'Inter_700Bold' : 'Inter_400Regular',
-        color: props.color ? props.color : 'white',
+        color: props.color
+          ? props.color
+          : isDarkTheme
+          ? myColors.gray_200
+          : myColors.gray_900,
         ...props.complementaryStyle,
       }}
       {...props}

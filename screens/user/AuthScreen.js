@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React from 'react'
 import {
   Image,
   Keyboard,
@@ -9,18 +9,19 @@ import {
   SafeAreaView,
   useWindowDimensions,
   Alert,
+  StyleSheet,
+  TextInput,
 } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
+import { useForm, Controller } from 'react-hook-form'
 
 import CenteredContainer from '../../components/UI/CenteredContainer'
-import MyTextInput from '../../components/UI/MyTextInput'
 import CustomButton from '../../components/UI/CustomButton'
 import CustomText from '../../components/UI/CustomText'
 
 import { useDispatch } from 'react-redux'
 import * as authActions from '../../store/authActions'
 
-import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import useColorScheme from '../../hooks/useColorSchemeFix'
 import myColors from '../../constants/myColors'
@@ -33,22 +34,13 @@ const authValidationSchema = Yup.object({
 
 const AuthScreen = () => {
   const dispatch = useDispatch()
-  const password = useRef(null)
   const isDarkTheme = useColorScheme() === 'dark' ? true : false
+  const { control, handleSubmit, errors } = useForm()
 
-  const { handleChange, handleBlur, handleSubmit, errors, touched } = useFormik(
-    {
-      validationSchema: authValidationSchema,
-      initialValues: { username: '', password: '' },
-      onSubmit: (values) => {
-        authHandler(values.username, values.password)
-      },
-    }
-  )
-
-  const authHandler = async (username, password) => {
+  const authHandler = async (values) => {
+    console.log(values)
     try {
-      await dispatch(authActions.logIn(username, password))
+      await dispatch(authActions.logIn(values.username, values.password))
     } catch (error) {
       Alert.alert('Error', error.message, [{ text: 'OK' }])
     }
@@ -106,58 +98,57 @@ const AuthScreen = () => {
                 complementaryStyle={{ marginBottom: spacing.xl }}
               />
             </View>
-            <View
-              style={{
-                marginBottom: spacing.xs,
-                paddingHorizontal: spacing.xl,
-              }}
-            >
-              <MyTextInput
-                icon="ios-person"
-                placeholder="Enter your username"
-                autoCapitalize="none"
-                autoCompleteType="username"
-                returnKeyType="next"
-                returnKeyLabel="next"
-                onChangeText={handleChange('username')}
-                onBlur={handleBlur('username')}
-                error={errors.username}
-                touched={touched.username}
-                onSubmitEditing={() => {
-                  password.current?.focus()
-                }}
+
+            <View style={styles.inputContainer}>
+              <Controller
+                control={control}
+                render={({ onChange, onBlur, value }) => (
+                  <TextInput
+                    onBlur={onBlur}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    autoCapitalize="none"
+                    autoCompleteType="username"
+                    placeholder="Enter your username"
+                    placeholderTextColor="#999"
+                    style={styles.textInput}
+                  />
+                )}
+                name="username"
+                rules={{ required: true }}
+                defaultValue=""
+              />
+            </View>
+            <View style={styles.inputContainer}>
+              <Controller
+                control={control}
+                render={({ onChange, onBlur, value }) => (
+                  <TextInput
+                    onBlur={onBlur}
+                    onChangeText={(value) => onChange(value)}
+                    value={value}
+                    secureTextEntry={true}
+                    autoCompleteType="password"
+                    placeholder="Enter your password"
+                    placeholderTextColor="#999"
+                    style={styles.textInput}
+                  />
+                )}
+                name="password"
+                defaultValue=""
               />
             </View>
             <View
-              style={{
-                marginBottom: spacing.md,
-                paddingHorizontal: spacing.xl,
-              }}
+              style={{ paddingHorizontal: spacing.lg, marginTop: spacing.sm }}
             >
-              <MyTextInput
-                icon="md-lock"
-                placeholder="Enter your password"
-                autoCapitalize="none"
-                autoCompleteType="password"
-                secureTextEntry
-                returnKeyType="go"
-                returnKeyLabel="go"
-                onChangeText={handleChange('password')}
-                onBlur={handleBlur('password')}
-                error={errors.password}
-                touched={touched.password}
-                ref={password}
-                onSubmitEditing={() => {
-                  handleSubmit()
-                }}
-              />
-            </View>
-            <View style={{ paddingHorizontal: spacing.xl }}>
               <CustomButton
                 label="Login"
-                onPress={handleSubmit}
+                onPress={handleSubmit(authHandler)}
                 themeColor="primary"
               />
+            </View>
+
+            <View style={{ paddingHorizontal: spacing.xl }}>
               <CustomText
                 children="Doesn't have an last.fm account ? Sign Up"
                 size="H6"
@@ -174,5 +165,18 @@ const AuthScreen = () => {
     </KeyboardAvoidingView>
   )
 }
+
+const styles = StyleSheet.create({
+  textInput: {
+    backgroundColor: '#FFF',
+    padding: spacing.md,
+    borderWidth: 1,
+    borderRadius: spacing.xs,
+  },
+  inputContainer: {
+    marginBottom: spacing.sm,
+    paddingHorizontal: spacing.xl,
+  },
+})
 
 export default AuthScreen
