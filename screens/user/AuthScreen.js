@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useRef } from 'react'
 import {
   Image,
   Keyboard,
@@ -36,6 +36,8 @@ const AuthScreen = () => {
   const dispatch = useDispatch()
   const isDarkTheme = useColorScheme() === 'dark' ? true : false
   const { control, handleSubmit, errors } = useForm()
+  const usernameRef = useRef()
+  const passwordRef = useRef()
 
   const authHandler = async (values) => {
     console.log(values)
@@ -45,6 +47,8 @@ const AuthScreen = () => {
       Alert.alert('Error', error.message, [{ text: 'OK' }])
     }
   }
+
+  console.log('errors', errors)
 
   return (
     <KeyboardAvoidingView
@@ -102,6 +106,10 @@ const AuthScreen = () => {
             <View style={styles.inputContainer}>
               <Controller
                 control={control}
+                rules={{ required: 'Valid username is required' }}
+                onFocus={() => {
+                  usernameRef.current.focus()
+                }}
                 render={({ onChange, onBlur, value }) => (
                   <TextInput
                     onBlur={onBlur}
@@ -112,6 +120,7 @@ const AuthScreen = () => {
                     placeholder="Enter your username"
                     placeholderTextColor="#999"
                     style={styles.textInput}
+                    ref={usernameRef}
                   />
                 )}
                 name="username"
@@ -122,6 +131,10 @@ const AuthScreen = () => {
             <View style={styles.inputContainer}>
               <Controller
                 control={control}
+                rules={{ required: 'Password is required' }}
+                onFocus={() => {
+                  passwordRef.current.focus()
+                }}
                 render={({ onChange, onBlur, value }) => (
                   <TextInput
                     onBlur={onBlur}
@@ -132,6 +145,7 @@ const AuthScreen = () => {
                     placeholder="Enter your password"
                     placeholderTextColor="#999"
                     style={styles.textInput}
+                    ref={passwordRef}
                   />
                 )}
                 name="password"
