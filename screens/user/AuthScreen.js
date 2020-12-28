@@ -10,7 +10,6 @@ import {
   useWindowDimensions,
   Alert,
   StyleSheet,
-  TextInput,
 } from 'react-native'
 import { StatusBar } from 'expo-status-bar'
 import { useForm, Controller } from 'react-hook-form'
@@ -26,6 +25,7 @@ import * as Yup from 'yup'
 import useColorScheme from '../../hooks/useColorSchemeFix'
 import myColors from '../../constants/myColors'
 import spacing from '../../constants/spacing'
+import MyTextInput from '../../components/UI/MyTextInput'
 
 const authValidationSchema = Yup.object({
   username: Yup.string().required(),
@@ -40,15 +40,12 @@ const AuthScreen = () => {
   const passwordRef = useRef()
 
   const authHandler = async (values) => {
-    console.log(values)
     try {
       await dispatch(authActions.logIn(values.username, values.password))
     } catch (error) {
       Alert.alert('Error', error.message, [{ text: 'OK' }])
     }
   }
-
-  console.log('errors', errors)
 
   return (
     <KeyboardAvoidingView
@@ -105,53 +102,72 @@ const AuthScreen = () => {
 
             <View style={styles.inputContainer}>
               <Controller
+                name="username"
+                defaultValue=""
                 control={control}
-                rules={{ required: 'Valid username is required' }}
+                rules={{ value: true, required: 'Username is required' }}
                 onFocus={() => {
-                  usernameRef.current.focus()
+                  usernameRef.current?.focus()
                 }}
-                render={({ onChange, onBlur, value }) => (
-                  <TextInput
+                render={(
+                  { onChange, onBlur, value },
+                  { invalid, isTouched, isDirty }
+                ) => (
+                  <MyTextInput
+                    icon="ios-person"
                     onBlur={onBlur}
                     onChangeText={(value) => onChange(value)}
                     value={value}
                     autoCapitalize="none"
                     autoCompleteType="username"
                     placeholder="Enter your username"
-                    placeholderTextColor="#999"
-                    style={styles.textInput}
                     ref={usernameRef}
+                    returnKeyType="next"
+                    onSubmitEditing={() => {
+                      passwordRef.current?.focus()
+                    }}
+                    error={errors.username}
+                    errorText={errors?.username?.message}
+                    touched={isTouched}
                   />
                 )}
-                name="username"
-                rules={{ required: true }}
-                defaultValue=""
               />
             </View>
             <View style={styles.inputContainer}>
               <Controller
+                name="password"
+                defaultValue=""
                 control={control}
-                rules={{ required: 'Password is required' }}
+                rules={{ value: true, required: 'Password is required' }}
                 onFocus={() => {
-                  passwordRef.current.focus()
+                  passwordRef.current?.focus()
                 }}
-                render={({ onChange, onBlur, value }) => (
-                  <TextInput
+                render={(
+                  { onChange, onBlur, value },
+                  { invalid, isTouched, isDirty }
+                ) => (
+                  <MyTextInput
+                    icon="ios-lock"
                     onBlur={onBlur}
                     onChangeText={(value) => onChange(value)}
                     value={value}
                     secureTextEntry={true}
+                    autoCapitalize="none"
                     autoCompleteType="password"
                     placeholder="Enter your password"
-                    placeholderTextColor="#999"
-                    style={styles.textInput}
                     ref={passwordRef}
+                    returnKeyType="go"
+                    onSubmitEditing={() => {
+                      handleSubmit(authHandler)
+                    }}
+                    error={errors.password}
+                    errorText={errors?.password?.message}
+                    touched={isTouched}
                   />
                 )}
-                name="password"
-                defaultValue=""
               />
             </View>
+
             <View
               style={{ paddingHorizontal: spacing.lg, marginTop: spacing.sm }}
             >
