@@ -155,7 +155,9 @@ export const getSpotifyArtistInfo = async (artistName) => {
     }
 
     const selectedArtist = items.find(
-      (item) => item.name.toLowerCase() === artistName.toLowerCase()
+      (item) =>
+        encodeURIComponent(item.name.toLowerCase()) ===
+        encodeURIComponent(artistName.toLowerCase())
     )
 
     if (selectedArtist === undefined) {
@@ -269,7 +271,7 @@ export const getSpotifyAlbumId = async (artistName, albumName) => {
       const result = await spotifySearch(albumName, 'album')
 
       const selectedId = result.albums.items.find(
-        (item) => encodeURIComponent(item.artists[0].name) === artistName
+        (item) => encodeURIComponent(item.artists[0].name) == artistName
       )
 
       if (selectedId === undefined) {
@@ -298,7 +300,7 @@ const spotifySearch = async (item, type) => {
   const spotifyToken = await getSpotifyToken()
 
   const response = await fetch(
-    `https://api.spotify.com/v1/search?q=${item}&type=${type}&limit=3`,
+    `https://api.spotify.com/v1/search?q=${item}&type=${type}&limit=5`,
     {
       method: 'GET',
       headers: {

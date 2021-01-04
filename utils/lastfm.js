@@ -1,7 +1,7 @@
 import Album from '../models/album'
 import Artist from '../models/artist'
 import Scrobble from '../models/scrobble'
-import { image_blank_300 } from './expo'
+import { image_blank_300, image_blank_640 } from './expo'
 
 import {
   getSpotifyTrackInfo,
@@ -89,12 +89,11 @@ export const getUserTopArtists = async (username, period) => {
 
     for (const artist of response.topartists.artist) {
       imageFromSpotify = await getSpotifyArtistInfo(artist.name)
-
       data.push(
         new Artist(
           artist.name,
-          imageFromSpotify.image_640,
-          imageFromSpotify.image_300,
+          imageFromSpotify ? imageFromSpotify.image_640 : image_blank_640,
+          imageFromSpotify ? imageFromSpotify.image_300 : image_blank_300,
           artist.playcount,
           undefined
         )
