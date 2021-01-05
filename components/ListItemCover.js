@@ -62,6 +62,7 @@ const ListItemCover = (props) => {
                 children={props.playcount}
                 size="H3"
                 bold
+                color="white"
                 complementaryStyle={{ marginLeft: 8 }}
               />
             </View>
@@ -69,6 +70,7 @@ const ListItemCover = (props) => {
               children={props.title}
               size="H5"
               bold
+              color="white"
               numberOfLines={1}
             />
 
