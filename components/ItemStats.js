@@ -36,7 +36,7 @@ const ItemStats = ({ playcount, listeners, userplaycount, topPlaycount }) => {
         value={abbreviateNumber(listeners)}
       />
       <Counter
-        title="Your scrobbles"
+        title="My scrobbles"
         icon="ios-musical-notes"
         value={topPlaycount ? topPlaycount : userplaycount}
       />

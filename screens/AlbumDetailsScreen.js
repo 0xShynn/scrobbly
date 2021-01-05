@@ -241,8 +241,8 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
       >
         <CustomText
           children="Tracklist not found"
-          size="H6"
-          complementaryStyle={{ textAlign: 'center' }}
+          size="H5"
+          complementaryStyle={{ textAlign: 'center', marginBottom: spacing.xl }}
         />
         <CustomButton
           label="Go Back"

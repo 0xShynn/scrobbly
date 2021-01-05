@@ -3,6 +3,7 @@ import AlbumTrack from '../models/albumTrack'
 import { image_blank_300, image_blank_640 } from './expo'
 import prettyMilliseconds from 'pretty-ms'
 import dayjs from 'dayjs'
+import { specialCharacters } from '../constants/myConstants'
 
 export const setSpotifyToken = async () => {
   try {
@@ -181,6 +182,7 @@ export const getSpotifyArtistInfo = async (artistName) => {
 export const getSpotifyAlbumInfo = async (artistName, albumName) => {
   const encodedArtistName = encodeURIComponent(artistName)
   const encodedAlbumName = encodeURIComponent(albumName)
+
   const albumId = await getSpotifyAlbumId(encodedArtistName, encodedAlbumName)
   const spotifyToken = await getSpotifyToken()
   const response = await fetch(`https://api.spotify.com/v1/albums/${albumId}`, {
@@ -271,7 +273,9 @@ export const getSpotifyAlbumId = async (artistName, albumName) => {
       const result = await spotifySearch(albumName, 'album')
 
       const selectedId = result.albums.items.find(
-        (item) => encodeURIComponent(item.artists[0].name) == artistName
+        (item) =>
+          encodeURIComponent(item.artists[0].name.toLowerCase()) ==
+          artistName.toLowerCase()
       )
 
       if (selectedId === undefined) {
