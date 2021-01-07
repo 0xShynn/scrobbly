@@ -198,7 +198,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                   children={
                     abbreviateNumber(albumInfo.playcount) + ' scrobbles'
                   }
-                  color={myColors.gray_500}
+                  color={isDarkTheme ? 'white' : myColors.gray_700}
                 />
               </View>
             </TouchableItem>
@@ -228,7 +228,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                 />
                 <CustomText
                   size="H6"
-                  color={myColors.gray_500}
+                  color={isDarkTheme ? 'white' : myColors.gray_700}
                   numberOfLines={2}
                 >
                   {abbreviateNumber(artistInfo.playcount)} scrobbles

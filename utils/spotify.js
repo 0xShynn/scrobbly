@@ -143,8 +143,8 @@ export const getSpotifyTrackInfo = async (artistName, trackName) => {
 
 export const getSpotifyArtistInfo = async (artistName) => {
   const encodedArtistName = encodeURIComponent(artistName)
-  let image_640 = image_blank_640
-  let image_300 = image_blank_300
+  let image_640
+  let image_300
 
   try {
     const {
@@ -152,7 +152,8 @@ export const getSpotifyArtistInfo = async (artistName) => {
     } = await spotifySearch(encodedArtistName, 'artist')
 
     if (items.length === 0) {
-      return { image_640, image_300 }
+      // return { image_640, image_300 }
+      return null
     }
 
     const selectedArtist = items.find(
@@ -164,6 +165,10 @@ export const getSpotifyArtistInfo = async (artistName) => {
     if (selectedArtist === undefined) {
       return null
     }
+
+    // if (selectedArtist.images.length !== 0) {
+    //   return null
+    // }
 
     if (
       selectedArtist.hasOwnProperty('images') &&

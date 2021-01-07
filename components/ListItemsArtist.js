@@ -1,6 +1,6 @@
-import { LinearGradient } from 'expo-linear-gradient'
 import React from 'react'
 import { View, ImageBackground, TouchableOpacity } from 'react-native'
+import { LinearGradient } from 'expo-linear-gradient'
 import spacing from '../constants/spacing'
 import CustomText from './UI/CustomText'
 
@@ -41,6 +41,7 @@ const ListItemsArtist = (props) => {
           <CustomText
             children={props.title}
             size="H5"
+            color="white"
             bold
             complementaryStyle={{
               padding: 10,

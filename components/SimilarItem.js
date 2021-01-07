@@ -41,7 +41,10 @@ const SimilarItem = (props) => {
       </View>
       {props.playcount ? (
         <View style={{ marginLeft: 10 }}>
-          <CustomText size="H7" color={myColors.gray_500}>
+          <CustomText
+            size="H7"
+            color={isDarkTheme ? 'white' : myColors.gray_700}
+          >
             {abbreviateNumber(props.playcount)}
           </CustomText>
         </View>

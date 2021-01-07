@@ -137,21 +137,23 @@ export const getTopAlbums = async (
         album.artist.name,
         album.name
       )
-      data.push(
-        new Album(
-          album.artist.name,
-          album.name,
-          spotifyAlbumData !== null
-            ? spotifyAlbumData.albumArt300
-            : album.image[2]['#text'] !== ''
-            ? album.image[2]['#text']
-            : image_blank_300,
-          spotifyAlbumData !== null ? spotifyAlbumData.release_year : null,
-          spotifyAlbumData !== null ? spotifyAlbumData.total_tracks : null,
-          spotifyAlbumData !== null ? spotifyAlbumData.total_length_text : null,
-          album.playcount
+      if (spotifyAlbumData !== null) {
+        data.push(
+          new Album(
+            album.artist.name,
+            album.name,
+            spotifyAlbumData !== null
+              ? spotifyAlbumData.albumArt300
+              : album.image[2]['#text'] !== ''
+              ? album.image[2]['#text']
+              : image_blank_300,
+            spotifyAlbumData.release_year,
+            spotifyAlbumData.total_tracks,
+            spotifyAlbumData.total_length_text,
+            album.playcount
+          )
         )
-      )
+      }
     }
     data.sort((a, b) => b.playcount - a.playcount)
     return data
@@ -189,22 +191,20 @@ export const getTopTracks = async (
     for (const track of response.toptracks.track) {
       spotifyData = await getSpotifyTrackInfo(track.artist.name, track.name)
 
-      data.push(
-        new Scrobble(
-          track.artist.name,
-          track.name,
-          spotifyData !== null ? spotifyData.albumName : '',
-          spotifyData !== null
-            ? spotifyData.image_300
-            : track.image[2]['#text'] !== ''
-            ? track.image[2]['#text']
-            : image_blank_300,
-          false,
-          track.playcount,
-          undefined,
-          track['@attr'].rank
+      if (spotifyData !== null) {
+        data.push(
+          new Scrobble(
+            track.artist.name,
+            track.name,
+            spotifyData.albumName,
+            spotifyData.image_300,
+            false,
+            track.playcount,
+            undefined,
+            track['@attr'].rank
+          )
         )
-      )
+      }
     }
     data.sort((a, b) => b.playcount - a.playcount)
     return data
@@ -291,7 +291,7 @@ export const getTrackInfo = async (username, artistName, trackName) => {
 
 export const getSimilarArtists = async (artistName) => {
   const encodedArtistName = encodeURIComponent(artistName)
-  const method = `?method=artist.getsimilar&artist=${encodedArtistName}&api_key=${api_key}&limit=8&format=json`
+  const method = `?method=artist.getsimilar&artist=${encodedArtistName}&api_key=${api_key}&limit=10&format=json`
 
   try {
     const response = await fetch(baseUrl + method).then((res) => res.json())
@@ -305,7 +305,10 @@ export const getSimilarArtists = async (artistName) => {
     let spotifyArtistData
     for (const artist of response.similarartists.artist) {
       spotifyArtistData = await getSpotifyArtistInfo(artist.name)
-      if (spotifyArtistData !== null) {
+      if (
+        spotifyArtistData !== null &&
+        spotifyArtistData.image_640 !== undefined
+      ) {
         data.push(
           new Artist(
             artist.name,
