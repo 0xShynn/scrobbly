@@ -33,6 +33,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
   const [spotifyAlbumInfo, setSpotifyAlbumInfo] = useState()
   const [albumTracklist, setAlbumTracklist] = useState([])
   const [artistInfo, setArtistInfo] = useState()
+  const [isACompilation, setIsACompilation] = useState(false)
   const isDarkTheme = useColorScheme() === 'dark' ? true : false
   const username = useSelector((state) => state.auth.username)
 
@@ -47,6 +48,12 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
         artistName,
         albumName
       )
+      if (
+        spotifyAlbumInfoData &&
+        spotifyAlbumInfoData.albumType === 'compilation'
+      ) {
+        setIsACompilation(true)
+      }
       setSpotifyAlbumInfo(spotifyAlbumInfoData)
 
       const { tracklist } = await getSpotifyAlbumTracklist(
@@ -72,22 +79,41 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
             paddingHorizontal: spacing.xl,
             paddingVertical: spacing.lg,
           }}
-          onPress={itemSelectTrackHandler.bind(this, itemData.item.trackName)}
+          onPress={itemSelectTrackHandler.bind(
+            this,
+            itemData.item.artistName,
+            itemData.item.trackName
+          )}
         >
-          <CustomText
-            children={itemData.item.trackNumber}
-            size="H6"
-            color={isDarkTheme ? 'white' : myColors.gray_900}
-            bold
-            complementaryStyle={{ minWidth: 25 }}
-          />
-          <CustomText
-            children={itemData.item.trackName}
-            size="H6"
-            color={isDarkTheme ? 'white' : myColors.gray_900}
-            numberOfLines={1}
-            complementaryStyle={{ flex: 1 }}
-          />
+          <View
+            style={{
+              minWidth: 30,
+              alignItems: 'flex-start',
+              justifyContent: 'center',
+            }}
+          >
+            <CustomText
+              children={itemData.item.trackNumber}
+              size="H5"
+              color={isDarkTheme ? 'white' : myColors.gray_900}
+              bold
+            />
+          </View>
+          <View style={{ flex: 1 }}>
+            <CustomText
+              children={itemData.item.artistName}
+              color={isDarkTheme ? myColors.gray_900 : myColors.gray_700}
+              complementaryStyle={{ marginBottom: 3 }}
+            />
+            <CustomText
+              children={itemData.item.trackName}
+              size="H6"
+              bold
+              color={isDarkTheme ? 'white' : myColors.gray_900}
+              numberOfLines={1}
+              complementaryStyle={{ flex: 1 }}
+            />
+          </View>
           <CustomText
             children={itemData.item.duration}
             size="H6"
@@ -100,7 +126,15 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
     [isDarkTheme]
   )
 
-  const itemSelectTrackHandler = (trackName) => {
+  const itemSelectTrackHandler = (artistName, trackName) => {
+    if (isACompilation) {
+      navigation.push('Scrobble Details', {
+        artistName,
+        trackName,
+        albumArt,
+        albumName,
+      })
+    }
     navigation.push('Scrobble Details', {
       artistName,
       trackName,
@@ -128,7 +162,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
       <>
         <DetailsHeader
           title={albumName}
-          subtitle={artistName}
+          subtitle={isACompilation ? 'Various Artists' : artistName}
           image={albumArt}
         />
 
@@ -145,7 +179,9 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
               </View>
             ) : null}
 
-            {artistInfo && !isLoading ? (
+            {artistInfo &&
+            !isLoading &&
+            spotifyAlbumInfo.albumType !== 'compilation' ? (
               <View
                 style={{
                   paddingHorizontal: spacing.md,

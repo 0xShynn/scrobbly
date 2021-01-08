@@ -207,6 +207,7 @@ export const getSpotifyAlbumInfo = async (artistName, albumName) => {
     albumArt300: response.images[1].url,
     albumId: response.id,
     albumName: response.name,
+    albumType: response.album_type,
     artistName: response.artists[0].name,
     artistId: response.artists[0].id,
     copyrights: response.copyrights[0]['text'],
@@ -247,7 +248,13 @@ export const getSpotifyAlbumTracklist = async (artistName, albumName) => {
       colonNotation: true,
     })
     tracklist.push(
-      new AlbumTrack(item.id, item.name, item.track_number, updatedDuration)
+      new AlbumTrack(
+        item.id,
+        item.artists[0].name,
+        item.name,
+        item.track_number,
+        updatedDuration
+      )
     )
   }
 
@@ -280,7 +287,7 @@ export const getSpotifyAlbumId = async (artistName, albumName) => {
       const selectedId = result.albums.items.find(
         (item) =>
           encodeURIComponent(item.artists[0].name.toLowerCase()) ==
-          artistName.toLowerCase()
+            artistName.toLowerCase() || item.album_type === 'compilation'
       )
 
       if (selectedId === undefined) {
