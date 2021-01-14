@@ -102,7 +102,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
           <View style={{ flex: 1 }}>
             <CustomText
               children={itemData.item.artistName}
-              color={isDarkTheme ? myColors.gray_900 : myColors.gray_700}
+              color={isDarkTheme ? myColors.gray_300 : myColors.gray_700}
               complementaryStyle={{ marginBottom: 3 }}
             />
             <CustomText
