@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { AppLoading } from 'expo'
+import AppLoading from 'expo-app-loading'
 import AppNavigator from './navigation/AppNavigator'
 import {
   Inter_400Regular,

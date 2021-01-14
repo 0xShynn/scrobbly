@@ -1,6 +1,6 @@
 import React from 'react'
 import { TouchableOpacity, View } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 import RoundedContainer from './UI/RoundedContainer'
 import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
@@ -22,11 +22,11 @@ const TouchableItem = (props) => {
         <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
           {props.children}
         </View>
-        <View style={{ paddingLeft: spacing.sm }}>
-          <Ionicons
-            name="ios-arrow-forward"
+        <View style={{ paddingLeft: spacing.xs }}>
+          <MaterialIcons
+            name="keyboard-arrow-right"
             size={20}
-            color={isDarkTheme ? myColors.gray_500 : myColors.gray_400}
+            color={myColors.gray_500}
           />
         </View>
       </RoundedContainer>

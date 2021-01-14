@@ -165,76 +165,82 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
           )}
 
           {albumInfo !== undefined && (
-            <TouchableItem
-              onPress={albumDetailsHandler}
-              style={{ marginBottom: spacing.md }}
-            >
-              <Image
-                source={{ uri: albumArt }}
-                style={{
-                  width: 80,
-                  height: 80,
-                  borderRadius: 4,
-                  overflow: 'hidden',
-                }}
-              />
-              <View
-                style={{
-                  marginLeft: 14,
-                  flex: 1,
-                  justifyContent: 'center',
-                }}
+            <>
+              <DetailsTitle>From the album</DetailsTitle>
+              <TouchableItem
+                onPress={albumDetailsHandler}
+                style={{ marginBottom: spacing.md }}
               >
-                <CustomText
-                  children={albumInfo.albumName}
-                  size="H5"
-                  bold
-                  color={isDarkTheme ? 'white' : myColors.gray_900}
-                  numberOfLines={2}
-                  complementaryStyle={{ marginBottom: 4 }}
+                <Image
+                  source={{ uri: albumArt }}
+                  style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 4,
+                    overflow: 'hidden',
+                  }}
                 />
-                <CustomText
-                  size="H6"
-                  children={
-                    abbreviateNumber(albumInfo.playcount) + ' scrobbles'
-                  }
-                  color={isDarkTheme ? 'white' : myColors.gray_700}
-                />
-              </View>
-            </TouchableItem>
+                <View
+                  style={{
+                    marginLeft: 14,
+                    flex: 1,
+                    justifyContent: 'center',
+                  }}
+                >
+                  <CustomText
+                    children={albumInfo.albumName}
+                    size="H5"
+                    bold
+                    color={isDarkTheme ? 'white' : myColors.gray_900}
+                    numberOfLines={2}
+                    complementaryStyle={{ marginBottom: 4 }}
+                  />
+                  <CustomText
+                    size="H6"
+                    children={
+                      abbreviateNumber(albumInfo.playcount) + ' scrobbles'
+                    }
+                    color={isDarkTheme ? 'white' : myColors.gray_700}
+                  />
+                </View>
+              </TouchableItem>
+            </>
           )}
 
           {artistInfo !== undefined && (
-            <TouchableItem
-              onPress={artistDetailsHandler}
-              style={{ marginBottom: 30 }}
-            >
-              <Image
-                source={{ uri: artistInfo.image }}
-                style={{
-                  width: 80,
-                  height: 80,
-                  borderRadius: 70,
-                  marginRight: 15,
-                }}
-              />
-              <View style={{ flex: 1 }}>
-                <CustomText
-                  size="H5"
-                  bold
-                  color={isDarkTheme ? 'white' : myColors.gray_900}
-                  complementaryStyle={{ marginBottom: 4 }}
-                  children={artistName}
+            <>
+              <DetailsTitle>Artist details</DetailsTitle>
+              <TouchableItem
+                onPress={artistDetailsHandler}
+                style={{ marginBottom: 30 }}
+              >
+                <Image
+                  source={{ uri: artistInfo.image }}
+                  style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: 70,
+                    marginRight: 15,
+                  }}
                 />
-                <CustomText
-                  size="H6"
-                  color={isDarkTheme ? 'white' : myColors.gray_700}
-                  numberOfLines={2}
-                >
-                  {abbreviateNumber(artistInfo.playcount)} scrobbles
-                </CustomText>
-              </View>
-            </TouchableItem>
+                <View style={{ flex: 1 }}>
+                  <CustomText
+                    size="H5"
+                    bold
+                    color={isDarkTheme ? 'white' : myColors.gray_900}
+                    complementaryStyle={{ marginBottom: 4 }}
+                    children={artistName}
+                  />
+                  <CustomText
+                    size="H6"
+                    color={isDarkTheme ? 'white' : myColors.gray_700}
+                    numberOfLines={2}
+                  >
+                    {abbreviateNumber(artistInfo.playcount)} scrobbles
+                  </CustomText>
+                </View>
+              </TouchableItem>
+            </>
           )}
 
           {similarTracks.length !== 0 && (

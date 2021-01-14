@@ -4,7 +4,7 @@ import myColors from '../constants/myColors'
 import spacing from '../constants/spacing'
 import useColorScheme from '../hooks/useColorSchemeFix'
 import CustomText from './UI/CustomText'
-import { Ionicons } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
 
 const LinkItem = (props) => {
   const isDarkTheme = useColorScheme() === 'dark' ? true : false
@@ -21,7 +21,9 @@ const LinkItem = (props) => {
             : pressed
             ? myColors.gray_200
             : 'white',
-          padding: spacing.lg,
+          paddingVertical: spacing.lg,
+          paddingLeft: spacing.lg,
+          paddingRight: spacing.sm,
           borderBottomWidth: 1,
           borderBottomColor: isDarkTheme
             ? myColors.gray_950
@@ -42,10 +44,10 @@ const LinkItem = (props) => {
       </View>
       {props.type !== 'signout' ? (
         <View style={{ paddingLeft: spacing.sm }}>
-          <Ionicons
-            name="ios-arrow-forward"
+          <MaterialIcons
+            name="keyboard-arrow-right"
             size={20}
-            color={isDarkTheme ? myColors.gray_500 : myColors.gray_400}
+            color={myColors.gray_500}
           />
         </View>
       ) : null}

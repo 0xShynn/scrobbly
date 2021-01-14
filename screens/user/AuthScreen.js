@@ -76,7 +76,7 @@ const AuthScreen = () => {
               }}
             >
               <Image
-                source={require('../../assets/icon.png')}
+                source={require('../../assets/icon-rounded.png')}
                 style={{
                   width: 80,
                   height: 80,
@@ -147,7 +147,7 @@ const AuthScreen = () => {
                   { invalid, isTouched, isDirty }
                 ) => (
                   <MyTextInput
-                    icon="ios-lock"
+                    icon="ios-lock-closed-sharp"
                     onBlur={onBlur}
                     onChangeText={(value) => onChange(value)}
                     value={value}
