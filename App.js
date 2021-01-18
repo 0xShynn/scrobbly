@@ -23,8 +23,9 @@ const roorReducer = combineReducers({
 
 const store = createStore(roorReducer, applyMiddleware(ReduxThunk))
 
-import { enableScreens } from 'react-native-screens'
-enableScreens()
+// Disabled those lines in order to make the stacks screens work with the new Expo SDK 40 update.
+// import { enableScreens } from 'react-native-screens'
+// enableScreens()
 
 export default function App() {
   let [fontsLoaded] = useFonts({
