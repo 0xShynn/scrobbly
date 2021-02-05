@@ -1,23 +1,54 @@
-import React from 'react'
-import { Image, View, ScrollView } from 'react-native'
-import { useDispatch } from 'react-redux'
-import * as authActions from '../store/authActions'
+import React, { useState } from 'react';
+import { Image, View, ScrollView, Button, Text } from 'react-native';
+import { useDispatch } from 'react-redux';
+import * as authActions from '../store/authActions';
+import * as WebBrowser from 'expo-web-browser';
+import * as Linking from 'expo-linking';
+import Constants from 'expo-constants';
 
-import CustomText from '../components/UI/CustomText'
-import LinkItem from '../components/LinkItem'
+import CustomText from '../components/UI/CustomText';
+import LinkItem from '../components/LinkItem';
 
-import myColors from '../constants/myColors'
-import spacing from '../constants/spacing'
-import useColorScheme from '../hooks/useColorSchemeFix'
+import myColors from '../constants/myColors';
+import spacing from '../constants/spacing';
+import useColorScheme from '../hooks/useColorSchemeFix';
 
-const MyAccountScreen = ({ route }) => {
-  const dispatch = useDispatch()
-  const isDarkTheme = useColorScheme() === 'dark' ? true : false
-  const { userData } = route.params
+const MyAccountScreen = ({ route, navigation }) => {
+  const dispatch = useDispatch();
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false;
+  const { userData } = route.params;
+  const [result, setResult] = useState(null);
 
   const signOutHandler = async () => {
-    dispatch(authActions.logOut())
-  }
+    dispatch(authActions.logOut());
+  };
+
+  const _handlePressButtonAsync = async (page) => {
+    let result;
+    switch (page) {
+      case 'terms':
+        result = await WebBrowser.openBrowserAsync(
+          'https://scrobbly.netlify.app/terms-and-conditions'
+        );
+        setResult(result);
+        break;
+      case 'privacy':
+        result = await WebBrowser.openBrowserAsync(
+          'https://scrobbly.netlify.app/privacy-policy'
+        );
+        setResult(result);
+        break;
+
+      default:
+        break;
+    }
+  };
+
+  const _handleSendFeedback = async () => {
+    const sendFeedbackEmail =
+      'mailto:scrobbly.app@gmail.com?subject=Scrobbly Feedback:';
+    Linking.openURL(sendFeedbackEmail);
+  };
 
   return (
     <ScrollView
@@ -78,9 +109,20 @@ const MyAccountScreen = ({ route }) => {
             borderTopColor: isDarkTheme ? myColors.gray_950 : myColors.gray_100,
           }}
         >
-          <LinkItem>About this version</LinkItem>
-          <LinkItem>Terms of Use</LinkItem>
-          <LinkItem>Privacy Policy</LinkItem>
+          <LinkItem
+            onPress={() => {
+              navigation.navigate('About this App');
+            }}
+          >
+            About this App
+          </LinkItem>
+          <LinkItem onPress={() => _handlePressButtonAsync('terms')}>
+            Terms & Conditions
+          </LinkItem>
+          <LinkItem onPress={() => _handlePressButtonAsync('privacy')}>
+            Privacy Policy
+          </LinkItem>
+          <LinkItem onPress={_handleSendFeedback}>Send us feedback</LinkItem>
         </View>
 
         <View
@@ -95,7 +137,7 @@ const MyAccountScreen = ({ route }) => {
         </View>
       </View>
     </ScrollView>
-  )
-}
+  );
+};
 
-export default MyAccountScreen
+export default MyAccountScreen;

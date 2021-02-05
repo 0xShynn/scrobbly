@@ -20,6 +20,7 @@
     "expo-app-loading": "^1.0.1",
     "expo-asset": "~8.2.1",
     "expo-blur": "~8.2.2",
+    "expo-constants": "~9.3.3",
     "expo-crypto": "~8.4.0",
     "expo-file-system": "~9.3.0",
     "expo-font": "~8.4.0",
