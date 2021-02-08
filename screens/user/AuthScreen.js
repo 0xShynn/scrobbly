@@ -1,4 +1,4 @@
-import React, { useRef } from 'react'
+import React, { useRef } from 'react';
 import {
   Image,
   Keyboard,
@@ -10,42 +10,51 @@ import {
   useWindowDimensions,
   Alert,
   StyleSheet,
-} from 'react-native'
-import { StatusBar } from 'expo-status-bar'
-import { useForm, Controller } from 'react-hook-form'
+  Button,
+} from 'react-native';
+import { StatusBar } from 'expo-status-bar';
+import { useForm, Controller } from 'react-hook-form';
+import * as WebBrowser from 'expo-web-browser';
 
-import CenteredContainer from '../../components/UI/CenteredContainer'
-import CustomButton from '../../components/UI/CustomButton'
-import CustomText from '../../components/UI/CustomText'
+import CenteredContainer from '../../components/UI/CenteredContainer';
+import CustomButton from '../../components/UI/CustomButton';
+import CustomText from '../../components/UI/CustomText';
 
-import { useDispatch } from 'react-redux'
-import * as authActions from '../../store/authActions'
+import { useDispatch } from 'react-redux';
+import * as authActions from '../../store/authActions';
 
-import * as Yup from 'yup'
-import useColorScheme from '../../hooks/useColorSchemeFix'
-import myColors from '../../constants/myColors'
-import spacing from '../../constants/spacing'
-import MyTextInput from '../../components/UI/MyTextInput'
+import * as Yup from 'yup';
+import useColorScheme from '../../hooks/useColorSchemeFix';
+import myColors from '../../constants/myColors';
+import spacing from '../../constants/spacing';
+import MyTextInput from '../../components/UI/MyTextInput';
+import { useState } from 'react';
 
 const authValidationSchema = Yup.object({
   username: Yup.string().required(),
   password: Yup.string().required(),
-})
+});
 
 const AuthScreen = () => {
-  const dispatch = useDispatch()
-  const isDarkTheme = useColorScheme() === 'dark' ? true : false
-  const { control, handleSubmit, errors } = useForm()
-  const usernameRef = useRef()
-  const passwordRef = useRef()
+  const [result, setResult] = useState();
+  const dispatch = useDispatch();
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false;
+  const { control, handleSubmit, errors } = useForm();
+  const usernameRef = useRef();
+  const passwordRef = useRef();
 
   const authHandler = async (values) => {
     try {
-      await dispatch(authActions.logIn(values.username, values.password))
+      await dispatch(authActions.logIn(values.username, values.password));
     } catch (error) {
-      Alert.alert('Error', error.message, [{ text: 'OK' }])
+      Alert.alert('Error', error.message, [{ text: 'OK' }]);
     }
-  }
+  };
+
+  const _handlePressButtonAsync = async () => {
+    let result = await WebBrowser.openBrowserAsync('https://www.last.fm/join');
+    setResult(result);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -107,7 +116,7 @@ const AuthScreen = () => {
                 control={control}
                 rules={{ value: true, required: 'Username is required' }}
                 onFocus={() => {
-                  usernameRef.current?.focus()
+                  usernameRef.current?.focus();
                 }}
                 render={(
                   { onChange, onBlur, value },
@@ -124,7 +133,7 @@ const AuthScreen = () => {
                     ref={usernameRef}
                     returnKeyType="next"
                     onSubmitEditing={() => {
-                      passwordRef.current?.focus()
+                      passwordRef.current?.focus();
                     }}
                     error={errors.username}
                     errorText={errors?.username?.message}
@@ -140,7 +149,7 @@ const AuthScreen = () => {
                 control={control}
                 rules={{ value: true, required: 'Password is required' }}
                 onFocus={() => {
-                  passwordRef.current?.focus()
+                  passwordRef.current?.focus();
                 }}
                 render={(
                   { onChange, onBlur, value },
@@ -158,7 +167,7 @@ const AuthScreen = () => {
                     ref={passwordRef}
                     returnKeyType="go"
                     onSubmitEditing={() => {
-                      handleSubmit(authHandler)
+                      handleSubmit(authHandler);
                     }}
                     error={errors.password}
                     errorText={errors?.password?.message}
@@ -180,7 +189,8 @@ const AuthScreen = () => {
 
             <View style={{ paddingHorizontal: spacing.xl }}>
               <CustomText
-                children="Doesn't have an last.fm account ? Sign Up"
+                onPress={_handlePressButtonAsync}
+                children="Doesn't have an last.fm account ? Join now"
                 size="H6"
                 color={isDarkTheme ? myColors.gray_500 : myColors.gray_900}
                 complementaryStyle={{
@@ -193,8 +203,8 @@ const AuthScreen = () => {
         </TouchableWithoutFeedback>
       </CenteredContainer>
     </KeyboardAvoidingView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   textInput: {
@@ -207,6 +217,6 @@ const styles = StyleSheet.create({
     marginBottom: spacing.sm,
     paddingHorizontal: spacing.xl,
   },
-})
+});
 
-export default AuthScreen
+export default AuthScreen;
