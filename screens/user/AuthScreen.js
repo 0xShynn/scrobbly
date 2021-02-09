@@ -187,16 +187,16 @@ const AuthScreen = () => {
               />
             </View>
 
-            <View style={{ paddingHorizontal: spacing.xl }}>
-              <CustomText
+            <View
+              style={{
+                paddingHorizontal: spacing.xl,
+                marginTop: 15,
+              }}
+            >
+              <CustomButton
+                label="Create a Last.fm account"
                 onPress={_handlePressButtonAsync}
-                children="Doesn't have an last.fm account ? Join now"
-                size="H6"
-                color={isDarkTheme ? myColors.gray_500 : myColors.gray_900}
-                complementaryStyle={{
-                  textAlign: 'center',
-                  marginTop: 30,
-                }}
+                themeColor="secondary"
               />
             </View>
           </SafeAreaView>

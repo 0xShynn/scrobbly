@@ -1,31 +1,34 @@
-import React from 'react'
-import { TouchableOpacity } from 'react-native'
-import myColors from '../../constants/myColors'
-import useColorScheme from '../../hooks/useColorSchemeFix'
-import CustomText from './CustomText'
+import React from 'react';
+import { TouchableOpacity, View } from 'react-native';
+import myColors from '../../constants/myColors';
+import useColorScheme from '../../hooks/useColorSchemeFix';
+import CustomText from './CustomText';
 
 export default function CustomButton({ label, onPress, themeColor }) {
-  const isDarkTheme = useColorScheme() === 'dark' ? true : false
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false;
 
   const buttonBgColorHandler = (value) => {
     switch (value) {
       case 'primary':
-        return myColors.primary
+        return myColors.primary;
+
+      case 'secondary':
+        return myColors.gray_600;
 
       default:
-        return myColors.gray_700
+        return myColors.gray_400;
     }
-  }
+  };
 
   const buttonTextColorHandler = (value) => {
     switch (value) {
       case 'primary':
-        return 'white'
+        return 'white';
 
       default:
-        return 'white'
+        return 'white';
     }
-  }
+  };
 
   return (
     <TouchableOpacity
@@ -48,5 +51,5 @@ export default function CustomButton({ label, onPress, themeColor }) {
         color={buttonTextColorHandler(themeColor)}
       />
     </TouchableOpacity>
-  )
+  );
 }
