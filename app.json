@@ -2,8 +2,8 @@
   "expo": {
     "name": "Scrobbly",
     "slug": "scrobbly",
-    "version": "1.0.0",
-    "description": "Scrobbly is an clean and simple scrobbler mobile app available for iOS/Android which uses last.fm data.",
+    "version": "1.0.1",
+    "description": "Scrobbly is a music data reader (iOS app) for your Last.fm account.",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "userInterfaceStyle": "automatic",
@@ -15,12 +15,11 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": false,
-      "bundleIdentifier": "com.scrobbly.mobileApp"
+      "bundleIdentifier": "com.scrobbly.mobileApp",
+      "buildNumber": "1.0.1"
     },
     "web": {
       "favicon": "./assets/favicon.png"
