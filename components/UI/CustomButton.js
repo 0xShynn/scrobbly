@@ -1,6 +1,7 @@
 import React from 'react';
-import { TouchableOpacity, View } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import myColors from '../../constants/myColors';
+import spacing from '../../constants/spacing';
 import useColorScheme from '../../hooks/useColorSchemeFix';
 import CustomText from './CustomText';
 
@@ -34,8 +35,8 @@ export default function CustomButton({ label, onPress, themeColor }) {
     <TouchableOpacity
       style={{
         borderRadius: 24,
-        paddingVertical: 14,
-        paddingHorizontal: 12,
+        paddingVertical: spacing.md,
+        paddingHorizontal: spacing.xl,
         justifyContent: 'center',
         alignItems: 'center',
         minWidth: 160,

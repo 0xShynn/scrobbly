@@ -1,13 +1,14 @@
-import React from 'react'
-import { Pressable, StyleSheet, View } from 'react-native'
-import myColors from '../constants/myColors'
-import spacing from '../constants/spacing'
-import useColorScheme from '../hooks/useColorSchemeFix'
-import CustomText from './UI/CustomText'
-import { MaterialIcons } from '@expo/vector-icons'
+import React from 'react';
+import { Pressable, StyleSheet, View } from 'react-native';
+import myColors from '../constants/myColors';
+import spacing from '../constants/spacing';
+import useColorScheme from '../hooks/useColorSchemeFix';
+import CustomText from './UI/CustomText';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 const LinkItem = (props) => {
-  const isDarkTheme = useColorScheme() === 'dark' ? true : false
+  const isDarkTheme = useColorScheme() === 'dark' ? true : false;
 
   return (
     <Pressable
@@ -34,13 +35,14 @@ const LinkItem = (props) => {
         },
       ]}
     >
-      <View style={{ flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-        <CustomText
-          size="H6"
-          color={isDarkTheme ? myColors.gray_200 : myColors.gray_900}
-        >
-          {props.children}
-        </CustomText>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: 'row',
+          alignItems: 'center',
+        }}
+      >
+        {props.children}
       </View>
       {props.type !== 'signout' ? (
         <View style={{ paddingLeft: spacing.sm }}>
@@ -52,9 +54,9 @@ const LinkItem = (props) => {
         </View>
       ) : null}
     </Pressable>
-  )
-}
+  );
+};
 
-export default LinkItem
+export default LinkItem;
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({});

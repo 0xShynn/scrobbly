@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
-import { Image, View, ScrollView, Button, Text } from 'react-native';
+import { Image, View, ScrollView } from 'react-native';
 import { useDispatch } from 'react-redux';
 import * as authActions from '../store/authActions';
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
-import Constants from 'expo-constants';
+import { MaterialIcons } from '@expo/vector-icons';
+import { Ionicons } from '@expo/vector-icons';
 
 import CustomText from '../components/UI/CustomText';
 import LinkItem from '../components/LinkItem';
@@ -111,18 +112,44 @@ const MyAccountScreen = ({ route, navigation }) => {
         >
           <LinkItem
             onPress={() => {
-              navigation.navigate('About this App');
+              navigation.navigate('About this version');
             }}
           >
-            About this App
+            <Ionicons
+              name="information-circle-outline"
+              size={24}
+              color={isDarkTheme ? myColors.gray_200 : myColors.gray_900}
+              style={{ marginRight: 5 }}
+            />
+            <CustomText size="H6">About this version</CustomText>
           </LinkItem>
           <LinkItem onPress={() => _handlePressButtonAsync('terms')}>
-            Terms & Conditions
+            <Ionicons
+              name="document-text-outline"
+              size={24}
+              color={isDarkTheme ? myColors.gray_200 : myColors.gray_900}
+              style={{ marginRight: 5 }}
+            />
+            <CustomText size="H6">Terms & Conditions</CustomText>
           </LinkItem>
           <LinkItem onPress={() => _handlePressButtonAsync('privacy')}>
-            Privacy Policy
+            <Ionicons
+              name="shield-checkmark-outline"
+              size={24}
+              color={isDarkTheme ? myColors.gray_200 : myColors.gray_900}
+              style={{ marginRight: 5 }}
+            />
+            <CustomText size="H6">Privacy Policy</CustomText>
           </LinkItem>
-          <LinkItem onPress={_handleSendFeedback}>Send us feedback</LinkItem>
+          <LinkItem onPress={_handleSendFeedback}>
+            <Ionicons
+              name="mail-outline"
+              size={24}
+              color={isDarkTheme ? myColors.gray_200 : myColors.gray_900}
+              style={{ marginRight: 5 }}
+            />
+            <CustomText size="H6">Send us feedback</CustomText>
+          </LinkItem>
         </View>
 
         <View
@@ -132,7 +159,15 @@ const MyAccountScreen = ({ route, navigation }) => {
           }}
         >
           <LinkItem onPress={signOutHandler} type="signout">
-            Sign out
+            <Ionicons
+              name="log-out-outline"
+              size={24}
+              color={myColors.primary}
+              style={{ marginRight: 5 }}
+            />
+            <CustomText size="H6" color={myColors.primary}>
+              Sign Out
+            </CustomText>
           </LinkItem>
         </View>
       </View>

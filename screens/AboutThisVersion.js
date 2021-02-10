@@ -7,8 +7,9 @@ import CenteredContainer from '../components/UI/CenteredContainer';
 import CustomText from '../components/UI/CustomText';
 import myColors from '../constants/myColors';
 import spacing from '../constants/spacing';
+import CustomButton from '../components/UI/CustomButton';
 
-const AboutThisApp = () => {
+const AboutThisVersion = () => {
   const isDarkTheme = useColorScheme() === 'dark' ? true : false;
 
   return (
@@ -34,7 +35,10 @@ const AboutThisApp = () => {
         Expo version {Constants.expoVersion}
       </CustomText>
 
-      <CustomText size="H7">
+      <CustomText
+        size="H7"
+        complementaryStyle={{ textAlign: 'center', marginBottom: spacing.xl }}
+      >
         The app was created by Antonin Nhek using React Native and Expo.
         Copyright © {new Date().getFullYear()} Scrobbly.
       </CustomText>
@@ -42,4 +46,4 @@ const AboutThisApp = () => {
   );
 };
 
-export default AboutThisApp;
+export default AboutThisVersion;
