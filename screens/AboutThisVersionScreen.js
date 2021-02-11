@@ -9,7 +9,7 @@ import myColors from '../constants/myColors';
 import spacing from '../constants/spacing';
 import CustomButton from '../components/UI/CustomButton';
 
-const AboutThisVersion = () => {
+const AboutThisVersionScreen = () => {
   const isDarkTheme = useColorScheme() === 'dark' ? true : false;
 
   return (
@@ -46,4 +46,4 @@ const AboutThisVersion = () => {
   );
 };
 
-export default AboutThisVersion;
+export default AboutThisVersionScreen;

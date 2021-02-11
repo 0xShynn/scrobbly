@@ -4,7 +4,6 @@ import { useDispatch } from 'react-redux';
 import * as authActions from '../store/authActions';
 import * as WebBrowser from 'expo-web-browser';
 import * as Linking from 'expo-linking';
-import { MaterialIcons } from '@expo/vector-icons';
 import { Ionicons } from '@expo/vector-icons';
 
 import CustomText from '../components/UI/CustomText';
@@ -27,6 +26,12 @@ const MyAccountScreen = ({ route, navigation }) => {
   const _handlePressButtonAsync = async (page) => {
     let result;
     switch (page) {
+      case 'faq':
+        result = await WebBrowser.openBrowserAsync(
+          'https://scrobbly.netlify.app/faq'
+        );
+        setResult(result);
+        break;
       case 'terms':
         result = await WebBrowser.openBrowserAsync(
           'https://scrobbly.netlify.app/terms-and-conditions'
@@ -123,6 +128,15 @@ const MyAccountScreen = ({ route, navigation }) => {
             />
             <CustomText size="H6">About this version</CustomText>
           </LinkItem>
+          <LinkItem onPress={() => _handlePressButtonAsync('faq')}>
+            <Ionicons
+              name="chatbox-ellipses-outline"
+              size={24}
+              color={isDarkTheme ? myColors.gray_200 : myColors.gray_900}
+              style={{ marginRight: 5 }}
+            />
+            <CustomText size="H6">Frequently Asked Questions</CustomText>
+          </LinkItem>
           <LinkItem onPress={() => _handlePressButtonAsync('terms')}>
             <Ionicons
               name="document-text-outline"
@@ -148,7 +162,7 @@ const MyAccountScreen = ({ route, navigation }) => {
               color={isDarkTheme ? myColors.gray_200 : myColors.gray_900}
               style={{ marginRight: 5 }}
             />
-            <CustomText size="H6">Send us feedback</CustomText>
+            <CustomText size="H6">Send feedback</CustomText>
           </LinkItem>
         </View>
 
