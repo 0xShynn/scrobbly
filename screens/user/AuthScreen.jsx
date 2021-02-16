@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from "react";
 import {
   Image,
   Keyboard,
@@ -10,25 +10,22 @@ import {
   useWindowDimensions,
   Alert,
   StyleSheet,
-  Button,
-} from 'react-native';
-import { StatusBar } from 'expo-status-bar';
-import { useForm, Controller } from 'react-hook-form';
-import * as WebBrowser from 'expo-web-browser';
+} from "react-native";
+import { useDispatch } from "react-redux";
+import { StatusBar } from "expo-status-bar";
+import { useForm, Controller } from "react-hook-form";
+import * as WebBrowser from "expo-web-browser";
+import * as Yup from "yup";
+import * as authActions from "../../store/authActions";
 
-import CenteredContainer from '../../components/UI/CenteredContainer';
-import CustomButton from '../../components/UI/CustomButton';
-import CustomText from '../../components/UI/CustomText';
+import CenteredContainer from "../../components/UI/CenteredContainer";
+import CustomButton from "../../components/UI/CustomButton";
+import CustomText from "../../components/UI/CustomText";
 
-import { useDispatch } from 'react-redux';
-import * as authActions from '../../store/authActions';
-
-import * as Yup from 'yup';
-import useColorScheme from '../../hooks/useColorSchemeFix';
-import myColors from '../../constants/myColors';
-import spacing from '../../constants/spacing';
-import MyTextInput from '../../components/UI/MyTextInput';
-import { useState } from 'react';
+import useColorScheme from "../../hooks/useColorSchemeFix";
+import myColors from "../../constants/myColors";
+import spacing from "../../constants/spacing";
+import MyTextInput from "../../components/UI/MyTextInput";
 
 const authValidationSchema = Yup.object({
   username: Yup.string().required(),
@@ -38,7 +35,7 @@ const authValidationSchema = Yup.object({
 const AuthScreen = () => {
   const [result, setResult] = useState();
   const dispatch = useDispatch();
-  const isDarkTheme = useColorScheme() === 'dark' ? true : false;
+  const isDarkTheme = useColorScheme() === "dark";
   const { control, handleSubmit, errors } = useForm();
   const usernameRef = useRef();
   const passwordRef = useRef();
@@ -47,18 +44,18 @@ const AuthScreen = () => {
     try {
       await dispatch(authActions.logIn(values.username, values.password));
     } catch (error) {
-      Alert.alert('Error', error.message, [{ text: 'OK' }]);
+      Alert.alert("Error", error.message, [{ text: "OK" }]);
     }
   };
 
   const _handlePressButtonAsync = async () => {
-    let result = await WebBrowser.openBrowserAsync('https://www.last.fm/join');
+    let result = await WebBrowser.openBrowserAsync("https://www.last.fm/join");
     setResult(result);
   };
 
   return (
     <KeyboardAvoidingView
-      behavior={Platform.OS == 'ios' ? 'padding' : 'height'}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={{ flex: 1 }}
     >
       <CenteredContainer
@@ -69,23 +66,23 @@ const AuthScreen = () => {
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <SafeAreaView
             style={{
-              width: '100%',
+              width: "100%",
               height: useWindowDimensions().height,
-              justifyContent: 'center',
+              justifyContent: "center",
               paddingVertical: spacing.xl,
             }}
           >
             <StatusBar
-              barStyle={isDarkTheme ? 'light-content' : 'dark-content'}
+              barStyle={isDarkTheme ? "light-content" : "dark-content"}
             />
             <View
               style={{
-                justifyContent: 'center',
-                alignItems: 'center',
+                justifyContent: "center",
+                alignItems: "center",
               }}
             >
               <Image
-                source={require('../../assets/icon-rounded.png')}
+                source={require("../../assets/icon-rounded.png")}
                 style={{
                   width: 80,
                   height: 80,
@@ -95,7 +92,7 @@ const AuthScreen = () => {
               <CustomText
                 size="H2"
                 bold
-                color={isDarkTheme ? 'white' : myColors.gray_900}
+                color={isDarkTheme ? "white" : myColors.gray_900}
                 complementaryStyle={{ marginBottom: 40 }}
               >
                 Scrobbly
@@ -103,10 +100,11 @@ const AuthScreen = () => {
               <CustomText
                 size="H4"
                 bold
-                children="Log in with your Last.fm account"
-                color={isDarkTheme ? 'white' : myColors.gray_900}
+                color={isDarkTheme ? "white" : myColors.gray_900}
                 complementaryStyle={{ marginBottom: spacing.xl }}
-              />
+              >
+                Log in with your Last.fm account
+              </CustomText>
             </View>
 
             <View style={styles.inputContainer}>
@@ -114,14 +112,11 @@ const AuthScreen = () => {
                 name="username"
                 defaultValue=""
                 control={control}
-                rules={{ value: true, required: 'Username is required' }}
+                rules={{ value: true, required: "Username is required" }}
                 onFocus={() => {
                   usernameRef.current?.focus();
                 }}
-                render={(
-                  { onChange, onBlur, value },
-                  { invalid, isTouched, isDirty }
-                ) => (
+                render={({ onChange, onBlur, value }, { isTouched }) => (
                   <MyTextInput
                     icon="ios-person"
                     onBlur={onBlur}
@@ -147,20 +142,17 @@ const AuthScreen = () => {
                 name="password"
                 defaultValue=""
                 control={control}
-                rules={{ value: true, required: 'Password is required' }}
+                rules={{ value: true, required: "Password is required" }}
                 onFocus={() => {
                   passwordRef.current?.focus();
                 }}
-                render={(
-                  { onChange, onBlur, value },
-                  { invalid, isTouched, isDirty }
-                ) => (
+                render={({ onChange, onBlur, value }, { isTouched }) => (
                   <MyTextInput
                     icon="ios-lock-closed-sharp"
                     onBlur={onBlur}
                     onChangeText={(value) => onChange(value)}
                     value={value}
-                    secureTextEntry={true}
+                    secureTextEntry
                     autoCapitalize="none"
                     autoCompleteType="password"
                     placeholder="Enter your password"
@@ -208,7 +200,7 @@ const AuthScreen = () => {
 
 const styles = StyleSheet.create({
   textInput: {
-    backgroundColor: '#FFF',
+    backgroundColor: "#FFF",
     padding: spacing.md,
     borderWidth: 1,
     borderRadius: spacing.xs,
