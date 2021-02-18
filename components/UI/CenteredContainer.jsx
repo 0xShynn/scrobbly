@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { View } from "react-native";
 
 const CenteredContainer = ({ style, children }) => {
@@ -14,6 +15,15 @@ const CenteredContainer = ({ style, children }) => {
       {children}
     </View>
   );
+};
+
+CenteredContainer.propTypes = {
+  style: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
+  children: PropTypes.element.isRequired,
+};
+
+CenteredContainer.defaultProps = {
+  style: {},
 };
 
 export default CenteredContainer;

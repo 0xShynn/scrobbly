@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { View } from "react-native";
 import myColors from "../../constants/myColors";
 import spacing from "../../constants/spacing";
@@ -23,6 +24,15 @@ const RoundedContainer = ({ children, style }) => {
       {children}
     </View>
   );
+};
+
+RoundedContainer.propTypes = {
+  children: PropTypes.node.isRequired,
+  style: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
+};
+
+RoundedContainer.defaultProps = {
+  style: {},
 };
 
 export default RoundedContainer;

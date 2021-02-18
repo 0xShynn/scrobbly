@@ -1,4 +1,6 @@
 import React from "react";
+import PropTypes from "prop-types";
+
 import { TouchableOpacity } from "react-native";
 import myColors from "../../constants/myColors";
 import spacing from "../../constants/spacing";
@@ -48,3 +50,9 @@ export default function CustomButton({ label, onPress, themeColor }) {
     </TouchableOpacity>
   );
 }
+
+CustomButton.propTypes = {
+  label: PropTypes.string.isRequired,
+  themeColor: PropTypes.string.isRequired,
+  onPress: PropTypes.func.isRequired,
+};

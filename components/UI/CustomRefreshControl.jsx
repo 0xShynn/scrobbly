@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { RefreshControl } from "react-native";
 
 export default function CustomRefreshControl({ onRefresh, isRefreshing }) {
@@ -8,7 +9,12 @@ export default function CustomRefreshControl({ onRefresh, isRefreshing }) {
       tintColor="white"
       onRefresh={onRefresh}
       refreshing={isRefreshing}
-      enabled={true}
+      enabled
     />
   );
 }
+
+CustomRefreshControl.propTypes = {
+  onRefresh: PropTypes.func.isRequired,
+  isRefreshing: PropTypes.bool.isRequired,
+};

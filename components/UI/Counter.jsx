@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { View } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import myColors from "../../constants/myColors";
@@ -45,6 +46,17 @@ const Counter = ({ style, title, icon, value }) => {
       </View>
     </View>
   );
+};
+
+Counter.propTypes = {
+  title: PropTypes.string.isRequired,
+  icon: PropTypes.string.isRequired,
+  value: PropTypes.number.isRequired,
+  style: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
+};
+
+Counter.defaultProps = {
+  style: {},
 };
 
 export default Counter;

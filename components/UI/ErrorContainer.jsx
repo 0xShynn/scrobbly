@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { View } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 
@@ -54,6 +55,11 @@ const ErrorContainer = ({ error, retryFunc }) => {
       </View>
     </CenteredContainer>
   );
+};
+
+ErrorContainer.propTypes = {
+  error: PropTypes.string.isRequired,
+  retryFunc: PropTypes.func.isRequired,
 };
 
 export default ErrorContainer;
