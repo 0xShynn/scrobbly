@@ -49,7 +49,11 @@ ItemStats.propTypes = {
   playcount: PropTypes.string.isRequired,
   listeners: PropTypes.string.isRequired,
   userplaycount: PropTypes.string.isRequired,
-  topPlaycount: PropTypes.string.isRequired,
+  topPlaycount: PropTypes.string,
+};
+
+ItemStats.defaultProps = {
+  topPlaycount: "",
 };
 
 export default ItemStats;
