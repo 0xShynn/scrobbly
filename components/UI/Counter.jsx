@@ -51,7 +51,7 @@ const Counter = ({ style, title, icon, value }) => {
 Counter.propTypes = {
   title: PropTypes.string.isRequired,
   icon: PropTypes.string.isRequired,
-  value: PropTypes.number.isRequired,
+  value: PropTypes.string.isRequired,
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
 };
 
