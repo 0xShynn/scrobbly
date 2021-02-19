@@ -19,7 +19,7 @@ const CenteredContainer = ({ style, children }) => {
 
 CenteredContainer.propTypes = {
   style: PropTypes.oneOfType([PropTypes.object, PropTypes.number]),
-  children: PropTypes.element.isRequired,
+  children: PropTypes.node.isRequired,
 };
 
 CenteredContainer.defaultProps = {

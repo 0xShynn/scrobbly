@@ -12,7 +12,7 @@ import myColors from "../constants/myColors";
 import spacing from "../constants/spacing";
 import useColorScheme from "../hooks/useColorSchemeFix";
 // eslint-disable-next-line no-unused-vars
-import { updatedLocale } from "../utils/dayjs";
+import updatedLocale from "../utils/dayjs";
 
 const ListItem = ({
   onPress,

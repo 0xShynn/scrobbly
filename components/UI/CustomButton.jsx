@@ -53,6 +53,10 @@ export default function CustomButton({ label, onPress, themeColor }) {
 
 CustomButton.propTypes = {
   label: PropTypes.string.isRequired,
-  themeColor: PropTypes.string.isRequired,
   onPress: PropTypes.func.isRequired,
+  themeColor: PropTypes.string,
+};
+
+CustomButton.defaultProps = {
+  themeColor: "",
 };
