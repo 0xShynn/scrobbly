@@ -1,168 +1,180 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react'
-import { FlatList, Image, View, TouchableOpacity } from 'react-native'
-import { useSelector } from 'react-redux'
+import React, {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
+import { FlatList, Image, View, TouchableOpacity } from "react-native";
+import PropTypes from "prop-types";
+import { useSelector } from "react-redux";
 
-import DetailsHeader from '../components/DetailsHeader'
-import ItemStats from '../components/ItemStats'
-import TouchableItem from '../components/TouchableItem'
-import DetailsTitle from '../components/DetailsTitle'
-import LoadingContainer from '../components/UI/LoadingContainer'
-import CustomButton from '../components/UI/CustomButton'
-import CustomText from '../components/UI/CustomText'
+import DetailsHeader from "../components/DetailsHeader";
+import ItemStats from "../components/ItemStats";
+import TouchableItem from "../components/TouchableItem";
+import DetailsTitle from "../components/DetailsTitle";
+import LoadingContainer from "../components/UI/LoadingContainer";
+import CustomButton from "../components/UI/CustomButton";
+import CustomText from "../components/UI/CustomText";
 
-import useColorScheme from '../hooks/useColorSchemeFix'
-import myColors from '../constants/myColors'
-import spacing from '../constants/spacing'
-import { getAlbumInfo, getArtistInfo } from '../utils/lastfm'
-import { abbreviateNumber } from '../utils/numbers'
-import { getSpotifyAlbumInfo, getSpotifyAlbumTracklist } from '../utils/spotify'
-
-const itemSeparator = (isDarkTheme) => (
-  <View
-    style={{
-      height: 1,
-      backgroundColor: isDarkTheme ? myColors.gray_1000 : myColors.gray_200,
-    }}
-  />
-)
+import useColorScheme from "../hooks/useColorSchemeFix";
+import myColors from "../constants/myColors";
+import spacing from "../constants/spacing";
+import { getAlbumInfo, getArtistInfo } from "../utils/lastfm";
+import abbreviateNumber from "../utils/numbers";
+import {
+  getSpotifyAlbumInfo,
+  getSpotifyAlbumTracklist,
+} from "../utils/spotify";
 
 const AlbumDetailsScreen = ({ navigation, route }) => {
-  const { artistName, albumName, albumArt, topPlaycount } = route.params
-  const [isLoading, setIsLoading] = useState(false)
-  const [albumStats, setAlbumStats] = useState()
-  const [spotifyAlbumInfo, setSpotifyAlbumInfo] = useState()
-  const [albumTracklist, setAlbumTracklist] = useState([])
-  const [artistInfo, setArtistInfo] = useState()
-  const [isACompilation, setIsACompilation] = useState(false)
-  const isDarkTheme = useColorScheme() === 'dark' ? true : false
-  const username = useSelector((state) => state.auth.username)
+  const { artistName, albumName, albumArt, topPlaycount } = route.params;
+  const [isLoading, setIsLoading] = useState(false);
+  const [albumStats, setAlbumStats] = useState();
+  const [spotifyAlbumInfo, setSpotifyAlbumInfo] = useState();
+  const [albumTracklist, setAlbumTracklist] = useState([]);
+  const [artistInfo, setArtistInfo] = useState();
+  const [isACompilation, setIsACompilation] = useState(false);
+  const isDarkTheme = useColorScheme() === "dark";
+  const username = useSelector((state) => state.auth.username);
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true)
+      setIsLoading(true);
 
-      const albumStatsData = await getAlbumInfo(username, artistName, albumName)
-      setAlbumStats(albumStatsData)
+      const albumStatsData = await getAlbumInfo(
+        username,
+        artistName,
+        albumName
+      );
+      setAlbumStats(albumStatsData);
 
       const spotifyAlbumInfoData = await getSpotifyAlbumInfo(
         artistName,
         albumName
-      )
+      );
       if (
         spotifyAlbumInfoData &&
-        spotifyAlbumInfoData.albumType === 'compilation'
+        spotifyAlbumInfoData.albumType === "compilation"
       ) {
-        setIsACompilation(true)
+        setIsACompilation(true);
       }
-      setSpotifyAlbumInfo(spotifyAlbumInfoData)
+      setSpotifyAlbumInfo(spotifyAlbumInfoData);
 
       const { tracklist } = await getSpotifyAlbumTracklist(
         artistName,
         albumName
-      )
-      setAlbumTracklist(tracklist)
+      );
+      setAlbumTracklist(tracklist);
 
-      const artistInfoData = await getArtistInfo(username, artistName)
-      setArtistInfo(artistInfoData)
+      const artistInfoData = await getArtistInfo(username, artistName);
+      setArtistInfo(artistInfoData);
 
-      setIsLoading(false)
-    }
-    fetchData()
-  }, [])
+      setIsLoading(false);
+    };
+    fetchData();
+  }, []);
+
+  const itemSeparator = useCallback(
+    () => (
+      <View
+        style={{
+          height: 1,
+          backgroundColor: isDarkTheme ? myColors.gray_1000 : myColors.gray_200,
+        }}
+      />
+    ),
+    [isDarkTheme]
+  );
+
+  const itemSelectTrackHandler = (artist, trackName) => {
+    navigation.push("Scrobble Details", {
+      artistName: artist,
+      trackName,
+      albumArt,
+      albumName,
+    });
+  };
 
   const itemTrackList = useCallback(
     (itemData) => {
       return (
         <TouchableOpacity
           style={{
-            flexDirection: 'row',
+            flexDirection: "row",
             paddingHorizontal: spacing.xl,
             paddingVertical: spacing.lg,
           }}
-          onPress={itemSelectTrackHandler.bind(
-            this,
-            itemData.item.artistName,
-            itemData.item.trackName
-          )}
+          onPress={() => {
+            itemSelectTrackHandler(
+              itemData.item.artistName,
+              itemData.item.trackName
+            );
+          }}
         >
           <View
             style={{
               minWidth: 30,
-              alignItems: 'flex-start',
-              justifyContent: 'center',
+              alignItems: "flex-start",
+              justifyContent: "center",
             }}
           >
             <CustomText
-              children={itemData.item.trackNumber}
               size="H5"
-              color={isDarkTheme ? 'white' : myColors.gray_900}
+              color={isDarkTheme ? "white" : myColors.gray_900}
               bold
-            />
+            >
+              {itemData.item.trackNumber}
+            </CustomText>
           </View>
           <View style={{ flex: 1 }}>
             <CustomText
-              children={itemData.item.artistName}
+              size="H6"
               color={isDarkTheme ? myColors.gray_300 : myColors.gray_700}
               complementaryStyle={{ marginBottom: 3 }}
-            />
+            >
+              {itemData.item.artistName}
+            </CustomText>
             <CustomText
-              children={itemData.item.trackName}
               size="H6"
               bold
-              color={isDarkTheme ? 'white' : myColors.gray_900}
+              color={isDarkTheme ? "white" : myColors.gray_900}
               numberOfLines={1}
               complementaryStyle={{ flex: 1 }}
-            />
+            >
+              {itemData.item.trackName}
+            </CustomText>
           </View>
           <CustomText
-            children={itemData.item.duration}
             size="H6"
             color={myColors.gray_500}
             complementaryStyle={{ paddingLeft: 10 }}
-          />
+          >
+            {itemData.item.duration}
+          </CustomText>
         </TouchableOpacity>
-      )
+      );
     },
     [isDarkTheme]
-  )
-
-  const itemSelectTrackHandler = (artistName, trackName) => {
-    if (isACompilation) {
-      navigation.push('Scrobble Details', {
-        artistName,
-        trackName,
-        albumArt,
-        albumName,
-      })
-    }
-    navigation.push('Scrobble Details', {
-      artistName,
-      trackName,
-      albumArt,
-      albumName,
-    })
-  }
+  );
 
   const itemSelectArtistHandler = () => {
-    const artistImage = artistInfo.image
-    const playcount = artistInfo.playcount
-    const listeners = artistInfo.listeners
-    navigation.navigate('Artist Details', {
+    const { artistImage, playcount, listeners } = artistInfo;
+    navigation.navigate("Artist Details", {
       artistName,
       artistImage,
       playcount,
       listeners,
-    })
-  }
+    });
+  };
 
-  const keyExtractor = useCallback((item) => item.id, [])
+  const keyExtractor = useCallback((item) => item.id, []);
 
   const ListHeader = () => {
     return (
       <>
         <DetailsHeader
           title={albumName}
-          subtitle={isACompilation ? 'Various Artists' : artistName}
+          subtitle={isACompilation ? "Various Artists" : artistName}
           image={albumArt}
         />
 
@@ -181,7 +193,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
 
             {artistInfo &&
             !isLoading &&
-            spotifyAlbumInfo.albumType !== 'compilation' ? (
+            spotifyAlbumInfo.albumType !== "compilation" ? (
               <View
                 style={{
                   paddingHorizontal: spacing.md,
@@ -200,12 +212,13 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
                   />
                   <View style={{ flex: 1 }}>
                     <CustomText
-                      children={artistName}
                       size="H5"
-                      color={isDarkTheme ? 'white' : myColors.gray_900}
+                      color={isDarkTheme ? "white" : myColors.gray_900}
                       bold
                       complementaryStyle={{ marginBottom: 4 }}
-                    />
+                    >
+                      {artistName}
+                    </CustomText>
                     <CustomText
                       size="H6"
                       color={
@@ -235,8 +248,8 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
           </View>
         ) : null}
       </>
-    )
-  }
+    );
+  };
 
   const ListFooter = () => {
     return (
@@ -249,14 +262,15 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
       >
         {spotifyAlbumInfo && !isLoading ? (
           <CustomText
-            children={spotifyAlbumInfo.copyrights}
             size="H6"
             color={isDarkTheme ? myColors.gray_400 : myColors.gray_600}
-          />
+          >
+            {spotifyAlbumInfo.copyrights}
+          </CustomText>
         ) : null}
       </View>
-    )
-  }
+    );
+  };
 
   const ListEmpty = () => {
     if (isLoading) {
@@ -264,37 +278,38 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
         <View style={{ padding: 100 }}>
           <LoadingContainer />
         </View>
-      )
+      );
     }
 
     return (
       <View
         style={{
           height: 200,
-          justifyContent: 'center',
-          alignItems: 'center',
+          justifyContent: "center",
+          alignItems: "center",
         }}
       >
         <CustomText
-          children="Tracklist not found"
           size="H5"
-          complementaryStyle={{ textAlign: 'center', marginBottom: spacing.xl }}
-        />
+          complementaryStyle={{ textAlign: "center", marginBottom: spacing.xl }}
+        >
+          Tracklist not found
+        </CustomText>
         <CustomButton
           label="Go Back"
           onPress={() => navigation.goBack()}
           style={{ marginVertical: spacing.md }}
         />
       </View>
-    )
-  }
+    );
+  };
 
   // Set the header title
   useLayoutEffect(() => {
     navigation.setOptions({
       title: `${artistName} - ${albumName}`,
-    })
-  }, [navigation])
+    });
+  }, [navigation]);
 
   return (
     <View
@@ -308,7 +323,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
           data={albumTracklist}
           renderItem={itemTrackList}
           keyExtractor={keyExtractor}
-          ItemSeparatorComponent={itemSeparator.bind(this, isDarkTheme)}
+          ItemSeparatorComponent={itemSeparator}
           ListHeaderComponent={ListHeader}
           ListEmptyComponent={ListEmpty}
           ListFooterComponent={ListFooter}
@@ -318,7 +333,12 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
         <LoadingContainer />
       )}
     </View>
-  )
-}
+  );
+};
 
-export default AlbumDetailsScreen
+AlbumDetailsScreen.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  route: PropTypes.node.isRequired,
+};
+
+export default AlbumDetailsScreen;

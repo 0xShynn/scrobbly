@@ -20,6 +20,25 @@
         "react"
     ],
     "rules": {
+        "react/forbid-prop-types": [
+            "warn",
+            {
+                "forbid": [
+                    "any",
+                    "array"
+                ]
+            }
+        ],
+        "no-console": "off",
+        "no-shadow": [
+            "error",
+            {
+                "allow": [
+                    "error"
+                ]
+            }
+        ],
+        "global-require": "off",
         "react/jsx-props-no-spreading": "warn",
         "react/prop-types": "warn",
         "dot-notation": "off",
