@@ -1,13 +1,13 @@
-import React from 'react';
-import { createStackNavigator } from '@react-navigation/stack';
-import ScrobblesScreen from '../screens/ScrobblesScreen';
-import ScrobbleDetailsScreen from '../screens/ScrobbleDetailsScreen';
-import AlbumDetailsScreen from '../screens/AlbumDetailsScreen';
-import ArtistDetailsScreen from '../screens/ArtistDetailsScreen';
-import { defaultNavOptions } from './defaultNavOptions';
-import BiographyScreen from '../screens/BiographyScreen';
-import MyAccountScreen from '../screens/MyAccountScreen';
-import AboutThisVersionScreen from '../screens/AboutThisVersionScreen';
+import React from "react";
+import { createStackNavigator } from "@react-navigation/stack";
+import ScrobblesScreen from "../screens/ScrobblesScreen";
+import ScrobbleDetailsScreen from "../screens/ScrobbleDetailsScreen";
+import AlbumDetailsScreen from "../screens/AlbumDetailsScreen";
+import ArtistDetailsScreen from "../screens/ArtistDetailsScreen";
+import defaultNavOptions from "./defaultNavOptions";
+import BiographyScreen from "../screens/BiographyScreen";
+import MyAccountScreen from "../screens/MyAccountScreen";
+import AboutThisVersionScreen from "../screens/AboutThisVersionScreen";
 
 const Stack = createStackNavigator();
 

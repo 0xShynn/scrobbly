@@ -20,6 +20,8 @@
         "react"
     ],
     "rules": {
+        "no-console": "off",
+        "no-useless-catch": "off",
         "react/forbid-prop-types": [
             "warn",
             {
