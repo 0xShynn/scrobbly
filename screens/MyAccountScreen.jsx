@@ -1,48 +1,43 @@
-import React, { useState } from 'react';
-import { Image, View, ScrollView } from 'react-native';
-import { useDispatch } from 'react-redux';
-import * as authActions from '../store/authActions';
-import * as WebBrowser from 'expo-web-browser';
-import * as Linking from 'expo-linking';
-import { Ionicons } from '@expo/vector-icons';
+import React from "react";
+import { Image, View, ScrollView } from "react-native";
+import { useDispatch } from "react-redux";
+import PropTypes from "prop-types";
 
-import CustomText from '../components/UI/CustomText';
-import LinkItem from '../components/LinkItem';
+import { Ionicons } from "@expo/vector-icons";
+import * as WebBrowser from "expo-web-browser";
+import * as Linking from "expo-linking";
+import * as authActions from "../store/authActions";
 
-import myColors from '../constants/myColors';
-import spacing from '../constants/spacing';
-import useColorScheme from '../hooks/useColorSchemeFix';
+import CustomText from "../components/UI/CustomText";
+import LinkItem from "../components/LinkItem";
+
+import myColors from "../constants/myColors";
+import spacing from "../constants/spacing";
+import useColorScheme from "../hooks/useColorSchemeFix";
 
 const MyAccountScreen = ({ route, navigation }) => {
   const dispatch = useDispatch();
-  const isDarkTheme = useColorScheme() === 'dark' ? true : false;
+  const isDarkTheme = useColorScheme() === "dark";
   const { userData } = route.params;
-  const [result, setResult] = useState(null);
 
   const signOutHandler = async () => {
     dispatch(authActions.logOut());
   };
 
-  const _handlePressButtonAsync = async (page) => {
-    let result;
+  const handlePressButtonAsync = async (page) => {
     switch (page) {
-      case 'faq':
-        result = await WebBrowser.openBrowserAsync(
-          'https://scrobbly.netlify.app/faq'
-        );
-        setResult(result);
+      case "faq":
+        await WebBrowser.openBrowserAsync("https://scrobbly.netlify.app/faq");
         break;
-      case 'terms':
-        result = await WebBrowser.openBrowserAsync(
-          'https://scrobbly.netlify.app/terms-and-conditions'
+      case "terms":
+        await WebBrowser.openBrowserAsync(
+          "https://scrobbly.netlify.app/terms-and-conditions"
         );
-        setResult(result);
         break;
-      case 'privacy':
-        result = await WebBrowser.openBrowserAsync(
-          'https://scrobbly.netlify.app/privacy-policy'
+      case "privacy":
+        await WebBrowser.openBrowserAsync(
+          "https://scrobbly.netlify.app/privacy-policy"
         );
-        setResult(result);
         break;
 
       default:
@@ -50,9 +45,9 @@ const MyAccountScreen = ({ route, navigation }) => {
     }
   };
 
-  const _handleSendFeedback = async () => {
+  const handleSendFeedback = async () => {
     const sendFeedbackEmail =
-      'mailto:scrobbly.app@gmail.com?subject=Scrobbly Feedback:';
+      "mailto:scrobbly.app@gmail.com?subject=Scrobbly Feedback:";
     Linking.openURL(sendFeedbackEmail);
   };
 
@@ -67,10 +62,10 @@ const MyAccountScreen = ({ route, navigation }) => {
           <View
             style={{
               flex: 1,
-              flexDirection: 'row',
-              alignItems: 'center',
+              flexDirection: "row",
+              alignItems: "center",
               padding: spacing.lg,
-              backgroundColor: isDarkTheme ? myColors.gray_1050 : 'white',
+              backgroundColor: isDarkTheme ? myColors.gray_1050 : "white",
               borderBottomWidth: 1,
               borderBottomColor: isDarkTheme
                 ? myColors.gray_950
@@ -93,17 +88,19 @@ const MyAccountScreen = ({ route, navigation }) => {
               }}
             >
               <CustomText
-                children={userData.name}
                 size="H3"
                 bold
-                color={isDarkTheme ? 'white' : myColors.gray_900}
+                color={isDarkTheme ? "white" : myColors.gray_900}
                 complementaryStyle={{ marginBottom: 4 }}
-              />
+              >
+                {userData.name}
+              </CustomText>
               <CustomText
-                children={userData.playcount + ' scrobbles'}
                 size="H6"
                 color={isDarkTheme ? myColors.gray_500 : myColors.gray_600}
-              />
+              >
+                {`${userData.playcount} scrobbles`}
+              </CustomText>
             </View>
           </View>
         ) : null}
@@ -117,7 +114,7 @@ const MyAccountScreen = ({ route, navigation }) => {
         >
           <LinkItem
             onPress={() => {
-              navigation.navigate('About this version');
+              navigation.navigate("About this version");
             }}
           >
             <Ionicons
@@ -128,7 +125,7 @@ const MyAccountScreen = ({ route, navigation }) => {
             />
             <CustomText size="H6">About this version</CustomText>
           </LinkItem>
-          <LinkItem onPress={() => _handlePressButtonAsync('faq')}>
+          <LinkItem onPress={() => handlePressButtonAsync("faq")}>
             <Ionicons
               name="chatbox-ellipses-outline"
               size={24}
@@ -137,7 +134,7 @@ const MyAccountScreen = ({ route, navigation }) => {
             />
             <CustomText size="H6">Frequently Asked Questions</CustomText>
           </LinkItem>
-          <LinkItem onPress={() => _handlePressButtonAsync('terms')}>
+          <LinkItem onPress={() => handlePressButtonAsync("terms")}>
             <Ionicons
               name="document-text-outline"
               size={24}
@@ -146,7 +143,7 @@ const MyAccountScreen = ({ route, navigation }) => {
             />
             <CustomText size="H6">Terms & Conditions</CustomText>
           </LinkItem>
-          <LinkItem onPress={() => _handlePressButtonAsync('privacy')}>
+          <LinkItem onPress={() => handlePressButtonAsync("privacy")}>
             <Ionicons
               name="shield-checkmark-outline"
               size={24}
@@ -155,7 +152,7 @@ const MyAccountScreen = ({ route, navigation }) => {
             />
             <CustomText size="H6">Privacy Policy</CustomText>
           </LinkItem>
-          <LinkItem onPress={_handleSendFeedback}>
+          <LinkItem onPress={handleSendFeedback}>
             <Ionicons
               name="mail-outline"
               size={24}
@@ -187,6 +184,11 @@ const MyAccountScreen = ({ route, navigation }) => {
       </View>
     </ScrollView>
   );
+};
+
+MyAccountScreen.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  route: PropTypes.object.isRequired,
 };
 
 export default MyAccountScreen;
