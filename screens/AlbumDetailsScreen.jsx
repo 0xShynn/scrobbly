@@ -37,37 +37,37 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
   const isDarkTheme = useColorScheme() === "dark";
   const username = useSelector((state) => state.auth.username);
 
+  const albumInfoHandler = useCallback(async () => {
+    const result = await getAlbumInfo(username, artistName, albumName);
+    setAlbumStats(result);
+  }, []);
+
+  const spotifyAlbumInfoHandler = useCallback(async () => {
+    const result = await getSpotifyAlbumInfo(artistName, albumName);
+    if (result && result.albumType === "compilation") {
+      setIsACompilation(true);
+    }
+    setSpotifyAlbumInfo(result);
+  }, []);
+
+  const spotifyAlbumTracklistHandler = useCallback(async () => {
+    const { tracklist } = await getSpotifyAlbumTracklist(artistName, albumName);
+    setAlbumTracklist(tracklist);
+  }, []);
+
+  const artistInfoHandler = useCallback(async () => {
+    const result = await getArtistInfo(username, artistName);
+    setArtistInfo(result);
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
 
-      const albumStatsData = await getAlbumInfo(
-        username,
-        artistName,
-        albumName
-      );
-      setAlbumStats(albumStatsData);
-
-      const spotifyAlbumInfoData = await getSpotifyAlbumInfo(
-        artistName,
-        albumName
-      );
-      if (
-        spotifyAlbumInfoData &&
-        spotifyAlbumInfoData.albumType === "compilation"
-      ) {
-        setIsACompilation(true);
-      }
-      setSpotifyAlbumInfo(spotifyAlbumInfoData);
-
-      const { tracklist } = await getSpotifyAlbumTracklist(
-        artistName,
-        albumName
-      );
-      setAlbumTracklist(tracklist);
-
-      const artistInfoData = await getArtistInfo(username, artistName);
-      setArtistInfo(artistInfoData);
+      albumInfoHandler();
+      spotifyAlbumInfoHandler();
+      spotifyAlbumTracklistHandler();
+      artistInfoHandler();
 
       setIsLoading(false);
     };
@@ -338,7 +338,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
 
 AlbumDetailsScreen.propTypes = {
   navigation: PropTypes.object.isRequired,
-  route: PropTypes.node.isRequired,
+  route: PropTypes.object.isRequired,
 };
 
 export default AlbumDetailsScreen;

@@ -34,7 +34,8 @@
             "error",
             {
                 "allow": [
-                    "error"
+                    "error",
+                    "result"
                 ]
             }
         ],

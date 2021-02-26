@@ -61,7 +61,8 @@ SimilarItem.propTypes = {
   image: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   subtitle: PropTypes.string.isRequired,
-  playcount: PropTypes.number.isRequired,
+  playcount: PropTypes.oneOfType([PropTypes.string, PropTypes.number])
+    .isRequired,
 };
 
 export default SimilarItem;

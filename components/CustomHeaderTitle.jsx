@@ -24,7 +24,7 @@ const CustomHeaderTitle = ({
       {periodSelected && (
         <CustomText size="H4" color={isDarkTheme ? "white" : myColors.gray_900}>
           {" "}
-          /{isLoading || isRefreshing ? "Loading..." : periodSelected}
+          / {isLoading || isRefreshing ? "Loading..." : periodSelected}
         </CustomText>
       )}
     </>
