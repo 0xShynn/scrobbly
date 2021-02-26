@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-useless-catch */
 import dayjs from "dayjs";
 import prettyMilliseconds from "pretty-ms";
 import AsyncStorage from "@react-native-async-storage/async-storage";

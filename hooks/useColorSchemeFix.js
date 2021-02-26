@@ -1,35 +1,36 @@
-import { Appearance } from 'react-native'
-import { useEffect, useRef, useState } from 'react'
+/* eslint-disable no-use-before-define */
+import { Appearance } from "react-native";
+import { useEffect, useRef, useState } from "react";
 
 const useColorScheme = (delay = 500) => {
-  const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme())
+  const [colorScheme, setColorScheme] = useState(Appearance.getColorScheme());
 
-  let timeout = useRef.current
+  let timeout = useRef.current;
 
   useEffect(() => {
-    Appearance.addChangeListener(onColorSchemeChange)
+    Appearance.addChangeListener(onColorSchemeChange);
 
     return () => {
-      resetCurrentTimeout()
-      Appearance.removeChangeListener(onColorSchemeChange)
-    }
-  }, [])
+      resetCurrentTimeout();
+      Appearance.removeChangeListener(onColorSchemeChange);
+    };
+  }, []);
 
   function onColorSchemeChange(preferences) {
-    resetCurrentTimeout()
+    resetCurrentTimeout();
 
     timeout = setTimeout(() => {
-      setColorScheme(preferences.colorScheme)
-    }, delay)
+      setColorScheme(preferences.colorScheme);
+    }, delay);
   }
 
   function resetCurrentTimeout() {
     if (timeout) {
-      clearTimeout(timeout)
+      clearTimeout(timeout);
     }
   }
 
-  return colorScheme
-}
+  return colorScheme;
+};
 
-export default useColorScheme
+export default useColorScheme;

@@ -1,5 +1,3 @@
-/* eslint-disable no-console */
-/* eslint-disable no-useless-catch */
 import Album from "../models/album";
 import Artist from "../models/artist";
 import Scrobble from "../models/scrobble";
@@ -226,8 +224,6 @@ export const getArtistInfo = async (username, artistName) => {
     if (Object.prototype.hasOwnProperty.call(response, "error")) {
       throw new Error(response.message);
     }
-
-    console.log(response);
 
     const { image300 } = await getSpotifyArtistInfo(artistName);
 
