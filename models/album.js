@@ -1,5 +1,5 @@
-import 'react-native-get-random-values'
-import { v4 as uuidv4 } from 'uuid'
+import "react-native-get-random-values";
+import { v4 as uuidv4 } from "uuid";
 
 class Album {
   constructor(
@@ -11,15 +11,15 @@ class Album {
     totalTracksWord,
     playcount
   ) {
-    this.id = uuidv4()
-    this.artistName = artistName
-    this.albumName = albumName
-    this.albumArt = albumArt
-    this.releaseYear = releaseYear
-    this.totalTracks = totalTracks
-    this.totalTracksWord = totalTracksWord
-    this.playcount = playcount
+    this.id = uuidv4();
+    this.artistName = artistName;
+    this.albumName = albumName;
+    this.albumArt = albumArt;
+    this.releaseYear = releaseYear;
+    this.totalTracks = totalTracks;
+    this.totalTracksWord = totalTracksWord;
+    this.playcount = playcount;
   }
 }
 
-export default Album
+export default Album;
