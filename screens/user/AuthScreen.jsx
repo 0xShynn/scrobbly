@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import {
   Image,
   Keyboard,
@@ -14,6 +14,7 @@ import {
 import { useDispatch } from "react-redux";
 import { StatusBar } from "expo-status-bar";
 import { useForm, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 import * as WebBrowser from "expo-web-browser";
 import * as Yup from "yup";
 import * as authActions from "../../store/authActions";
@@ -27,16 +28,30 @@ import myColors from "../../constants/myColors";
 import spacing from "../../constants/spacing";
 import MyTextInput from "../../components/UI/MyTextInput";
 
+const styles = StyleSheet.create({
+  textInput: {
+    backgroundColor: "#FFF",
+    padding: spacing.md,
+    borderWidth: 1,
+    borderRadius: spacing.xs,
+  },
+  inputContainer: {
+    marginBottom: spacing.sm,
+    paddingHorizontal: spacing.xl,
+  },
+});
+
 const authValidationSchema = Yup.object({
   username: Yup.string().required(),
   password: Yup.string().required(),
 });
 
 const AuthScreen = () => {
-  const [result, setResult] = useState();
   const dispatch = useDispatch();
   const isDarkTheme = useColorScheme() === "dark";
-  const { control, handleSubmit, errors } = useForm();
+  const { control, handleSubmit, errors } = useForm({
+    resolver: yupResolver(authValidationSchema),
+  });
   const usernameRef = useRef();
   const passwordRef = useRef();
 
@@ -48,9 +63,8 @@ const AuthScreen = () => {
     }
   };
 
-  const _handlePressButtonAsync = async () => {
-    let result = await WebBrowser.openBrowserAsync("https://www.last.fm/join");
-    setResult(result);
+  const handlePressButtonAsync = async () => {
+    await WebBrowser.openBrowserAsync("https://www.last.fm/join");
   };
 
   return (
@@ -187,7 +201,7 @@ const AuthScreen = () => {
             >
               <CustomButton
                 label="Create a Last.fm account"
-                onPress={_handlePressButtonAsync}
+                onPress={handlePressButtonAsync}
                 themeColor="secondary"
               />
             </View>
@@ -197,18 +211,5 @@ const AuthScreen = () => {
     </KeyboardAvoidingView>
   );
 };
-
-const styles = StyleSheet.create({
-  textInput: {
-    backgroundColor: "#FFF",
-    padding: spacing.md,
-    borderWidth: 1,
-    borderRadius: spacing.xs,
-  },
-  inputContainer: {
-    marginBottom: spacing.sm,
-    paddingHorizontal: spacing.xl,
-  },
-});
 
 export default AuthScreen;
