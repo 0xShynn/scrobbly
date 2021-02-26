@@ -1,122 +1,121 @@
-import React, { useEffect, useLayoutEffect, useState } from 'react'
-import { View, Image, ScrollView } from 'react-native'
-import { useSelector } from 'react-redux'
-import myColors from '../constants/myColors'
+import React, { useEffect, useLayoutEffect, useState } from "react";
+import { View, Image, ScrollView } from "react-native";
+import { useSelector } from "react-redux";
+import PropTypes from "prop-types";
+import myColors from "../constants/myColors";
 
-import SimilarItem from '../components/SimilarItem'
-import DetailsHeader from '../components/DetailsHeader'
-import TouchableItem from '../components/TouchableItem'
+import SimilarItem from "../components/SimilarItem";
+import DetailsHeader from "../components/DetailsHeader";
+import TouchableItem from "../components/TouchableItem";
 
-import RoundedContainer from '../components/UI/RoundedContainer'
-import LoadingContainer from '../components/UI/LoadingContainer'
-import CustomText from '../components/UI/CustomText'
-import CustomButton from '../components/UI/CustomButton'
-import ItemStats from '../components/ItemStats'
-import DetailsTitle from '../components/DetailsTitle'
+import RoundedContainer from "../components/UI/RoundedContainer";
+import LoadingContainer from "../components/UI/LoadingContainer";
+import CustomText from "../components/UI/CustomText";
+import CustomButton from "../components/UI/CustomButton";
+import ItemStats from "../components/ItemStats";
+import DetailsTitle from "../components/DetailsTitle";
 
 import {
   getAlbumInfo,
   getArtistInfo,
   getSimilarTracks,
   getTrackInfo,
-} from '../utils/lastfm'
-import { abbreviateNumber } from '../utils/numbers'
-import spacing from '../constants/spacing'
-import useColorScheme from '../hooks/useColorSchemeFix'
+} from "../utils/lastfm";
+import abbreviateNumber from "../utils/numbers";
+import spacing from "../constants/spacing";
+import useColorScheme from "../hooks/useColorSchemeFix";
 
 const ScrobbleDetailsScreen = ({ navigation, route }) => {
-  const [isLoading, setIsLoading] = useState(false)
-  const [trackInfo, setTrackInfo] = useState()
-  const [albumInfo, setAlbumInfo] = useState()
-  const [artistInfo, setArtistInfo] = useState()
-  const [similarTracks, setSimilarTracks] = useState([])
-  const [error, setError] = useState()
-  const isDarkTheme = useColorScheme() === 'dark' ? true : false
-  const username = useSelector((state) => state.auth.username)
+  const [isLoading, setIsLoading] = useState(false);
+  const [trackInfo, setTrackInfo] = useState();
+  const [albumInfo, setAlbumInfo] = useState();
+  const [artistInfo, setArtistInfo] = useState();
+  const [similarTracks, setSimilarTracks] = useState([]);
+  const [error, setError] = useState();
+  const isDarkTheme = useColorScheme() === "dark";
+  const username = useSelector((state) => state.auth.username);
   const {
     artistName,
     albumName,
     albumArt,
     trackName,
     topPlaycount,
-  } = route.params
+  } = route.params;
 
   const itemSimilarTrackHandler = async (
-    artistName,
-    trackName,
-    albumArt,
-    albumName
+    artistNameArg,
+    trackNameArg,
+    albumArtArg,
+    albumNameArg
   ) => {
-    navigation.push('Scrobble Details', {
-      artistName,
-      trackName,
-      albumArt,
-      albumName,
-    })
-  }
+    navigation.push("Scrobble Details", {
+      artistName: artistNameArg,
+      trackName: trackNameArg,
+      albumArt: albumArtArg,
+      albumName: albumNameArg,
+    });
+  };
 
   const albumDetailsHandler = () => {
-    navigation.push('Album Details', {
+    navigation.push("Album Details", {
       artistName,
       albumArt,
       albumName,
-    })
-  }
+    });
+  };
 
   const artistDetailsHandler = () => {
-    const artistImage = artistInfo.image
-    const playcount = artistInfo.playcount
-    const listeners = artistInfo.listeners
-    navigation.navigate('Artist Details', {
+    const { artistImage, playcount, listeners } = artistInfo;
+    navigation.navigate("Artist Details", {
       artistName,
       artistImage,
       playcount,
       listeners,
-    })
-  }
+    });
+  };
 
   useEffect(() => {
     const fetchData = async () => {
-      setIsLoading(true)
+      setIsLoading(true);
 
       try {
         const trackInfoData = await getTrackInfo(
           username,
           artistName,
           trackName
-        )
-        setTrackInfo(trackInfoData)
+        );
+        setTrackInfo(trackInfoData);
 
-        const artistInfoData = await getArtistInfo(username, artistName)
-        setArtistInfo(artistInfoData)
+        const artistInfoData = await getArtistInfo(username, artistName);
+        setArtistInfo(artistInfoData);
 
-        const similarTracksData = await getSimilarTracks(artistName, trackName)
-        setSimilarTracks(similarTracksData)
+        const similarTracksData = await getSimilarTracks(artistName, trackName);
+        setSimilarTracks(similarTracksData);
 
         const albumInfoData = await getAlbumInfo(
           username,
           artistName,
           albumName
-        )
-        setAlbumInfo(albumInfoData)
+        );
+        setAlbumInfo(albumInfoData);
       } catch (error) {
-        setError(error)
-        setIsLoading(false)
-        console.log(error)
+        setError(error);
+        setIsLoading(false);
+        console.log(error);
       }
 
-      setIsLoading(false)
-    }
-    fetchData()
-  }, [])
+      setIsLoading(false);
+    };
+    fetchData();
+  }, []);
 
   // Set the header title
   useLayoutEffect(() => {
     navigation.setOptions({
       title: `${artistName} - ${trackName}`,
-      headerBackTitle: 'Back',
-    })
-  }, [navigation])
+      headerBackTitle: "Back",
+    });
+  }, [navigation]);
 
   return (
     <ScrollView
@@ -140,12 +139,10 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
         <View style={{ padding: 15 }}>
           {error ? (
             <>
-              <RoundedContainer style={{ alignItems: 'center' }}>
-                <CustomText
-                  children={error.message}
-                  size="H5"
-                  style={{ marginVertical: 15 }}
-                />
+              <RoundedContainer style={{ alignItems: "center" }}>
+                <CustomText size="H5" style={{ marginVertical: 15 }}>
+                  {error.message}
+                </CustomText>
               </RoundedContainer>
               <CustomButton
                 label="Go Back"
@@ -177,31 +174,31 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                     width: 80,
                     height: 80,
                     borderRadius: 4,
-                    overflow: 'hidden',
+                    overflow: "hidden",
                   }}
                 />
                 <View
                   style={{
                     marginLeft: 14,
                     flex: 1,
-                    justifyContent: 'center',
+                    justifyContent: "center",
                   }}
                 >
                   <CustomText
-                    children={albumInfo.albumName}
                     size="H5"
                     bold
-                    color={isDarkTheme ? 'white' : myColors.gray_900}
+                    color={isDarkTheme ? "white" : myColors.gray_900}
                     numberOfLines={2}
                     complementaryStyle={{ marginBottom: 4 }}
-                  />
+                  >
+                    {albumInfo.albumName}
+                  </CustomText>
                   <CustomText
                     size="H6"
-                    children={
-                      abbreviateNumber(albumInfo.playcount) + ' scrobbles'
-                    }
-                    color={isDarkTheme ? 'white' : myColors.gray_700}
-                  />
+                    color={isDarkTheme ? "white" : myColors.gray_700}
+                  >
+                    {`${abbreviateNumber(albumInfo.playcount)} scrobbles`}
+                  </CustomText>
                 </View>
               </TouchableItem>
             </>
@@ -227,13 +224,14 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                   <CustomText
                     size="H5"
                     bold
-                    color={isDarkTheme ? 'white' : myColors.gray_900}
+                    color={isDarkTheme ? "white" : myColors.gray_900}
                     complementaryStyle={{ marginBottom: 4 }}
-                    children={artistName}
-                  />
+                  >
+                    {artistName}
+                  </CustomText>
                   <CustomText
                     size="H6"
-                    color={isDarkTheme ? 'white' : myColors.gray_700}
+                    color={isDarkTheme ? "white" : myColors.gray_700}
                     numberOfLines={2}
                   >
                     {abbreviateNumber(artistInfo.playcount)} scrobbles
@@ -245,7 +243,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
 
           {similarTracks.length !== 0 && (
             <View>
-              <DetailsTitle children="Similar Tracks" />
+              <DetailsTitle>Similar Tracks</DetailsTitle>
               {similarTracks.map((item) => (
                 <SimilarItem
                   title={item.trackName}
@@ -253,13 +251,14 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                   image={item.albumArt}
                   playcount={item.playcount}
                   key={item.id}
-                  onPress={itemSimilarTrackHandler.bind(
-                    this,
-                    item.artistName,
-                    item.trackName,
-                    item.albumArt,
-                    item.albumName
-                  )}
+                  onPress={() => {
+                    itemSimilarTrackHandler(
+                      item.artistName,
+                      item.trackName,
+                      item.albumArt,
+                      item.albumName
+                    );
+                  }}
                 />
               ))}
             </View>
@@ -267,7 +266,12 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
         </View>
       )}
     </ScrollView>
-  )
-}
+  );
+};
 
-export default ScrobbleDetailsScreen
+ScrobbleDetailsScreen.propTypes = {
+  navigation: PropTypes.object.isRequired,
+  route: PropTypes.object.isRequired,
+};
+
+export default ScrobbleDetailsScreen;
