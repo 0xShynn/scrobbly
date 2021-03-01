@@ -54,10 +54,10 @@ const TopArtistsScreen = ({ navigation }) => {
   useScrollToTop(flatListRef);
 
   const itemSelectArtistHandler = useCallback(
-    (artistName, artistImage, playcount) => {
+    (artistName, image, playcount) => {
       navigation.navigate("Artist Details", {
         artistName,
-        artistImage,
+        image,
         topPlaycount: playcount,
       });
     },
