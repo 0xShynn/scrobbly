@@ -14,7 +14,6 @@ const listFooter = () => <View style={{ height: 40 }} />;
 
 const FlatListItemsCover = forwardRef(
   ({ data, renderItem, onRefresh, isRefreshing }, ref) => {
-    const keyExtractor = useCallback((item) => item.id, []);
     const isDarkTheme = useColorScheme() === "dark";
 
     return (
@@ -25,7 +24,7 @@ const FlatListItemsCover = forwardRef(
         ItemSeparatorComponent={listItemSeparator}
         ListFooterComponent={listFooter}
         ListEmptyComponent={ListEmpty}
-        keyExtractor={keyExtractor}
+        keyExtractor={(item) => item.id}
         horizontal={false}
         numColumns={2}
         contentContainerStyle={{ flexGrow: 1 }}

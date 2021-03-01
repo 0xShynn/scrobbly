@@ -166,8 +166,6 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
     });
   };
 
-  const keyExtractor = useCallback((item) => item.id, []);
-
   const ListHeader = () => {
     return (
       <>
@@ -321,7 +319,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
         <FlatList
           data={albumTracklist}
           renderItem={itemTrackList}
-          keyExtractor={keyExtractor}
+          keyExtractor={(item) => item.id}
           ItemSeparatorComponent={itemSeparator}
           ListHeaderComponent={ListHeader}
           ListEmptyComponent={ListEmpty}

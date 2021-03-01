@@ -12,7 +12,6 @@ const listFooter = () => <View style={{ height: 40 }} />;
 
 const FlatListItems = forwardRef(
   ({ data, renderItem, ListHeaderComponent, onRefresh, isRefreshing }, ref) => {
-    const keyExtractor = useCallback((item) => item.id, []);
     const isDarkTheme = useColorScheme() === "dark";
 
     return (
@@ -20,7 +19,7 @@ const FlatListItems = forwardRef(
         ref={ref}
         data={data}
         renderItem={renderItem}
-        keyExtractor={keyExtractor}
+        keyExtractor={(item) => item.id}
         ItemSeparatorComponent={listItemSeparator}
         ListHeaderComponent={ListHeaderComponent}
         ListFooterComponent={listFooter}
