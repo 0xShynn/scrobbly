@@ -44,7 +44,6 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
 
   const artistInfoHandler = useCallback(async () => {
     const result = await getArtistInfo(username, artistNameFromParams);
-    console.log("ici", result);
     setArtistInfo(result);
   }, []);
 

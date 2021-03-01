@@ -117,7 +117,7 @@ export const getSpotifyTrackInfo = async (artistName, trackName) => {
           `[Similar track] > ${artistName} -
             ${trackName} : No data was found on Spotify.`
         );
-        return null;
+        return data;
       }
 
       // Match the artist name
@@ -135,7 +135,7 @@ export const getSpotifyTrackInfo = async (artistName, trackName) => {
       }
 
       if (selectedTrack === undefined) {
-        return null;
+        return data;
       }
       return data;
     }
@@ -155,8 +155,8 @@ export const getSpotifyTrackInfo = async (artistName, trackName) => {
 
 export const getSpotifyArtistInfo = async (artistName) => {
   const encodedArtistName = encodeURIComponent(artistName);
-  let image640;
-  let image300;
+  let image640 = imageBlank640;
+  let image300 = imageBlank300;
 
   try {
     const {
@@ -165,7 +165,7 @@ export const getSpotifyArtistInfo = async (artistName) => {
 
     if (items.length === 0) {
       // return { image640, image300 }
-      return null;
+      return { image640, image300 };
     }
 
     const selectedArtist = items.find(
@@ -175,7 +175,7 @@ export const getSpotifyArtistInfo = async (artistName) => {
     );
 
     if (selectedArtist === undefined) {
-      return null;
+      return { image640, image300 };
     }
 
     // if (selectedArtist.images.length !== 0) {
