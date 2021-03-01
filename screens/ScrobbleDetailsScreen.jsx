@@ -65,10 +65,10 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
   };
 
   const artistDetailsHandler = () => {
-    const { artistImage, playcount, listeners } = artistInfo;
+    const { image, playcount, listeners } = artistInfo;
     navigation.navigate("Artist Details", {
       artistName,
-      artistImage,
+      image,
       playcount,
       listeners,
     });

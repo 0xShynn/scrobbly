@@ -95,38 +95,38 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
     });
   };
 
-  const itemTrackList = useCallback(
-    (itemData) => {
-      return (
-        <TouchableOpacity
+  const itemTrackList = (itemData) => {
+    return (
+      <TouchableOpacity
+        style={{
+          flexDirection: "row",
+          paddingHorizontal: spacing.xl,
+          paddingVertical: spacing.lg,
+        }}
+        onPress={() => {
+          itemSelectTrackHandler(
+            itemData.item.artistName,
+            itemData.item.trackName
+          );
+        }}
+      >
+        <View
           style={{
-            flexDirection: "row",
-            paddingHorizontal: spacing.xl,
-            paddingVertical: spacing.lg,
-          }}
-          onPress={() => {
-            itemSelectTrackHandler(
-              itemData.item.artistName,
-              itemData.item.trackName
-            );
+            minWidth: 30,
+            alignItems: "flex-start",
+            justifyContent: "center",
           }}
         >
-          <View
-            style={{
-              minWidth: 30,
-              alignItems: "flex-start",
-              justifyContent: "center",
-            }}
+          <CustomText
+            size={isACompilation ? "H5" : "H6"}
+            color={isDarkTheme ? "white" : myColors.gray_900}
+            bold
           >
-            <CustomText
-              size="H5"
-              color={isDarkTheme ? "white" : myColors.gray_900}
-              bold
-            >
-              {itemData.item.trackNumber}
-            </CustomText>
-          </View>
-          <View style={{ flex: 1 }}>
+            {itemData.item.trackNumber}
+          </CustomText>
+        </View>
+        <View style={{ flex: 1 }}>
+          {isACompilation && (
             <CustomText
               size="H6"
               color={isDarkTheme ? myColors.gray_300 : myColors.gray_700}
@@ -134,34 +134,33 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
             >
               {itemData.item.artistName}
             </CustomText>
-            <CustomText
-              size="H6"
-              bold
-              color={isDarkTheme ? "white" : myColors.gray_900}
-              numberOfLines={1}
-              complementaryStyle={{ flex: 1 }}
-            >
-              {itemData.item.trackName}
-            </CustomText>
-          </View>
+          )}
           <CustomText
             size="H6"
-            color={myColors.gray_500}
-            complementaryStyle={{ paddingLeft: 10 }}
+            bold={isACompilation}
+            color={isDarkTheme ? "white" : myColors.gray_900}
+            numberOfLines={1}
+            complementaryStyle={{ flex: 1 }}
           >
-            {itemData.item.duration}
+            {itemData.item.trackName}
           </CustomText>
-        </TouchableOpacity>
-      );
-    },
-    [isDarkTheme]
-  );
+        </View>
+        <CustomText
+          size="H6"
+          color={myColors.gray_500}
+          complementaryStyle={{ paddingLeft: 10 }}
+        >
+          {itemData.item.duration}
+        </CustomText>
+      </TouchableOpacity>
+    );
+  };
 
   const itemSelectArtistHandler = () => {
-    const { artistImage, playcount, listeners } = artistInfo;
+    const { image, playcount, listeners } = artistInfo;
     navigation.navigate("Artist Details", {
       artistName,
-      artistImage,
+      image,
       playcount,
       listeners,
     });

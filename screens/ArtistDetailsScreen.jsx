@@ -31,7 +31,7 @@ const listItemSeparator = () => <View style={{ width: spacing.md }} />;
 const ArtistDetailsScreen = ({ navigation, route }) => {
   const {
     artistName: artistNameFromParams,
-    artistImage: artistImageFromParams,
+    image: artistImageFromParams,
     topPlaycount,
   } = route.params;
   const [isLoading, setIsLoading] = useState(false);
