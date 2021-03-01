@@ -43,39 +43,40 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
   const username = useSelector((state) => state.auth.username);
 
   const artistInfoHandler = useCallback(async () => {
-    const data = await getArtistInfo(username, artistNameFromParams);
-    setArtistInfo(data);
+    const result = await getArtistInfo(username, artistNameFromParams);
+    console.log("ici", result);
+    setArtistInfo(result);
   }, []);
 
   const artistTopTracksHandler = useCallback(async () => {
-    const data = await getTopTracks("artist", artistNameFromParams);
-    setArtistTopTracks(data);
+    const result = await getTopTracks("artist", artistNameFromParams);
+    setArtistTopTracks(result);
   }, []);
 
   const artistTopAlbumsHandler = useCallback(async () => {
-    const data = await getTopAlbums("artist", artistNameFromParams);
-    setArtistTopAlbums(data);
+    const result = await getTopAlbums("artist", artistNameFromParams);
+    setArtistTopAlbums(result);
   }, []);
 
   const similarArtistsHandler = useCallback(async () => {
-    const data = await getSimilarArtists(artistNameFromParams);
-    setSimilarArtists(data);
+    const result = await getSimilarArtists(artistNameFromParams);
+    setSimilarArtists(result);
   }, []);
 
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
-      try {
-        artistInfoHandler();
-        artistTopTracksHandler();
-        artistTopAlbumsHandler();
-        similarArtistsHandler();
 
-        setIsLoading(false);
+      try {
+        await artistInfoHandler();
+        await artistTopTracksHandler();
+        await artistTopAlbumsHandler();
+        await similarArtistsHandler();
       } catch (error) {
-        console.log(error);
         setIsLoading(false);
+        throw error;
       }
+      setIsLoading(false);
     };
     fetchData();
   }, []);

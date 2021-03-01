@@ -1,4 +1,9 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, {
+  useEffect,
+  useLayoutEffect,
+  useState,
+  useCallback,
+} from "react";
 import { View, Image, ScrollView } from "react-native";
 import { useSelector } from "react-redux";
 import PropTypes from "prop-types";
@@ -74,34 +79,39 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
     });
   };
 
+  const trackInfoHandler = useCallback(async () => {
+    const result = await getTrackInfo(username, artistName, trackName);
+    setTrackInfo(result);
+  }, []);
+
+  const artistInfoHandler = useCallback(async () => {
+    const result = await getArtistInfo(username, artistName);
+    setArtistInfo(result);
+  }, []);
+
+  const similarTracksHandler = useCallback(async () => {
+    const result = await getSimilarTracks(artistName, trackName);
+    setSimilarTracks(result);
+  }, []);
+
+  const albumInfoHandler = useCallback(async () => {
+    const result = await getAlbumInfo(username, artistName, albumName);
+    setAlbumInfo(result);
+  }, []);
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
 
       try {
-        const trackInfoData = await getTrackInfo(
-          username,
-          artistName,
-          trackName
-        );
-        setTrackInfo(trackInfoData);
-
-        const artistInfoData = await getArtistInfo(username, artistName);
-        setArtistInfo(artistInfoData);
-
-        const similarTracksData = await getSimilarTracks(artistName, trackName);
-        setSimilarTracks(similarTracksData);
-
-        const albumInfoData = await getAlbumInfo(
-          username,
-          artistName,
-          albumName
-        );
-        setAlbumInfo(albumInfoData);
+        await trackInfoHandler();
+        await artistInfoHandler();
+        await similarTracksHandler();
+        await albumInfoHandler();
       } catch (error) {
         setError(error);
         setIsLoading(false);
-        console.log(error);
+        throw error;
       }
 
       setIsLoading(false);

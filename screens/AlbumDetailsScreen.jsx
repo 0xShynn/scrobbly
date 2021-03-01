@@ -37,7 +37,7 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
   const isDarkTheme = useColorScheme() === "dark";
   const username = useSelector((state) => state.auth.username);
 
-  const albumInfoHandler = useCallback(async () => {
+  const albumStatsHandler = useCallback(async () => {
     const result = await getAlbumInfo(username, artistName, albumName);
     setAlbumStats(result);
   }, []);
@@ -64,11 +64,15 @@ const AlbumDetailsScreen = ({ navigation, route }) => {
     const fetchData = async () => {
       setIsLoading(true);
 
-      albumInfoHandler();
-      spotifyAlbumInfoHandler();
-      spotifyAlbumTracklistHandler();
-      artistInfoHandler();
-
+      try {
+        await albumStatsHandler();
+        await spotifyAlbumInfoHandler();
+        await spotifyAlbumTracklistHandler();
+        await artistInfoHandler();
+      } catch (error) {
+        setIsLoading(false);
+        throw error;
+      }
       setIsLoading(false);
     };
     fetchData();
