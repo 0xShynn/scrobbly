@@ -36,25 +36,25 @@ const CustomText = ({
     }
   };
 
-  const colorHandler = (selectedColor) => {
-    switch (selectedColor) {
-      case selectedColor:
-        return selectedColor;
-      case selectedColor && isDarkTheme:
-        return myColors.gray_200;
-      case selectedColor && !isDarkTheme:
-        return myColors.gray_900;
-      default:
-        return selectedColor;
-    }
-  };
+  // const colorHandler = (selectedColor) => {
+  //   switch (selectedColor) {
+  //     case selectedColor:
+  //       return selectedColor;
+  //     case selectedColor && isDarkTheme:
+  //       return "red";
+  //     case selectedColor && !isDarkTheme:
+  //       return myColors.gray_900;
+  //     default:
+  //       return selectedColor;
+  //   }
+  // };
 
   return (
     <Text
       style={{
         fontSize: fontSizeHandler(size),
         fontFamily: bold ? "Inter_700Bold" : "Inter_400Regular",
-        color: colorHandler(color),
+        color: color || (isDarkTheme ? myColors.gray_200 : myColors.gray_900),
         ...complementaryStyle,
       }}
       {...otherProps}
