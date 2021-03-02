@@ -165,7 +165,7 @@ export const getSpotifyArtistInfo = async (artistName) => {
 
     if (items.length === 0) {
       // return { image640, image300 }
-      return { image640, image300 };
+      return null;
     }
 
     const selectedArtist = items.find(
@@ -175,7 +175,7 @@ export const getSpotifyArtistInfo = async (artistName) => {
     );
 
     if (selectedArtist === undefined) {
-      return { image640, image300 };
+      return null;
     }
 
     // if (selectedArtist.images.length !== 0) {

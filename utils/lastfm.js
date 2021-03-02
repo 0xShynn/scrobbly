@@ -191,6 +191,7 @@ export const getTopTracks = async (
 
     for (const track of response.toptracks.track) {
       spotifyData = await getSpotifyTrackInfo(track.artist.name, track.name);
+      // console.log(spotifyData);
 
       if (spotifyData !== null) {
         data.push(
@@ -225,14 +226,14 @@ export const getArtistInfo = async (username, artistName) => {
       throw new Error(response.message);
     }
 
-    const { image300 } = await getSpotifyArtistInfo(artistName);
+    const result = await getSpotifyArtistInfo(artistName);
 
     const data = {
       bio: response.artist.bio.content,
       summary: response.artist.bio.summary,
       playcount: response.artist.stats.playcount,
       listeners: response.artist.stats.listeners,
-      image: image300,
+      image: result !== null ? result.image300 : imageBlank300,
       userplaycount: response.artist.stats.userplaycount,
     };
     return data;

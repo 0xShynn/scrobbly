@@ -74,7 +74,7 @@ const ScrobblesScreen = ({ navigation }) => {
         );
         setUserData(response.userInfo);
       } catch (error) {
-        console.log(error);
+        throw error;
       }
     };
     fetchData();

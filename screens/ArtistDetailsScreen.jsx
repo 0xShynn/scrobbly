@@ -92,7 +92,6 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
     artistImage,
     playcount
   ) => {
-    console.log(artistImage);
     navigation.push("Artist Details", {
       artistName,
       image: artistImage,

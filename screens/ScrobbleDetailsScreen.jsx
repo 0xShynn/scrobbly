@@ -148,9 +148,14 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
       ) : (
         <View style={{ padding: 15 }}>
           {error ? (
-            <>
-              <RoundedContainer style={{ alignItems: "center" }}>
-                <CustomText size="H5" style={{ marginVertical: 15 }}>
+            <View style={{ marginBottom: spacing.md }}>
+              <RoundedContainer
+                style={{ alignItems: "center", marginBottom: spacing.md }}
+              >
+                <CustomText
+                  size="H6"
+                  complementaryStyle={{ marginVertical: 15 }}
+                >
                   {error.message}
                 </CustomText>
               </RoundedContainer>
@@ -159,7 +164,7 @@ const ScrobbleDetailsScreen = ({ navigation, route }) => {
                 onPress={() => navigation.goBack()}
                 style={{ marginVertical: spacing.md }}
               />
-            </>
+            </View>
           ) : null}
 
           {trackInfo !== undefined && (
