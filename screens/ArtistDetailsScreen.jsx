@@ -92,7 +92,12 @@ const ArtistDetailsScreen = ({ navigation, route }) => {
     artistImage,
     playcount
   ) => {
-    navigation.push("Artist Details", { artistName, artistImage, playcount });
+    console.log(artistImage);
+    navigation.push("Artist Details", {
+      artistName,
+      image: artistImage,
+      playcount,
+    });
   };
 
   const listItemSimilarArtist = ({ item, index }) => {
