@@ -23,11 +23,7 @@ const MyTextInput = forwardRef(
         }}
       >
         <View style={{ paddingLeft: spacing.md, paddingRight: spacing.xs }}>
-          <Icon
-            name={icon}
-            color={touched ? myColors.gray_900 : "red"}
-            size={20}
-          />
+          <Icon name={icon} color={myColors.gray_900} size={20} />
         </View>
         <View style={{ flex: 1 }}>
           <TextInput
