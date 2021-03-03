@@ -9,11 +9,15 @@ const ListEmpty = () => {
   return (
     <CenteredContainer>
       <CustomText
-        size="H5"
+        size="H6"
         color={isDarkTheme ? myColors.gray_200 : myColors.gray_900}
+        complementaryStyle={{
+          textAlign: "center",
+        }}
       >
-        No music was found. Start scrobbling.
+        No data was found for the selected period.
       </CustomText>
+      <CustomText size="H6">Start scrobbling.</CustomText>
     </CenteredContainer>
   );
 };
