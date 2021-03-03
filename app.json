@@ -2,7 +2,7 @@
   "expo": {
     "name": "Scrobbly",
     "slug": "scrobbly",
-    "version": "1.0.3",
+    "version": "1.0.31",
     "description": "Scrobbly is a music data reader (iOS app) for your Last.fm account.",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -19,7 +19,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.scrobbly.mobileApp",
-      "buildNumber": "1.0.3"
+      "buildNumber": "1.0.31"
     },
     "web": {
       "favicon": "./assets/favicon.png"
