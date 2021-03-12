@@ -14,7 +14,7 @@ From the name of the Internet service Audioscrobbler.
 
 ## Description
 
-Scrobbly is a React Native mobile app for iOS/Android, it retrieves your Last.fm data to display your recent scrobbles, top tracks/albums/artists in a clean and elegant way.
+Scrobbly is a React Native mobile app for iOS, it retrieves your Last.fm data to display your recent scrobbles, top tracks/albums/artists in a clean and elegant way.
 
 ## About the project
 
@@ -24,23 +24,23 @@ Scrobbly fetch your music's data using Last.fm API and display your recent scrob
 
 ## How to install
 
-Under construction
+Scrobbly for Last.fm is officially available on the App Store (iOS) :
 
-## Ideas of future updates
-
-Under construction
+[![Download the App](https://www.dropbox.com/s/jn8z049uyfehvyo/dl-appstore.png?dl=0&raw=1)](https://apple.co/3aXVH2S)
 
 ## Technologies used
 
 - Javascript ES6
-- [React](http://reactjs.org)/[React Native](https://reactnative.dev)
+- [React](http://reactjs.org) / [React Native](https://reactnative.dev)
 - [React Navigation](http://reactnavigation.org)
 - [Redux](https://redux.js.org)
 - [Expo](https://expo.io)
-- [Formik](https://formik.org)
-- [Lotties](https://lottiefiles.com)
+- [React Hook Form](https://react-hook-form.com)
+- [LottieFiles](https://lottiefiles.com)
 
 ## About the author
 
-[Twitter](http://twitter.com/anhek_)
-[LinkedIn](https://www.linkedin.com/in/anhek)
+Antonin Nhek :
+[Twitter](http://twitter.com/anhek_) | [LinkedIn](https://www.linkedin.com/in/anhek) | [GitHub](http://github.com/anhek)
+
+[Visit the Scrobbly website](https://scrobbly.netlify.app)
