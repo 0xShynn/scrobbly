@@ -1,4 +1,4 @@
-import React, { useCallback, forwardRef } from "react";
+import React, { forwardRef } from "react";
 import { FlatList, View, RefreshControl } from "react-native";
 import PropTypes from "prop-types";
 

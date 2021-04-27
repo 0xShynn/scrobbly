@@ -13,7 +13,7 @@ import useColorScheme from "../hooks/useColorSchemeFix";
 const Tab = createBottomTabNavigator();
 
 const MainBottomTabNavigator = () => {
-  const isDarkTheme = useColorScheme() === "dark" ? true : false;
+  const isDarkTheme = useColorScheme() === "dark";
 
   return (
     <Tab.Navigator
