@@ -22,7 +22,7 @@ Sentry.init({
   dsn:
     "https://9b633e0f819348a3b8f6d603cac7d211@o270434.ingest.sentry.io/5783875",
   enableInExpoDevelopment: true,
-  debug: true, // Sentry will try to print out useful debugging information if something goes wrong with sending an event. Set this to `false` in production.
+  debug: `${process.env.DEV === true}`, // Sentry will try to print out useful debugging information if something goes wrong with sending an event. Set this to `false` in production.
 });
 
 // // Access any @sentry/react-native exports via:
