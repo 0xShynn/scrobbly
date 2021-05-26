@@ -23,6 +23,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "anhek",
+            "project": "scrobbly",
+            "authToken": "54a0647c0d9844189394db20ea5eab89441812de8e654250adc6d22093eaea4a"
+          }
+        }
+      ]
     }
   }
 }
