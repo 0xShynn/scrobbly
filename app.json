@@ -23,6 +23,18 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "thunderbolts",
+            "project": "scrobbly",
+            "authToken": "3719d5107c5f44a98a34067fead8ae99c48866da21dc481aaab08faf1cfa2370"
+          }
+        }
+      ]
     }
   }
 }
